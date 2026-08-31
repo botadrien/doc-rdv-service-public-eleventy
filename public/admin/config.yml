@@ -1,0 +1,47 @@
+backend:
+  name: github
+  repo: botadrien/doc-rdv-service-public-eleventy
+  branch: main
+
+site_url: https://botadrien.github.io/doc-rdv-service-public-eleventy/
+display_url: https://botadrien.github.io/doc-rdv-service-public-eleventy/
+
+# Langue de l'interface
+locale: fr
+
+# Dossier des médias « globaux » (par défaut). Les pages co-localisent plutôt
+# leurs images dans content/<page>/assets/ via le media_folder de la collection.
+media_folder: public/img/uploads
+public_folder: /doc-rdv-service-public-eleventy/img/uploads
+
+collections:
+  - name: pages
+    label: Pages de documentation
+    label_singular: Page
+    description: >-
+      Une page = un dossier content/<section>/<page>/ contenant index.md et,
+      éventuellement, un sous-dossier assets/ pour les images.
+    folder: content
+    extension: md
+    format: frontmatter
+    create: true
+    nested:
+      depth: 4
+    path: "{{slug}}/index"
+    media_folder: assets
+    public_folder: ./assets
+    fields:
+      - { name: title, label: Titre, widget: string }
+      - { name: description, label: "Sous-titre (chapô)", widget: string, required: false }
+      - name: eleventyNavigation
+        label: Navigation
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - { name: key, label: "Libellé dans le menu", widget: string }
+          - { name: parent, label: "Section parente", widget: string, required: false }
+          - { name: order, label: Ordre, widget: number, required: false, value_type: int }
+      - { name: showBreadcrumb, label: "Afficher le fil d'Ariane", widget: boolean, required: false, default: true }
+      - { name: draft, label: Brouillon, widget: boolean, required: false, default: false }
+      - { name: body, label: Contenu, widget: markdown }
