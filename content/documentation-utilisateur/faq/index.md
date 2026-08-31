@@ -1,0 +1,930 @@
+---
+title: FAQ
+layout: layouts/page.njk
+eleventyNavigation:
+  key: FAQ
+  parent: Documentation utilisateur
+  order: 1
+showBreadcrumb: true
+---
+## Les notifications agent
+
+????accordionsgroup
+
+???Comment recevoir des notifications d’alertes de rendez-vous ?
+
+Cette fonctionnalité permet de recevoir des notifications par email lorsqu’un rendez-vous est ajouté, modifié ou annulé dans un agenda. Elle répond au besoin des agents souhaitant être alertés en cas de changement dans leur planning.
+
+Vous pouvez personnaliser vos préférences de notification dans l’onglet _**Mon Compte**_, accessible en cliquant sur votre prénom en haut à droite de votre calendrier.
+
+![](./assets/image-1-1.png)
+
+Chaque email contient une pièce jointe au format **ICS**, compatible avec la plupart des logiciels de calendrier. Votre calendrier externe reconnaîtra automatiquement ces mises à jour, bien que certains logiciels demandent une validation manuelle des modifications.
+
+???
+
+???Je ne reçois pas les emails de RDV·SP. Comment y remédier ?
+
+### Votre client mail classe nos emails en spam
+
+Les emails provenant de l’adresse RDV Service Public peuvent être classifiés à tort comme du spam par votre client mail (Outlook, Thunderbird, etc).
+
+**Solution** : Dans votre boîte e-mail, vérifiez les dossiers « spam » ou « indésirables ». En complément, vous pouvez signaler l’adresse RDV Service Public comme n’étant pas un spam. De cette façon, vous recevrez les e-mails RDV Services Publics directement
+
+### Un autre logiciel de filtrage d’email classe nos emails en spam
+
+Le domaine RDV Service Public peut être bloqué par un outil de protection des e-mails, tel que **MailinBlack**.
+
+**Solution** : Autorisez notre adresse e-mail en suivant ces étapes :
+
+* Connectez-vous à votre interface MailinBlack.
+* Sur la page principale, sélectionnez l’onglet « Newsletter »
+* Cliquez sur l’icône de droite et autorisez les adresses du domaine @rdv-solidarites.fr / @rdv-service-public.fr / @rdv-aide-numerique.fr
+* Confirmez en validant le message "Autoriser les messages de ces domaines".
+
+Cette autorisation est appliquée à titre individuel et vos collègues auront potentiellement le même problème. Vous pouvez suggérer au responsable technique de votre administration de consulter cette page pour corriger ce problème pour tout le monde.
+
+### Un problème temporaire sur les serveurs de RDV Service Public empêche l’envoi des emails
+
+Il arrive que les serveurs de RDV Service Public rencontrent des ralentissements ou soient temporairement inaccessibles.
+
+**Solution** :  Vous pouvez suivre en temps réel l'évolution du dysfonctionnement sur notre [page de statut](https://rdv-service-public.instatus.com).
+
+### Un problème temporaire sur les serveurs de votre système informatique (SI) empêche la réception des emails
+
+Il peut arriver que le système d’information ou le réseau interne sur lequel vous naviguez rencontre des ralentissements ou soit inacessible temporairement.
+
+**Solution** :
+
+* Contactez le service informatique
+* Vous pouvez effectuer les tests suivants pour comprendre si le problème vient du SI de votre service ou de RDV Service Public :
+  * Demander à un collègue de vous envoyer un e-mail
+  * Envoyez-vous un e-mail depuis une adresse personnelle (Gmail, Outlook, etc.)
+
+Si le problème est lié au SI de votre service, nous ne pourrons malheureusement pas intervenir directement.
+
+### Votre adresse a été bloquée par notre fournisseur d’envoi d’e-mails
+
+Votre adresse e-mail peut être bloquée par notre fournisseur d’envoi.
+
+Cette situation peut se produire dans deux cas :
+
+* vous avez cliqué sur les liens de nos e-mails qui vous permettent de vous désabonner
+* le serveur mail de votre SI a refusé la réception des emails envoyés par RDV Service Public car il les considérant comme du spam. Cela se produit suite à une classification manuelle d’un de nos mails comme du spam par un agent au sein de votre SI, ou par une classification automatique.
+
+**Solution** :  Envoyez-nous un e-mail à [support@rdv-service-public.fr](mailto:support@rdv-service-public.fr)
+
+Si vous vous retrouvez dans cette situation, il est probable que plusieurs de vos collègues soient dans la même situation. Vous pouvez suggérer aux responsables techniques de votre SI de consulter le sinformations ci-dessous pour corriger le problème durablement et à l’échelle de tout votre service :
+
+### Les emails de RDV Service Public ne sont pas reçus par les agents
+
+Si un des agents de votre service rencontre ce genre de problèmes de réception d’emails, il est probable que d’autres le rencontrent à leur tour. En tant que responsable technique vous avez la possibilité de configurer le SI pour corriger ces problèmes pour tous les agents.
+
+Le but est de faire en sorte que les serveurs mails du SI ne refusent jamais les emails envoyés par RDV Service Public. L’idée est de mettre dans des listes d’acceptations tous les emails émis par RDV Service Public (on parle aussi de _whitelists_).
+
+Il faut le cas échéant faire cette configuration à deux niveaux :
+
+* le système de détection de spam natif du serveur mail de votre SI
+* le(s) logiciel(s) de filtrage d’email branchés sur votre serveur comme MailInBlack
+
+Le plus robuste est d’ajouter dans les listes d’acceptations l’adresse IP suivante,  nous envoyons tous nos emails depuis cette adresse :
+
+```
+212.146.241.127
+```
+
+Si vous ne trouvez pas l’option pour ajouter une IP dans une liste d’acceptation, vous pouvez en repli ajouter les domaines émetteurs suivants comme domaines de confiance  :
+
+```
+reply.demo.rdv-solidarites.fr
+reply.staging.rdv-service-public.fr
+reply.rdv-service-public.fr
+reply.demo.rdv-aide-numerique.fr
+reply.demo.rdv-service-public.fr
+reply.rdv-aide-numerique.fr
+rdv-aide-numerique.fr
+rdv-service-public.fr
+reply.rdv-solidarites.fr
+email.rdv-solidarites.fr
+rdv-solidarites.fr
+```
+
+N’hésitez pas à nous contacter à support@rdv-service-public.fr pour que nous puissions vous aider à faire ces configurations.
+
+???
+
+????
+## Synchronisation calendrier
+
+????accordionsgroup
+
+???Synchronisation Outlook (Microsoft 365)
+
+#### Distinction des versions d’Outlook
+
+Il existe deux versions d’Outlook :
+
+1. Outlook hébergé à distance (Microsoft 365)
+2. Outlook hébergé sur place par l’administration (Microsoft Exchange)
+
+:::warning
+**Nous proposons une solution de synchronisation uniquement pour la première version : Outlook hébergé à distance (Microsoft 365)**.
+:::
+
+Ce guide décrit cette solution. N’hésitez pas à nous contacter si vous avez besoin d’aide pour la mettre en place sur votre espace.
+
+RDV Service Public ne propose pour l’instant pas de solution de synchronisation clé en main pour Outlook hébergé sur place. Certaines structures utilisant RDV Service Public et ce type d’Outlook ont mis en place des solutions via webhooks, qui nécessitent du développement en interne.
+
+#### Fonctionnement
+
+Une application Microsoft Outlook 365 permet aux agents de synchroniser leur agenda RDV Service Public avec leur agenda Microsoft Outlook.
+
+Cette application requiert les droits d’écriture sur les calendriers Outlook.
+
+Elle utilise l’API de Microsoft pour créer et mettre à jour des événements correspondants aux RDV pris dans RDV Service Public.
+
+#### Procédure à suivre
+
+Pour que les agents puissent utiliser l’application Microsoft 365, un·e administrateur·ice du compte Outlook du département doit au préalable l’autoriser via un flux OAuth.
+
+:::info
+Cette procédure doit être effectuée une seule fois pour tout un compte Microsoft 365
+:::
+
+**Étape 1** : L’administrateur·ice Outlook du département doit être invité à créer un compte sur RDV Service Public.
+
+**Étape 2** : Une fois connecté·e sur RDV Service Public, l’administrateur·ice doit cliquer sur son nom en haut à droite > Mon Compte > Synchronisation d’agenda > Connexion Outlook > Se connecter avec Microsoft
+
+![Chemin à suivre pour la connexion Outlook](https://storage.gra.cloud.ovh.net/v1/AUTH_0f20d409cb2a4c9786c769e2edec0e06/padnumerique/uploads/874bafcf-66ea-4a17-b07f-23b1406d3c1b.png)
+
+**Étape 3** : L’administrateur·ice doit accepter les permissions. Il faut nécessairement cocher la case **“Consentement pour le compte de votre organisation”** pour que les agents non-administrateur·ices puissent à leur tour utiliser l’application.
+
+<figure class="fr-content-media">
+
+![](./assets/image-3.png)
+
+<figcaption class="fr-content-media__caption"><p><em>L’application Oauth est actuellement indiquée comme “non vérifiée” car le processus de validation avec Microsoft n’a pas encore été finalisé.</em></p></figcaption>
+</figure>
+
+#### Sécurité et code source
+
+Pour des raisons de sécurité et de confidentialité, les événements créés dans Outlook ne contiennent pas d’informations personnelles sur les usagers. Ils contiennent uniquement un lien vers RDV Service Public. Ce lien permet à l’agent, une fois authentifié et autorisé, d’accéder aux détails du rendez-vous.
+
+Notre application Microsoft demande les permissions suivantes : `Calendars.ReadWrite` et `User.read` [voir la documentation Microsoft](https://learn.microsoft.com/en-us/graph/permissions-reference#calendarsreadwrite).
+
+Le code source de RDV Service Public est accessible en open source sur [GitHub (betagouv/rdv-solidarites.fr)](https://github.com/betagouv/rdv-solidarites.fr) :
+
+* **Configuration du client OAuth** : [https://github.com/betagouv/rdv-service-public/blob/production/config/initializers/omniauth.rb#L6](https://github.com/betagouv/rdv-service-public/blob/production/config/initializers/omniauth.rb#L6)
+* **Code du client REST** : [https://github.com/betagouv/rdv-service-public/blob/production/app/models/outlook/api\_client.rb](https://github.com/betagouv/rdv-service-public/blob/production/app/models/outlook/api_client.rb)
+
+???
+
+???Synchronisation avec La Suite numérique (CalDAV)
+
+La synchronisation CalDAV est actuellement en bêta de notre côté. Elle a été principalement testée avec le calendrier de La Suite numérique, mais reste compatible avec l’ensemble des agendas utilisant le standard CalDAV.\
+\
+Elle permet de synchroniser les événements de votre agenda RDV Service Public avec l’agenda de La Suite, dans les deux sens. Ainsi, un rendez-vous créé dans La Suite peut apparaître comme une indisponibilité dans RDV Service Public, empêchant les usagers de prendre rendez-vous sur ce créneau.
+
+#### Étape 1 : création d’un mot de passe dédié à la synchronisation
+
+Afin d’effectuer la synchronisation avec La Suite, il est nécessaire de créer un mot de passe dédié.
+
+Il faut d'abord se rendre dans les paramètres de Messagerie, qui est l’agenda de La Suite Numérique :
+
+```
+Réglages → Sécurité → Mots de passe d’applications.
+```
+
+Dans la section _« Ajouter des mots de passe »_ sélectionnez _« Client d’agenda (CalDAV) »_ puis donnez un nom de votre choix au mot de passe.
+
+![](./assets/520aed14-b71a-42ac-acea-81f792b90030.png)
+
+Conservez le mot de passe généré.
+
+:::info
+Si vous avez perdu le mot de passe généré, supprimez le dans Mots de passe existants et recréez en un nouveau.
+:::
+
+#### Étape 2 : récupération du lien du calendrier à synchroniser
+
+Allez dans les propriétés de votre calendrier
+
+![](./assets/29c6f23b-468e-4ac7-b73c-d157649a02c0.png)
+
+Puis copiez l’URL CalDAV
+
+![](./assets/8f91b34d-2c06-40e1-b51a-42f2c5909445.png)
+
+#### Étape 3 : configuration de la synchronisation dans RDV Service Public
+
+Sur RDV Service Public, cliquez sur votre nom en haut à droite, ouvrez « _Mon compte_ », puis sélectionnez « _Synchronisation d’agenda_ ».
+
+![](./assets/762bb42a-264f-4a17-a3c6-58633b9b2fba.png)
+
+![](./assets/52ac213d-0356-458b-8507-a0c64301667c-1.png)
+
+Cliquez sur « _CalDAV_ ».
+
+:::info
+💡Si vous ne voyez pas le menu ci-après, rendez-vous directement sur cette page : [https://rdv.anct.gouv.fr/agents/calendar\_sync/caldav\_sync](https://rdv.anct.gouv.fr/agents/calendar_sync/caldav_sync)
+:::
+
+Dans le formulaire qui s’affiche, renseignez les informations suivantes :
+
+* **Nom d’utilisateur** : votre adresse email utilisée pour la connexion à votre compte de La Suite.
+* **Mot de passe** : le mot de passe généré dans l'étape 1.
+* **URL de l’agenda CalDAV** : l’URL copiée à l’étape 2.
+
+Si vous avez saisi les bonnes informations, tous vos rendez-vous à partir de la date du jour seront automatiquement envoyé dans le calendrier choisi.
+
+???
+
+???Comment synchroniser les rendez-vous avec mon agenda ?
+
+Cette fonctionnalité permet d'envoyer les informations des rendez-vous planifié dans un agenda extérieur à RDV Service Public. Elle répond au besoin de faire afficher les rendez-vous planifié dans un agenda du quotidien, souvent utilisé dans les administrations pour gérer leur quotidien métier en dehors des rendez-vous (réunion d'équipe etc ...)
+
+#### Notes générales
+
+RDV Service Public propose différents mécanismes de synchronisation. Voici quelques remarques importantes valables pour tous les mécanismes :
+
+* Pour protéger les données personnelles de vos usagers, les événements envoyés à votre logiciel de calendrier externe ne contiendront que le motif, l'adresse du rendez-vous et un lien vers les détails dans RDV Service Public ;
+* Nous proposons de synchroniser les créations, changements et annulations depuis RDV Service Public vers les logiciels de calendrier externes mais pas l’inverse. Si vous supprimez un RDV depuis votre logiciel de calendrier externe, cela ne sera pas répercuté dans RDV Service Public et l’usager n’en sera pas averti.
+
+#### S**ynchronisation par email**
+
+Cette synchronisation envoie un email pour chaque création, modification ou annulation de RDV.
+
+Chaque email contient une pièce jointe au format ICS, un format largement supporté. Votre logiciel de calendrier externe reconnaîtra ces emails et mettra automatiquement à jour les évènements dans votre calendrier. Certains logiciels de calendrier demandent « d’accepter » chaque modification.
+
+Vous pouvez modifier vos préférences de notifications email dans l’espace « Mon Compte » accessible en cliquant sur votre prénom en haut à droite depuis votre vue calendrier.
+
+#### **Synchronisation Outlook (Microsoft 365)**
+
+Une application Microsoft 365 permet de synchroniser vos RDV vers votre agenda Outlook. Cette application ne fonctionne que pour les versions d’Outlook hébergées par Microsoft, pas pour les versions hébergées sur site.
+
+Vous trouverez plus d’informations sur [ici](/documentation-utilisateur/faq/).
+
+#### **Synchronisation Webcal**
+
+Webcal est un protocole largement supporté par les logiciels de calendrier.
+
+Nous vous fournissons une URL individuelle fournissant le contenu de votre agenda au format ICS. Cette URL peut être récupérée depuis dans l’espace « Mon Compte » accessible en cliquant sur votre prénom en haut à droite depuis votre vue calendrier. Il suffit de copier cette URL dans votre logiciel de calendrier externe et la synchronisation se fera automatiquement.
+
+Si vous synchronisez votre agenda RDV Solidarités avec Google Agenda, la mise à jour peut prendre jusqu'à 12 heures. Avec le calendrier Outlook, l'affichage est plus rapide, généralement dans l'heure suivant la prise de rendez-vous.
+
+La synchronisation WebCal n’est pas instantanée.
+
+\
+La fréquence de mise à jour dépend de chaque logiciel de calendrier externe. Avec Google Agenda par exemple, la mise à jour peut prendre jusqu’à 12h. Avec Outlook, cette fréquence est généralement d’environ une heure mais chaque logiciel peut se comporter différemment.
+
+#### Synchronisation spécifique Outlook
+
+Il existe deux grandes versions d'Outlook :
+
+* Outlook hébergé à distance, aussi appelé Microsoft 365
+* Outlook hébergé sur place par l’administration, aussi appelé Microsoft Exchange
+
+Nous avons un prototype de synchronisation spécifique pour la version hébergée à distance (Microsoft 365). N’hésitez pas à nous contacter si vous souhaitez l’expérimenter sur votre territoire.
+
+Nous ne fournissons pour l’instant pas de solution spécifique pour Outlook hébergé sur place (Microsoft Exchange). Certaines structures utilisant RDV Service Public et ce type d’Outlook ont cependant mis en place des solutions via webhooks (voir ci-dessous).
+
+#### Synchronisation via webhooks
+
+Cette solution demande du développement spécifique en interne par votre DSI.
+
+Les webhooks sont une manière de communiquer entre deux systèmes d’information. Nous proposons d’émettre des webhooks vers le SI de votre organisation.
+
+Il est possible de développer un logiciel dans votre SI pour recevoir ces webhooks et mettre à jour les calendriers des agents en conséquence. Cette solution est déjà en place dans plusieurs structures utilisant RDV Service Public.
+
+Vous trouverez des informations techniques ici : [https://github.com/betagouv/rdv-service-public/blob/production/docs/api/webhooks/api-notifications-webhooks.md](https://github.com/betagouv/rdv-service-public/blob/production/docs/api/webhooks/api-notifications-webhooks.md)
+
+???
+
+???Pourquoi certains RDV ne sont pas synchronisés dans mon calendrier externe ?
+
+Les raisons de ce genre de problèmes dépendent du type de synchronisation avec votre calendrier externe (voir question précédente).
+
+Le mécanisme de synchronisation le plus répandu est celui utilisant les emails avec des pièces-jointes ICS. Dans ce cas, la raison la plus fréquente pour laquelle une partie des RDV ne se synchronisent pas c’est que vos préférences de notifications par mail sont trop restrictives.
+
+![](./assets/image-2.png)
+
+cf cette question pour apprendre à modifier ces préférences :
+
+[#comment-recevoir-des-notifications-dalertes-de-rendez-vous](/documentation-utilisateur/faq/#comment-recevoir-des-notifications-dalertes-de-rendez-vous "mention")
+
+???
+
+????
+## Prise de rendez-vous en ligne
+
+????accordionsgroup
+
+???Comment mettre en place de la prise de rendez-vous en ligne ?
+
+Cette fonctionnalité permet aux usagers d’accéder aux disponibilités de votre organisation et de planifier un rendez-vous en toute autonomie, depuis un ordinateur ou un téléphone.
+
+Pour activer cette option, trois étapes sont nécessaires :
+
+* **Configurer des motifs ouverts à la réservation en ligne**
+
+Dans les paramètres des motifs, sélectionnez au moins un motif et activez l’option _**Ouvert aux agents, aux prescripteurs et aux usagers**_. Vous pouvez également définir un délai minimum et maximum de réservation et ajouter des instructions personnalisées dans l’onglet _**Instruction et notification**_.
+
+* **Configurer une plage d’ouverture**
+
+Créez une plage d’ouverture en y associant des motifs configurés pour la réservation en ligne. Ces motifs sont identifiés par une pastille spécifique dans l’écran de suivi des motifs.
+
+* **Partager votre URL de prise de rendez-vous**
+
+Un lien URL est disponible dans le menu _**Réservation en ligne**_. Ce lien permet aux usagers et prescripteurs d’accéder directement à vos disponibilités via un navigateur web. Vous pouvez partager cette URL ou l’intégrer dans différents supports, tels que votre site internet ou une plaquette numérique.
+
+???
+
+???Est-il possible d'ajouter un formulaire dans le parcours en ligne ?
+
+Il n'est pas possible d'intégrer de formulaire ou de questionnaire en amont du choix du créneaux. Cette fonctionnalité n'exsite pas encore dans notre solution. Toutefois, vous pouvez personnaliser un message d'instruction qui s'affichera dans le parcours de prise de rendez-vous en ligne. Ce message est personnalisable motif par motif.
+
+Pour ajouter un message d'instruction :
+
+* Sélectionner un motif à modifier depuis _**paramètre**_ puis _**motif**_
+* Accéder à l'onglet _**notifications et instructions**_
+* Compléter le champ _**instructions affichées avant la prise de rendez-vous**_
+
+Ces informations apparaîtront entre la sélection du lieu de rendez-vous et du créneau de rendez-vous dans le parcours en ligne.
+
+???
+
+???Puis-je utiliser une solution d'intégration type iFrame sur mon site internet ?
+
+Nous ne proposons pas encore ce type d'intégration. Nous proposons une intégration simple via un URL à intégrer dans votre site internet :
+
+* Soit directement en corps de texte d'une page web
+* Soit via un bouton CTA avec l'URL en hyperlien.
+
+???
+
+???Comment les usagers prennent-ils rendez-vous ?
+
+Les usagers peuvent prendre rendez-vous en ligne si cette option est activée et que vous avez partagé votre lien de réservation. Ce lien peut être diffusé sur votre site web ou tout autre support.
+
+Une fois sur la plateforme, ils pourront :
+
+* Choisir un service et un motif de rendez-vous.
+* Sélectionner un créneau disponible
+* S’identifier pour confirmer leur rendez-vous.
+
+Deux options d’identification :
+
+1. **FranceConnect** : les informations de contact sont récupérées automatiquement. C'est le parcours le plus rapide et sécurisé.
+2. **Création de compte** : si l’usager ne passe pas par FranceConnect, il doit renseigner son nom, prénom, email et (optionnellement) son numéro de téléphone. Un email de vérification lui sera envoyé, et en cliquant sur le lien de vérificatio présent dans le mail, il sera redirigé vers son parcours et pourra finaliser son rendez-vous.
+
+???
+
+???Comment rendre accessible mes disponiblités à des partenaires ?
+
+La fonctionnalité **prescripteur** permet à un partenaire extérieur (ex. : association, administration, collectivité) de planifier des rendez-vous pour un usager dans vos disponibilités. Cela facilite le parcours des usagers en permettant à différentes entités administratives de rediriger les usagers vers un rendez-vous dans votre structure.
+
+#### **Comment ça fonctionne ?**
+
+* **Configuration** : Activez des motifs de rendez-vous ouverts à la réservation en ligne dans vos disponibilités.
+* **Partage de l'URL** : Envoyez l'URL de réservation en ligne à vos partenaires.
+
+Des notifications seront envoyées une fois le rendez-vous planifié :
+
+* **Prescripteur** : Reçoit un e-mail de confirmation du rendez-vous.
+* **Usager** : Reçoit une confirmation et un rappel 48 heures avant le rendez-vous.
+* **Professionnel** : Le rendez-vous apparaît dans son agenda, avec synchronisation possible.
+
+**Que doit faire un prescripteur ?**
+
+* Accéder à la prise de rendez-vous en ligne et réaliser le parcours
+* Cliquer sur _**Je suis un prescripteur qui oriente un bénéficiaire**_ lors du dernier écran d'authentification usager.
+* Saisir les coordonnées prescripteurs et celles de l'usager.
+* Confirmer le rendez-vous. Un récapitulatif sera généré à la fin.
+
+???
+
+????
+## Les notification usagers
+
+????accordionsgroup
+
+???Puis-je modifier les informations du SMS ?
+
+Il n’est pas possible de modifier le modèle SMS : le nombre de caractères pour les SMS est limité. Aussi certaines informations comme le nom du motif peut porter atteinte à l’usager. Nous avons donc fait le choix de limiter les informations présentes dans le SMS.
+
+???
+
+???Quand sont envoyées les notifications SMS et email des usagers ?
+
+Cette fonctionnalité permet d'automatiser les informations de rendez-vous à vos usagers. Elle répond à plusieurs besoins agents et usagers. Elle permet de diminuer l'absentéisme et d'éviter les manipulation de rappel chronophage pour les agents. Elle permet aussi à l'usager de garder une trace des informations du rendez-vous dans son téléphone.
+
+Plusieurs actions déclenchent l'envoi de SMS :
+
+* Une notification de **confirmation** est envoyée immédiatement après la création du rendez-vous.
+* Une notification de **rappel** est envoyée à l'usager 48h avant le rendez-vous (hors jours fériés et dimanches).
+* Une notification de **rendez-vous modifié** : l'usager reçoit immédiatement une notification en cas de modification du rendez-vous.
+* Une notification de **rendez-vous annulé** : l'usager reçoit immédiatement une notification en cas d'annulation du rendez-vous. Si l'usager est à l'origine de l'annulation, il doit le faire au moins 4 heures avant l'heure prévue du rendez-vous.
+
+???
+
+???Puis-je ajouter des instructions dans les notifications des usagers ?
+
+Vous pouvez ajouter des instructions dans les notifications emails que recevront les usagers. Ces instructions peuvent être personnalisées motif par motif.
+
+Pour ajouter des instructions dans les notification email :
+
+* Sélectionner un motif à modifier depuis _**paramètre**_  puis _**motif**_
+* Accéder à l'onglet  _**notifications et instructions**_
+* Compléter le champ _**instructions affichées après la prise de rendez-vous**_
+
+Ces informations apparaîtront à 3 niveaux :
+
+* Dans le dernier écran de confirmation du parcours usager
+* Dans la notification email de création et de rappel usager
+* Dans la note d'information accessible depuis l'URL du SMS
+
+???
+
+???Qu’est-ce que peut faire un usager depuis ces notification SMS ?
+
+Chaque usager recevra une notification par SMS et/ou email.
+
+* Le SMS contiendra un lien _**Infos/Annulation**_.
+* En cliquant dessus, il accèdera à une page web où il devra saisir les trois premières lettres de son nom de famille.
+* S'il les saisit correctement, il verra un récapitulatif de son rendez-vous avec les instructions associées ainsi que les informations de contact de votre organisation.
+
+Un bouton  _**Annuler le rendez-vous**_ lui permettra d’annuler sans vous contacter, jusqu’à **4 heures avant** l’heure prévue. Au-delà, il devra vous contacter via les informations de contact disponible dans le récapitulatif de rendez-vous.
+
+???
+
+????
+## Les agendas
+
+????accordionsgroup
+
+???Qui peut voir et modifier mon agenda ?
+
+Par défaut, seuls les agents de votre service et de votre organisation peuvent consulter et planifier des rendez-vous dans votre agenda. De plus, les agents d’accueils (anciennement agents affectés au service secrétariat) de votre organisation ont un accès étendu : ils peuvent voir, modifier et planifier des rendez-vous de tous les agendas.
+
+???
+
+???Comment utiliser les plages d’ouvertures ?
+
+Les plages d’ouverture permettent de définir les disponibilités d’un agent. Une fois configurées, elles simplifient la prise de rendez-vous : les agents peuvent directement rechercher un créneau via le bouton _**Trouver un RDV**_, évitant ainsi une consultation fastidieuse des agendas individuels.
+
+Pour créer une plage d’ouverture :
+
+*  Accédez au menu  _**Plages d’ouverture**_ dans l’onglet  _**Planning**_
+* Cliquer sur  _**Créer une plage d’ouverture**_
+
+Lors de la création, sélectionnez un ou plusieurs motifs pour indiquer les types de rendez-vous possibles. Cette option est particulièrement utile si certains motifs nécessitent du matériel spécifique.
+
+Si un motif est ouvert à la réservation en ligne, la plage d’ouverture sera accessible aux réservations en ligne depuis votre url de prise de rendez-vous en ligne.
+
+Vous pouvez créer une plage exceptionnelle (pour un jour unique) ou récurrente (tous les jours de la semaine). Pour une répétition, indiquez d’abord les horaires, puis cochez l’option _**Répéter**_.
+
+Les plages d’ouverture de plus d’un an sont automatiquement supprimées.
+
+???
+
+???Comment gérer une indisponibilité ponctuelle ?
+
+Les indisponibilités permettent de signaler vos absences ponctuelles ou régulières à vos collègues et aux usagers. Cette fonctionnalité évite de modifier les plages d'ouvertures en cas d'indisponiblité ponctuelle des agents. Si une indisponibilité couvre la période d'une plage d'ouverture, les disponibilités de cette période seront supprimées.
+
+Pour créer une indisponibilité :
+
+* Accédez au menu _**planning**_
+* Sélectionnez _**indisponibilité**_
+* Cliquez sur  _**créer une indisponibilité**_
+* Renseignez les informations demandées
+
+Vous pouvez configurer des absences ponctuelles ou récurrentes en utilisant l'option _**répéter**_.
+
+Les indisponibilités apparaissent en gris sur votre agenda et ceux de vos collègues.
+
+Pour une indisponibilité récurrente, il n'est pas possible de supprimer une seule occurrence. Vous devrez supprimer l'indisponibilité récurrente entière et en créer une nouvelle excluant l'occurrence non désirée.
+
+???
+
+???Comment trouver une disponibilité auprès des agents de mon organisation ?
+
+Le bouton _**Trouver un rendez-vous**_ permet de rechercher rapidement des disponibilités dans votre organisation ou service, évitant ainsi une consultation manuelle des agendas.
+
+Pour utiliser cette fonctionnalité :
+
+* Cliquez sur _**Trouver un rendez-vous**_ pour accéder au moteur de recherche.
+* Spécifiez vos critères : service, motif, agent, lieu et date.
+* Cliquez sur _**Afficher les créneaux**_ pour voir les disponibilités correspondantes.
+
+Conditions d’accès :
+
+* Disponible uniquement si les agents ont configuré leurs plages d’ouverture.
+* **Administrateurs et agents d’accueil** : accès à toutes les disponibilités.
+* **Agents simples** : accès uniquement aux créneaux de leur service.
+
+Si plusieurs agents sont disponibles sur le même créneau et motif, la première disponibilité enregistrée sera sélectionnée.
+
+???
+
+???Comment planifier un rendez-vous ?
+
+Après avoir sélectionné une disponibilité via _**Trouver un RDV**_, vous passerez à la planification du rendez-vous :
+
+* **Associer un usager** :
+
+Recherchez l’usager en tapant les premières lettres de son nom ou prénom. Vous verrez les fiches usagers de votre organisation et, de façon partiellement masquée, celles d’autres organisations de votre espace. **Plusieurs usagers peuvent être ajoutés à un rendez-vous.**
+
+* **Vérifier et modifier les informations** :
+
+Un récapitulatif s’affiche avec la date, l’heure, l’agent et le lieu du rendez-vous. **Chaque champ peut être modifié si nécessaire.**
+
+* **Gérer les notifications :**
+
+Un dernier récap vous permet d’activer ou désactiver les notifications pour ce rendez-vous.
+
+???
+
+???Comment exporter une liste de rendez-vous ?
+
+Le **statut d’agent administrateur** permet d’extraire les statistiques de votre organisation au format **.xls**, en complément de leur visualisation dans l’onglet _**Statistiques**_.
+
+#### Pour exporter les données :
+
+* Accédez au menu _**Liste des RDV**_.
+* Compléter les différents champ pour affiner les critères de votre export
+* Cliquer sur _**rafraichir la liste**_
+* Cliquez sur _**Exporter**_ après avoir renseigné vos critères.
+* Retrouvez vos exports dans la page _**Vos exports**_, accessible depuis votre compte (en haut à droite).
+
+**L’extraction se fait par organisation. Si vous en gérez plusieurs, vous devez effectuer une exportation pour chacune.**
+
+???
+
+???Comment trouver une disponiblités dans d’autres organisations ?
+
+Vous pouvez permettre aux agents de planifier des rendez-vous dans d'autres organisations si vous disposez de plusieurs organisations. Ce parcours est possible par la fonctionnalité _**prescripteur**_**.**
+
+Elle permet aux agents de partager leurs disponibilités et de planifier des rendez-vous dans **toutes les organisations** de leur espace.
+
+Pour configurer :
+
+Il est nécessaire de configurer vos motifs _**ouvert aux prescripteur**_ depuis l'écran de configuration des motifs. Plus précisément, depuis l'onglet _**réservation en ligne**_ présent dans l'écran de configuration des motifs.
+
+Pour l’utiliser :
+
+Si des motifs ouverts aux prescripteurs ont été configurés, vous pouvez accéder aux disponibilités d’autres organisations via _**Trouver un rendez-vous**_ :
+
+* Cliquer sur _**Élargir votre recherche**_.
+* Sélectionner les informations du rendez-vous (motif, lieu, créneau, usagers).
+* Cliquer sur **C**_**onfirmer le RDV**_ pour finaliser le rendez-vous.
+
+???
+
+????
+## Les fiches usagers
+
+????accordionsgroup
+
+???Puis-je modifier ou supprimer les données des usagers ?
+
+Vous pouvez supprimer ou modifier les données des usagers. Sur la fiche des usagers, des options Modifier et Supprimer sont prévues à cet effet. Si aucunes modifications n’est apportée et que l’usager n’a pris aucun RDV durant deux ans, alors ses données seront supprimées automatiquement.
+
+???
+
+???Comment créer une fiche usager ?
+
+Pour créer une fiche :
+
+* Dans le menu _**Usager**_, cliquez sur _**Créer un usager**_ ou depuis le parcours _**Trouver un RDV**_ cliquer sur _**Créer un usager**_
+* Seuls le nom et le prénom sont obligatoires.
+* La fiche sera rattachée à **l’organisation de l’agent** qui l’a créée.
+* Cliquez sur _**Créer usager**_ pour valider.
+
+**Pensez à vérifier l’orthographe des noms et prénoms pour éviter les doublons !**
+
+Une fois créée, la fiche contient :
+
+* Les **informations générales** de l’usager.
+* Son **historique** et le **statut de ses rendez-vous**.
+* Une option pour l’**inviter à créer un compte**, afin qu’il puisse **modifier ses infos** et **gérer ses rendez-vous** en autonomie depuis son esapce personnel.
+
+???
+
+???Comment gérer un doublon de fiche usager ?
+
+Les doublons peuvent apparaître lorsque :
+
+* Un professionnel crée une fiche **sans e-mail**, puis l’usager crée un compte avec une adresse e-mail.
+* Une faute de frappe lors d’une recherche fait croire qu’aucune fiche n’existe.
+
+**L’outil ne fusionne pas automatiquement les fiches, car l’unicité repose uniquement sur l’e-mail.**
+
+Pour fusionner des fiches usagers :
+
+* Accéder au menu _**Usagers**_.
+* Cliquer sur _**Fusionner deux usagers**_.
+* Entrer le nom de l’usager en double dans chaque colonne.
+* Comparez les fiches : **Différences en orange**, **similitudes en vert**.
+* Sélectionnez les informations à conserver.
+* Validez pour créer une **fiche unique fusionnée**.
+
+???
+
+????
+## Les agents
+
+????accordionsgroup
+
+???Puis-je associer un agent à plusieurs organisations ?
+
+Un agent peut être associé à plusieurs organisations. Cette association lui donnera accès aux agendas des agents rattachés à son service dans chacune de ces organisations. Seul un agent administrateur d'espace peut associer un agent à plusieurs organisations.
+
+Pour ajouter un agent à plusieurs organisations :
+
+* Accéder à votre _**Espace Admin**_
+* Sélectionner _**Agent**_
+* Choisissez l'agent à modifier. Vous trouverez en bas de page les options d'affectations à de nouvelles organisations.
+
+???
+
+???Quels sont les différents droits d’accès des agents ?
+
+#### **Agent Basique**
+
+L'**Agent Basique** a accès aux fonctionnalités de planification de rendez-vous. Il peut :
+
+* Créer des fiches usagers,
+* Planifier des rendez-vous
+* Créer des plages d'ouvertures
+* Rechercher des disponibilités dans les agendas de ses collègues
+
+**Sa visibilité est limitée aux agents de son service et de son organisation. Pour associer un agent à plusieurs services ou organisations.**
+
+#### **Agent Admin**
+
+L'**Agent Admin** a une **visibilité étendue** sur toutes les organisations auxquelles il est associé. Il peut :
+
+* Rechercher des disponibilités dans tous les services de son organisation,
+* Accéder à l'onglet **Paramètres** pour créer des motifs, lieux et inviter des agents,
+* Être associé à plusieurs organisations.
+
+#### **Agent Admin d'Espace**
+
+L'**Agent Admin d'Espace** a une **visibilité totale** sur tous les agendas de l'espace et tous les services/organisations. Il a également accès aux paramètres de tous les services et organisations de l'espace et peut :
+
+* Modifier les droits d'accès des agents,
+* Créer des organisations et former des équipes.
+
+**Plusieurs Agents Admin d'Espace peuvent être définis.**
+
+#### **Agent d’accueil**
+
+Un **Agent d’accueil** (anciennement agent affecté au service secrétariat) bénéficie de droits de visibilité supérieurs. Il peut :
+
+* Rechercher des disponibilités sur tous les agendas de l'organisation mais avec des droits d'un agent basique.
+* Planifier des rendez-vous dans n'importe quel agenda de l'organisation (tous services confondus).\
+  Sa principale fonction est de planifier des rendez-vous, mais il peut aussi planifier dans son propre agenda.
+
+**Un Agent Admin doit ouvrir les motifs de prise de rendez-vous pour les agents d’accueil s'ils doivent réaliser des rendez-vous.**
+
+???
+
+???Comment inviter des agents dans mon organisations ?
+
+Pour inviter un agent :
+
+* Allez dans _**Paramètres**_ puis _**Agents**_
+* Cliquez sur _**Inviter un agent**_
+* Choisissez un niveau d'accès
+* Entrez l’adresse e-mail de l'agent
+* Enfin, sélectionnez un service auquel associer l'agent
+* Il recevra une invitation pour créer son compte. Une fois l’invitation acceptée, l'agent devra créer un mot de passe pour se connecter
+
+**Si vous invitez un agent dans plusieurs organisations, chaque invitation sera validée automatiquement après la première, sans nouvel email d'invitation.**
+
+???
+
+???Comment modifier le services d’un agent ?
+
+Pour modifier le service d'un agent :
+
+* Accéder à votre _**Espace Admin**_
+* Cliquer sur _**agent**_ et sélectionner _**modifier**_
+* Associer l'agent à un ou plusieurs services pour définir ses droits d'accès
+
+**Seul un agent admin d'espace pour modifier les services d'un agent.**
+
+???
+
+???Comment supprimer un agent ?
+
+Pour supprimer un agent :
+
+* Allez dans _**Paramètres**_ puis _**Agents**_.
+* Cliquez sur l’icône _**Supprimer**_ à côté de l'agent.
+* Si l'agent a des rendez-vous à venir, une alerte vous empêchera de le supprimer. Vous devrez réaffecter ces rendez-vous avant de supprimer l'agent.
+
+**Les agents inactifs (non connectés depuis 30 jours) auront l’étiquette "inactif" à côté de leur nom.**
+
+???
+
+????
+## Les motifs
+
+????accordionsgroup
+
+???À quoi servent les motifs ?
+
+Le motif est la raison du rendez-vous. Il permet de catégoriser les prises de rendez-vous, d’informer l’agent sur le contenu attendu et d’affiner les options (présentiel, téléphone, visio, option de prise de rendez-vous en ligne). Il permet également une configuration fine des disponibilités des agents selon leurs compétences ou capacités dans leurs plages d'ouverture.
+
+???
+
+???Puis-je dupliquer des motifs dans une nouvelle organisation ?
+
+Vous pouvez dupliquer des motifs déjà créé dans une autre organisation. Cette fonctionnalité permet de répliquer une configuration dans une autre organisation en s'évitant de créer de nouveau tous les motifs.
+
+Pour dupliquer un motif :
+
+* Accéder à vos motifs depuis _**paramètres**_ puis _**motifs**_
+* Cliquer sur l'émoticône _**dupliquer**_ à droite de chaque motif
+* Sélectionner l'organisation dans laquelle dupliquer le motif
+* Au besoin, modifier des configurations du motif
+
+???
+
+???Puis-je modifier des motifs en masse ?
+
+Vous pouvez modifier des par lot. Cette fonctionnalité permet de changer des configurations pour plusieurs motifs en même temps et ainsi gagner du temps.
+
+Pour modifier des motifs en masse :
+
+* Accéder à votre _**Espace Admin**_
+* Sélectionner _**motif**_
+* Filtrer et rechercher les motifs à modifier et sélectionner les par lot.
+* Cliquer sur _**modifier les motifs**_
+
+**Seul un agent admin d'espace peut modifier des motif en masse.**
+
+???
+
+????
+## Les services
+
+????accordionsgroup
+
+???À quoi servent les services ?
+
+Les **services** servent à organiser votre espace et vos organisations en sous-ensembles distincts, chacun avec ses propres **agents** et **motifs**. Concrètement, ils permettent :
+
+* **le cloisonnement** : séparer les activités pour que chaque service ait ses propres règles, agents et motifs.
+* **la visibilité** : donner à chaque agent une vue adaptée à son service, sans être noyé dans l’ensemble des motifs et informations de toute l'organisation.
+
+Sans **services** activés :
+
+* Tous les agents voient l’ensemble des motifs de rendez-vous.
+* Par exemple, un agent de l’état civil pourrait avoir accès à des demandes liées à l’urbanisme ou à la petite enfance, ce qui peut générer de la confusion.
+
+Avec **services** activés :
+
+* Vous pouvez créer un **service État civil**, un **service Urbanisme**, un **service Petite enfance.**
+* Chaque service dispose de ses propres **motifs** (par exemple : “Demande de carte d’identité” pour l’État civil, “Permis de construire” pour l’Urbanisme).
+* Vous associez ensuite vos **agents** aux services concernés : les agents de l’État civil ne verront que les motifs qui leur sont liés, et ainsi de suite.
+
+???
+
+???Comment utiliser les services ?
+
+Par défaut, lors de la création de votre compte, aucun service ne sera actif dans votre espace.
+
+:::info
+**Seul un agent admin d'espace peut activer les services.**
+:::
+
+Pour activer les services :
+
+* Accéder à votre _**Espace Admin**_
+* Sélectionner _**Services**_
+* Sélectionner les services que vous souhaitez activer parmi la liste
+* Cliquer sur _**enregistrer**_ en bas de page
+
+:::warning
+Si vous avez déjà créé des motifs et des agents et que vous choisissez désormais un fonctionnement basé sur les services, il faudra associer vos motifs au service nouvellement activé, ainsi que rattacher vos agents aux services correspondants.
+:::
+
+En effet, pour profiter des fonctionnalités de cloisonnement et de visibilité, vous devez activer les services, puis répartir vos motifs et vos agents dans les services que vous venez de créer.
+
+???
+
+????
+## Les organisations
+
+????accordionsgroup
+
+???À quoi servent les organisations ?
+
+Les organisations permettent de gérer différents sites de rendez-vous au sein de la même entité administrative. Par exemple, une commune peut avoir plusieurs organisations : mairie, CCAS, médiathèque, etc. Cette fonctionnalité est utile si vous souhaitez créer des cloisonnements entre les agents de votre structure.
+
+En effet, créer plusieurs organisations permet de **cloisonner** vos agents selon le lieu d'exercice de leurs missions. Un agent d'une organisation (A) n’aura pas accès aux agendas ni aux options d’une autre organisation (B). Bien que vous pouvez, au besoin, associer un agent à plusieurs organisations.
+
+???
+
+???À quoi servent les options de configuration d'une organisation ?
+
+Depuis le menu **Configuration**, les agents administrateurs peuvent accéder à la section **Informations de l’organisation** et y compléter plusieurs champs.
+
+Une fois renseignées, ces informations seront **mises à disposition des usagers**, notamment en cas de :
+
+* difficulté à annuler leur rendez-vous en autonomie,
+* besoin d’informations complémentaires,
+* demande de modification, etc.
+
+Ces éléments seront ensuite visibles dans les **récapitulatifs de rendez-vous**, accessibles depuis les **notifications email ou SMS**, afin de faciliter la prise de contact si nécessaire.
+
+???
+
+???Comment créer des organisations ?
+
+Pour créer une nouvelle organisation :
+
+* Allez dans le menu _**Espace Admin**_
+* Cliquez sur _**Organisations**_ puis sur _**Créer une organisation**_.
+* L'agent admin d'espace qui crée l'organisation devient automatiquement le premier agent associé.
+* Cet agent admin pourra ensuite inviter d'autres agents dans cette organisation si nécessaire.
+
+**Seul un agent admin d'espace peut créer des organisations.**
+
+???
+
+????
+## La prescription
+
+????accordionsgroup
+
+???Comment utiliser la prescription externe ?
+
+La fonctionnalité prescripteur permet à un partenaire extérieur à votre organisation (une association, une administration, une collectivité) de planifier un rendez-vous pour un usager dans vos disponibilités. Cette fonctionnalité a été développée pour permettre à des entités administratives différentes de rediriger des usagers d'un rendez-vous à l'autre. L'objectif est de **faciliter** et **accélérer** le parcours des usagers.
+
+Concrètement, un agent d'une structure X peut planifier un rendez-vous directement dans vos disponibilités. Vous pouvez alors informer vos structures partenaires qu'elles ont la possibilité de planifier des rendez-vous sur vos créneaux disponibles.
+
+:::info
+**Par exemple, vous pouvez en informer la mairie de votre commune. Les secrétaires et agents d'accueil en contact avec des usagers pourront ainsi les rediriger vers un rendez-vous dans vos disponibilités.**
+:::
+
+#### Comment l’utiliser ?
+
+La première étape consiste à configurer des motifs de rendez-vous ouverts à la réservation en ligne dans vos plages de disponibilités. Pour plus d'informations, consultez Activer la prise de rendez-vous en ligne.
+
+Ensuite, il vous suffit de partager l'URL de prise de _**rendez-vous en ligne**_ avec les administrations de votre choix. Celles-ci pourront alors suivre le parcours prescripteur pour planifier des rendez-vous dans vos disponibilités.
+
+Si l'agent a besoin de plus d'informations sur le contexte du rendez-vous, il peut contacter le prescripteur en utilisant les coordonnées laissées par ce dernier. Ces informations sont accessibles depuis la fiche du rendez-vous.
+
+Les trois acteurs sont informés du rendez-vous par notifications :
+
+* Le prescripteur reçoit un e-mail confirmant le rendez-vous pour l'usager.
+* L'usager reçoit une confirmation de rendez-vous ainsi qu'un rappel 48 heures avant la rencontre avec le professionnel.
+* Le professionnel voit le rendez-vous apparaître directement dans son agenda. Selon la configuration de synchronisation, il peut également recevoir un e-mail ou voir le rendez-vous s'importer automatiquement dans son agenda externe.
+
+#### Que doit faire un prescripteur ?
+
+Un prescripteur aura accès aux disponibilités de l'organisation via le parcours de prise de rendez-vous en ligne _**(plus d'informations Activer la prise de rendez-vous en ligne).**_
+
+Pour prendre rendez-vous pour un usager, le prescripteur devra sélectionner :
+
+* un **motif** de rendez-vous
+* un **créneau** de rendez-vous
+
+Après avoir choisi le motif et le créneau, le prescripteur doit cliquer sur _**« Je suis un prescripteur qui oriente un bénéficiaire »**_. Il sera ensuite invité à saisir ses coordonnées, puis celles de l'usager. Une fois toutes ces informations renseignées, il pourra _**confirmer le rendez-vous**_. Un récapitulatif du rendez-vous sera généré à la fin du processus.
+
+:::info
+**Une fois le rendez-vous planifié, le prescripteur n'intervient plus dans sa gestion. L'annulation ou la modification d'un rendez-vous peut être initiée uniquement par les parties concernées, à savoir l'agent et l'usager.**
+:::
+
+???
+
+???Comment utiliser la prescription interne ?
+
+La prescription interne permet aux agents de partager leurs disponibilités et de planifier des rendez-vous dans toutes les organisations de votre espace.
+
+:::warning
+**Par défaut, un agent peut planifier des rendez-vous uniquement dans les plannings des agents de son service**
+:::
+
+Par exemple, si votre espace dispose de deux organisations — _**MDS de Beaulieu**_ et _**MDS de Boudon**_ — les agents pourront planifier des rendez-vous dans ces deux organisations.
+
+#### Comment l’utiliser ?
+
+:::success
+**Ce parcours est possible si vos motifs sont ouverts aux prescripteurs. Cette configuration est accessible depuis la modification de vos motifs.**
+:::
+
+Vous pouvez accéder aux disponibilités des agents d'une autre organisation depuis le bouton _**Trouver un rendez-vous**_ :
+
+**→ Cliquez sur **_**Élargir votre recherche**_
+
+**→ Sélectionnez les informations du rendez-vous (motif, lieu, créneaux et usagers)**
+
+**→ Validez le rendez-vous en cliquant sur « Confirmer le RDV »**
+
+???
+
+????

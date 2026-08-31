@@ -1,15 +1,29 @@
 ---
-title: Données personnelles
+title: Données personnelles et cookies
 layout: layouts/page.njk
-description: A compléter
+description: Traitement des données personnelles sur le centre d'aide
 slugOverride: donnees personnelles
 showBreadcrumb: true
 ---
 
-Ce site ne prélève aucune donnée à caractère personnel. L’outil de mesure d’audience que nous utilisons est paramétré de façon à ce que les informations recueillies soient anonymisées.
+Ce site de documentation ne collecte aucune donnée à caractère personnel permettant
+de vous identifier.
 
-Les _cookies_ déposées sur votre ordinateur lorsque vous le consultez nous permet de connaître le nombre de visites et les pages les plus consultées, sans pour autant permettre de vous identifier personnellement.
+## Mesure d'audience
 
-Nous sommes ainsi en conformité avec la [réglementation de la CNIL](https://www.cnil.fr/fr/solutions-pour-les-cookies-de-mesure-daudience) et exemptés d’autorisation préalable.
+<span class="aModifier">[À compléter : préciser si Matomo est activé et sa configuration.]</span>
 
-[ A COMPLETER ]
+Si un outil de mesure d'audience est activé, il est paramétré de façon à ce que les
+informations recueillies soient anonymisées, conformément à la
+[réglementation de la CNIL](https://www.cnil.fr/fr/solutions-pour-les-cookies-de-mesure-daudience)
+(exemption d'autorisation préalable).
+
+## Cookies
+
+Aucun cookie n'est déposé sans votre consentement, hormis ceux strictement
+nécessaires au fonctionnement du site.
+
+## Contact
+
+Pour toute question relative à vos données :
+[support@rdv-service-public.fr](mailto:support@rdv-service-public.fr)
