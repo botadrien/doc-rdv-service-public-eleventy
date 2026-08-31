@@ -33,6 +33,9 @@ module.exports = function (eleventyConfig) {
         "./node_modules/@gouvfr/dsfr/dist/artwork": "/artwork"
     });
 
+    // Images co-localisées avec les pages (content/<section>/<page>/assets/…)
+    eleventyConfig.addPassthroughCopy("content/**/assets/*.{png,jpg,jpeg,gif,svg,webp,avif}");
+
     // Watch content images for the image pipeline.
     eleventyConfig.addWatchTarget("content/**/*.{svg,webp,png,jpeg,jpg,gif}");
 
