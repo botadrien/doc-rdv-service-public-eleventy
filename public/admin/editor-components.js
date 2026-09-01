@@ -20,6 +20,11 @@
  *
  * Le marqueur du groupe est `????` (4), celui d'un accordéon `???` (3) — c'est ce
  * qui permet d'imbriquer les seconds dans le premier sans ambiguïté.
+ *
+ * Motifs : le drapeau `m` est indispensable. Sveltia teste le motif ligne par
+ * ligne dans l'éditeur, MAIS l'aperçu (buildMarkdownWithPreviews) l'applique en
+ * `matchAll` sur toute la valeur du champ ; sans `m`, `^` ne matche qu'au tout
+ * début du champ et l'aperçu affiche les `???` bruts.
  */
 (function () {
   'use strict';
@@ -29,9 +34,15 @@
     return;
   }
 
-  /** Découpe le corps d'un groupe en accordéons { title, body }. */
   var ITEM_RE = /^\?\?\?(?!\?)[ \t]*(.+)\n([\s\S]*?)\n\?\?\?(?!\?)[ \t]*$/gm;
 
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c];
+    });
+  }
+
+  /** Découpe le corps d'un groupe en accordéons { title, body }. */
   function parseItems(inner) {
     var items = [];
     var m;
@@ -42,26 +53,52 @@
     return items;
   }
 
+  /** Un accordéon -> syntaxe markdown-it-container. */
   function itemToMarkdown(it) {
     var title = it && it.title ? String(it.title).trim() : '';
     var body = it && it.body ? String(it.body).trim() : '';
     return '???' + (title ? ' ' + title : '') + '\n\n' + body + '\n\n???';
   }
 
+  /*
+   * Aperçu (panneau de droite). Sveltia inline la chaîne retournée dans le
+   * markdown puis la passe à `marked`. On rend un <details> stylé « façon DSFR »
+   * (repliable nativement, sans la CSS du DSFR qui n'est pas chargée dans
+   * l'aperçu). Les lignes vides autour du corps sont nécessaires pour que
+   * `marked` interprète le corps comme du markdown à l'intérieur du HTML.
+   */
+  var SUMMARY_STYLE =
+    'display:block;padding:.75rem 0;font-weight:500;color:#000091;cursor:pointer';
+  var DETAILS_STYLE = 'border-top:1px solid #dddddd;margin:0';
+
   function itemToPreview(it) {
-    var title = (it && it.title) || 'Sans titre';
-    var body = (it && it.body) || '';
-    return '<details><summary><strong>' + title + '</strong></summary>\n\n' + body + '\n\n</details>';
+    var title = esc((it && it.title) || 'Accordéon sans titre');
+    var body = (it && it.body) || '_(vide)_';
+    return (
+      '<details style="' + DETAILS_STYLE + '">\n' +
+      '<summary style="' + SUMMARY_STYLE + '">' + title + '</summary>\n\n' +
+      body + '\n\n' +
+      '</details>'
+    );
+  }
+
+  function groupToPreview(items) {
+    if (!items.length) {
+      return '_(groupe d’accordéons vide)_';
+    }
+    return (
+      '<div style="border-bottom:1px solid #dddddd">\n\n' +
+      items.map(itemToPreview).join('\n\n') +
+      '\n\n</div>'
+    );
   }
 
   // --- Groupe d'accordéons -------------------------------------------------
   window.CMS.registerEditorComponent({
     id: 'dsfr-accordions-group',
-    label: "Accordéons (groupe)",
+    label: 'Accordéons (groupe)',
     icon: 'expand_more',
-    // `[\s\S]` -> Sveltia traite le motif comme multi-ligne. Ancré en début de
-    // chaîne : le bloc doit commencer sur la ligne `????accordionsgroup`.
-    pattern: /^\?\?\?\?[ \t]*accordionsgroup[^\n]*\n([\s\S]*?)\n\?\?\?\?[ \t]*(?=\n|$)/,
+    pattern: /^\?\?\?\?[ \t]*accordionsgroup[^\n]*\n([\s\S]*?)\n\?\?\?\?[ \t]*(?=\n|$)/m,
     fields: [
       {
         name: 'items',
@@ -87,10 +124,7 @@
     },
     toPreview: function (data) {
       var items = data && Array.isArray(data.items) ? data.items : [];
-      if (!items.length) {
-        return '_(groupe d’accordéons vide)_';
-      }
-      return items.map(itemToPreview).join('\n\n');
+      return groupToPreview(items);
     },
   });
 
@@ -99,7 +133,7 @@
     id: 'dsfr-accordion',
     label: 'Accordéon (isolé)',
     icon: 'expand_more',
-    pattern: /^\?\?\?(?!\?)[ \t]*(.+)\n([\s\S]*?)\n\?\?\?(?!\?)[ \t]*(?=\n|$)/,
+    pattern: /^\?\?\?(?!\?)[ \t]*(.+)\n([\s\S]*?)\n\?\?\?(?!\?)[ \t]*(?=\n|$)/m,
     fields: [
       { name: 'title', label: 'Titre', widget: 'string' },
       { name: 'body', label: 'Contenu', widget: 'markdown' },
