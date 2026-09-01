@@ -197,6 +197,102 @@ options exactes.
 5. Build de prod : `npm run build-ghpages` → `preview.gen.js` présent dans
    `_site/admin/`. Workflow GitHub Pages inchangé (il lance déjà `eleventy`).
 
+### Résultat vérifié (1er septembre 2026)
+
+`npm start` en mode `--serve` : le hook `eleventy.before` lance esbuild,
+`public/admin/preview.gen.js` (~183 KB, IIFE) est généré et servi (`200`), le
+rendu du site est inchangé (mêmes marqueurs `fr-alert` / `fr-accordions-group` /
+`header-anchor` dans `_site/`).
+
+Rendu du corps par le bundle (via le `markdown-it` partagé), sur un corps
+représentatif :
+
+<details>
+<summary>Entrée Markdown</summary>
+
+```markdown
+## Qu’est-ce que la prescription ?
+
+:::info Astuce
+Texte **gras** et [lien](https://exemple.fr).
+:::
+
+:::success
+Sans titre → fr-alert--sm.
+:::
+
+????accordionsgroup
+
+???Question 1
+
+Réponse **1**.
+
+???
+
+???Question 2
+
+Réponse 2.
+
+???
+
+????
+
+{% from "components/component.njk" import component with context %}
+<div class="fr-grid-row"><div class="fr-col-12 fr-col-md-6">
+{{ component("tile", { url: "/a/", title: "Titre & co", description: "Desc" }) }}
+</div></div>
+```
+</details>
+
+<details>
+<summary>Sortie HTML (identique à la prod)</summary>
+
+```html
+<h2 id="qu-est-ce-que-la-prescription" tabindex="-1">Qu’est-ce que la prescription ? <a class="header-anchor" href="#qu-est-ce-que-la-prescription">#</a></h2>
+
+<div class="fr-alert fr-alert--info ">
+    <h3 class="fr-alert__title"> Astuce</h3>
+<p>Texte <strong>gras</strong> et <a href="https://exemple.fr">lien</a>.</p>
+</div>
+
+<div class="fr-alert fr-alert--success fr-alert--sm">
+    
+<p>Sans titre → fr-alert--sm.</p>
+</div>
+<div class="fr-accordions-group">
+<section class="fr-accordion">
+    <h3 class="fr-accordion__title">
+        <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-14">
+            Question 1
+        </button>
+    </h3>
+    <div class="fr-collapse" id="accordion-14">
+<p>Réponse <strong>1</strong>.</p>
+</div></section>
+
+<section class="fr-accordion">
+    <h3 class="fr-accordion__title">
+        <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-19">
+            Question 2
+        </button>
+    </h3>
+    <div class="fr-collapse" id="accordion-19">
+<p>Réponse 2.</p>
+</div></section>
+</div></section>
+<div class="fr-grid-row"><div class="fr-col-12 fr-col-md-6">
+<div class="fr-tile fr-enlarge-link"><div class="fr-tile__body"><div class="fr-tile__content"><h4 class="fr-tile__title"><a class="fr-tile__link" href="/a/">Titre &amp; co</a></h4><p class="fr-tile__desc">Desc</p></div></div></div>
+</div></div>
+```
+</details>
+
+Observations : ancre de titre slugifiée à l'identique (`qu-est-ce-que-la-prescription`) ;
+`:::info` avec titre → `<h3 class="fr-alert__title">` ; `:::success` sans titre →
+`fr-alert--sm` ; `????accordionsgroup` rendu nativement (le `</section>` en trop au
+`????` de fermeture reproduit fidèlement le bug de `markdown-custom-containers.js`
+côté site) ; `{% from %}` retiré, `{{ component("tile") }}` → `fr-tile` avec titre
+échappé (`&amp;`).
+
 ## Risques & limites
 
 - **Shortcodes Nunjucks non exécutables** : seul `component("tile")` est reproduit.
