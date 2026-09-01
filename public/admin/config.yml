@@ -14,25 +14,36 @@ locale: fr
 media_folder: public/img/uploads
 public_folder: /doc-rdv-service-public-eleventy/img/uploads
 
+# ---------------------------------------------------------------------------
+# Sveltia CMS ne gère PAS encore les « nested collections » de Decap
+# (prévu pour une version ultérieure). Avec l'ancienne config `nested: {depth: 4}`,
+# l'option était ignorée : seules les pages situées directement dans
+# content/<slug>/index.md apparaissaient (accessibilité, mentions légales,
+# données personnelles, contact) — les pages de sous-sections comme
+# content/a-propos/qui-sommes-nous/index.md restaient invisibles.
+#
+# Contournement : une collection par section. Chaque page garde son
+# emplacement (content/<section>/<slug>/index.md) ; comme la racine de la
+# collection est la section, le slug redevient un seul segment et Sveltia
+# liste bien toutes les pages. Les champs communs sont factorisés via une
+# ancre YAML (&page_fields / *page_fields).
+# ---------------------------------------------------------------------------
+
 collections:
-  - name: pages
-    label: Pages de documentation
+  - name: doc-utilisateur
+    label: Documentation utilisateur
     label_singular: Page
-    description: >-
-      Une page = un dossier content/<section>/<page>/ contenant index.md et,
-      éventuellement, un sous-dossier assets/ pour les images.
-    folder: content
+    folder: content/documentation-utilisateur
     extension: md
     format: frontmatter
     create: true
-    nested:
-      depth: 4
     path: "{{slug}}/index"
     media_folder: assets
     public_folder: ./assets
-    fields:
+    fields: &page_fields
       - { name: title, label: Titre, widget: string }
       - { name: description, label: "Sous-titre (chapô)", widget: string, required: false }
+      - { name: layout, label: Gabarit, widget: hidden, default: layouts/page.njk }
       - name: eleventyNavigation
         label: Navigation
         widget: object
@@ -43,5 +54,158 @@ collections:
           - { name: parent, label: "Section parente", widget: string, required: false }
           - { name: order, label: Ordre, widget: number, required: false, value_type: int }
       - { name: showBreadcrumb, label: "Afficher le fil d'Ariane", widget: boolean, required: false, default: true }
+      - { name: slugOverride, label: "URL personnalisée (optionnel)", widget: string, required: false }
       - { name: draft, label: Brouillon, widget: boolean, required: false, default: false }
       - { name: body, label: Contenu, widget: markdown }
+
+  - name: doc-technique
+    label: Documentation technique
+    label_singular: Page
+    folder: content/documentation-technique
+    extension: md
+    format: frontmatter
+    create: true
+    path: "{{slug}}/index"
+    media_folder: assets
+    public_folder: ./assets
+    fields: *page_fields
+
+  - name: accompagner-le-changement
+    label: Accompagner le changement
+    label_singular: Page
+    folder: content/accompagner-le-changement
+    extension: md
+    format: frontmatter
+    create: true
+    path: "{{slug}}/index"
+    media_folder: assets
+    public_folder: ./assets
+    fields: *page_fields
+
+  - name: toutes-les-notions
+    label: Toutes les notions
+    label_singular: Page
+    folder: content/toutes-les-notions
+    extension: md
+    format: frontmatter
+    create: true
+    path: "{{slug}}/index"
+    media_folder: assets
+    public_folder: ./assets
+    fields: *page_fields
+
+  - name: integration
+    label: Intégration
+    label_singular: Page
+    folder: content/integration
+    extension: md
+    format: frontmatter
+    create: true
+    path: "{{slug}}/index"
+    media_folder: assets
+    public_folder: ./assets
+    fields: *page_fields
+
+  - name: a-propos
+    label: À propos
+    label_singular: Page
+    folder: content/a-propos
+    extension: md
+    format: frontmatter
+    create: true
+    path: "{{slug}}/index"
+    media_folder: assets
+    public_folder: ./assets
+    fields: *page_fields
+
+  # Pages autonomes (sans section) + page d'accueil.
+  - name: pages-generales
+    label: Pages générales
+    files:
+      - name: accueil
+        label: Accueil
+        file: content/index.md
+        fields:
+          - { name: title, label: Titre, widget: string }
+          - { name: layout, label: Gabarit, widget: hidden, default: layouts/home.njk }
+          - name: eleventyNavigation
+            label: Navigation
+            widget: object
+            required: false
+            fields:
+              - { name: key, label: "Libellé dans le menu", widget: string }
+              - { name: order, label: Ordre, widget: number, required: false, value_type: int }
+          - { name: body, label: Contenu, widget: markdown }
+
+      - name: accessibilite
+        label: Déclaration d'accessibilité
+        file: content/accessibility/index.md
+        media_folder: assets
+        public_folder: ./assets
+        fields: *page_fields
+
+      - name: mentions-legales
+        label: Mentions légales
+        file: content/legal/index.md
+        media_folder: assets
+        public_folder: ./assets
+        fields: *page_fields
+
+      - name: donnees-personnelles
+        label: Données personnelles et cookies
+        file: content/personal-data/index.md
+        media_folder: assets
+        public_folder: ./assets
+        fields: *page_fields
+
+      - name: contact
+        label: Nous contacter
+        file: content/contact/index.md
+        media_folder: assets
+        public_folder: ./assets
+        fields: *page_fields
+
+  # Entrées de menu des grandes sections. Ces fichiers n'ont pas de page
+  # propre (permalink: false) : on n'édite ici que le libellé et l'ordre.
+  - name: menus
+    label: Menus de section
+    description: >-
+      Libellé et ordre des sections dans le menu principal. Ces entrées
+      ne génèrent aucune page.
+    files:
+      - name: a-propos
+        label: À propos
+        file: content/a-propos.md
+        fields: &menu_fields
+          - { name: permalink, label: Permalink, widget: hidden, default: false }
+          - name: eleventyNavigation
+            label: Navigation
+            widget: object
+            fields:
+              - { name: key, label: "Libellé dans le menu", widget: string }
+              - { name: order, label: Ordre, widget: number, value_type: int }
+
+      - name: documentation-utilisateur
+        label: Documentation utilisateur
+        file: content/documentation-utilisateur.md
+        fields: *menu_fields
+
+      - name: documentation-technique
+        label: Documentation technique
+        file: content/documentation-technique.md
+        fields: *menu_fields
+
+      - name: accompagner-le-changement
+        label: Accompagner le changement
+        file: content/accompagner-le-changement.md
+        fields: *menu_fields
+
+      - name: toutes-les-notions
+        label: Toutes les notions
+        file: content/toutes-les-notions.md
+        fields: *menu_fields
+
+      - name: integration
+        label: Intégration
+        file: content/integration.md
+        fields: *menu_fields
