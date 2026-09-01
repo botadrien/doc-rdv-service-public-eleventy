@@ -8,6 +8,9 @@ _site/
 # Pagefind (index de recherche généré au build)
 public/_pagefind/
 
+# Bundle de l'aperçu CMS (généré par esbuild au build, cf. docs/apercu-cms-dsfr.md)
+public/admin/preview.gen.js
+
 # Divers
 .DS_Store
 *.log

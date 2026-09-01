@@ -1,9 +1,7 @@
 const {DateTime} = require("luxon");
 const {nanoid} = require ("nanoid");
 
-const markdownItAnchor = require("markdown-it-anchor");
-const markdownItAttrs = require("markdown-it-attrs");
-const markdownItContainer = require("markdown-it-container");
+const esbuild = require("esbuild");
 
 const pluginSyntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight");
 const pluginBundle = require("@11ty/eleventy-plugin-bundle");
@@ -11,7 +9,8 @@ const pluginNavigation = require("@11ty/eleventy-navigation");
 const {EleventyHtmlBasePlugin} = require("@11ty/eleventy");
 const {EleventyI18nPlugin} = require("@11ty/eleventy");
 
-const customMarkdownContainers = require("./markdown-custom-containers");
+// Config markdown-it partagée avec l'aperçu du CMS (cf. docs/apercu-cms-dsfr.md).
+const configureMarkdown = require("./markdown-config");
 
 // Site monolingue (français). On garde les chaînes d'UI du template mais on
 // remplace la mécanique i18n (plugins @11ty/eleventy-i18n + @codegouvfr/eleventy-plugin-i18n)
@@ -112,32 +111,27 @@ module.exports = function (eleventyConfig) {
             .indexOf(tag) === -1);
     });
 
-    // Customize Markdown library settings:
-    eleventyConfig.amendLibrary("md", mdLib => {
-        mdLib.use(markdownItAnchor, {
-            permalink: markdownItAnchor.permalink.ariaHidden({
-                placement: "after",
-                class: "header-anchor",
-                symbol: "#",
-                ariaHidden: false,
-            }),
-            level: [1, 2, 3, 4],
-            slugify: eleventyConfig.getFilter("slugify")
+    // Réglages de la bibliothèque Markdown — voir markdown-config.js (partagé avec
+    // l'aperçu du CMS).
+    eleventyConfig.amendLibrary("md", mdLib =>
+        configureMarkdown(mdLib, {slugify: eleventyConfig.getFilter("slugify")})
+    );
+
+    // Bundle navigateur de l'aperçu du CMS (public/admin/preview.gen.js, gitignoré).
+    // Régénéré avant chaque build — voir docs/apercu-cms-dsfr.md.
+    eleventyConfig.addWatchTarget("admin-src/");
+    eleventyConfig.addWatchTarget("markdown-config.js");
+    eleventyConfig.on("eleventy.before", async () => {
+        await esbuild.build({
+            entryPoints: ["admin-src/preview.js"],
+            bundle: true,
+            format: "iife",
+            minify: true,
+            target: "es2020",
+            outfile: "public/admin/preview.gen.js",
+            logLevel: "warning",
         });
     });
-
-    eleventyConfig.amendLibrary("md", mdLib => {
-        mdLib.renderer.rules.table_open = function() {
-            return '<table class="fr-table">';
-        };
-    });
-
-    eleventyConfig.amendLibrary("md", mdLib => mdLib.use(markdownItAttrs));
-    eleventyConfig.amendLibrary("md", mdLib => mdLib.use(markdownItContainer, 'callout', customMarkdownContainers.callout(mdLib)));
-    eleventyConfig.amendLibrary("md", mdLib => mdLib.use(markdownItContainer, 'highlight', customMarkdownContainers.highlight(mdLib)));
-    eleventyConfig.amendLibrary("md", mdLib => mdLib.use(markdownItContainer, 'quote', customMarkdownContainers.quote(mdLib)));
-    eleventyConfig.amendLibrary("md", mdLib => mdLib.use(markdownItContainer, 'alert', customMarkdownContainers.alert(mdLib)));
-    eleventyConfig.amendLibrary("md", mdLib => mdLib.use(markdownItContainer, 'accordion', customMarkdownContainers.accordion(mdLib)));
 
     eleventyConfig.setNunjucksEnvironmentOptions({
         trimBlocks: true,

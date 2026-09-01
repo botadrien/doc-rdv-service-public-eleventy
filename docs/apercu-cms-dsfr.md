@@ -1,8 +1,9 @@
 # Aperçu Sveltia CMS fidèle au rendu Eleventy + DSFR
 
-> **Statut : plan, non implémenté.** Document de conception issu d'une session
-> Claude Code (1er septembre 2026). Approche validée avec l'équipe : « esbuild
-> auto » + « contenu seul ».
+> **Statut : implémenté** (1er septembre 2026). Fichiers : `markdown-config.js`,
+> `admin-src/preview.js`, hook `eleventy.before` dans `eleventy.config.js`,
+> `public/admin/index.html`. Bundle généré : `public/admin/preview.gen.js`
+> (gitignoré). Approche : « esbuild auto » + « contenu seul ».
 
 ## Contexte
 
