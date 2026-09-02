@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Site d'aide de RDV Service Public — Eleventy + Système de Design de l'État (DSFR).",
   "scripts": {
+    "test": "node --test test/*.test.js",
     "build": "npx @11ty/eleventy",
     "postbuild": "npx pagefind --site _site/ --output-subdir \"_pagefind\"",
     "build-ghpages": "npx @11ty/eleventy --pathprefix=/doc-rdv-service-public-eleventy/ && npx pagefind --site _site/ --output-subdir \"_pagefind\"",

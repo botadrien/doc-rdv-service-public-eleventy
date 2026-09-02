@@ -18,6 +18,7 @@ Prérequis : Node.js ≥ 18.
 npm ci             # installe les dépendances
 npm start          # serveur de dev sur http://localhost:8080
 npm run build      # build de production dans _site/ (+ index de recherche Pagefind)
+npm test           # tests des blocs Markdown DSFR + composants d'éditeur (node:test)
 ```
 
 Le site est **monolingue (français)** et servi à la racine (pas de préfixe `/fr/`).
@@ -56,6 +57,28 @@ Build avec `--pathprefix=/doc-rdv-service-public-eleventy/` (sous-chemin GitHub 
 3. Mettre à jour `_data/metadata.js` (`url`).
 4. Configurer le DNS : `aide` → `CNAME` vers `botadrien.github.io`.
 5. Mettre en place les redirections depuis les anciennes URL GitBook si nécessaire.
+
+## Feuille de route
+
+### Mutualiser les outils DSFR
+
+Les briques réutilisables de ce dépôt (conteneurs Markdown DSFR, composants
+d'éditeur Sveltia, thème Eleventy) ont vocation à être **extraites en paquets**
+partageables avec d'autres équipes — cf.
+[`docs/mutualisation-outils-dsfr.md`](docs/mutualisation-outils-dsfr.md).
+Piste retenue : cœur agnostique (`markdown-it-dsfr`) + `sveltia-cms-dsfr` +
+fin wrapper `eleventy-plugin-dsfr`. **Publication npm pas encore décidée.**
+
+- [x] Filet de sécurité : suite `npm test` (contrat rendu + aller-retour éditeur)
+- [ ] Étape 1 — isoler le cœur dans `packages/markdown-it-dsfr/` (sans publier),
+      passer le dépôt en npm workspaces
+- [ ] Étape 2 — `packages/sveltia-cms-dsfr/` (composants d'éditeur + aperçu)
+- [ ] Étape 3 — `packages/eleventy-plugin-dsfr/` (glu Eleventy) *(conditionnel)*
+- [ ] Étape 4 — publication + petite PR à [`eleventy-dsfr`](https://github.com/codegouvfr/eleventy-dsfr/issues/17)
+
+### Cutover DNS
+
+Voir la section **Déploiement › Cutover** ci-dessus.
 
 ## Licence
 
