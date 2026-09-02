@@ -155,7 +155,7 @@ Cette procédure doit être effectuée une seule fois pour tout un compte Micros
 
 **Étape 2** : Une fois connecté·e sur RDV Service Public, l’administrateur·ice doit cliquer sur son nom en haut à droite > Mon Compte > Synchronisation d’agenda > Connexion Outlook > Se connecter avec Microsoft
 
-![Chemin à suivre pour la connexion Outlook](https://storage.gra.cloud.ovh.net/v1/AUTH_0f20d409cb2a4c9786c769e2edec0e06/padnumerique/uploads/874bafcf-66ea-4a17-b07f-23b1406d3c1b.png)
+![Chemin à suivre pour la connexion Outlook](./assets/connexion-outlook.png)
 
 **Étape 3** : L’administrateur·ice doit accepter les permissions. Il faut nécessairement cocher la case **“Consentement pour le compte de votre organisation”** pour que les agents non-administrateur·ices puissent à leur tour utiliser l’application.
 
