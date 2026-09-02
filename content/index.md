@@ -16,7 +16,9 @@ eleventyNavigation:
 
 ## Bien démarrer 🌱
 
-Vous souhaitez déployer notre solution dans votre équipe ? Pour bien démarrer, nous vous recommandons de lire les bonnes pratiques du déploiement. Changer d’outil, ce n’est pas seulement une configuration technique, c’est aussi une transformation des pratiques quotidiennes !
+Vous souhaitez déployer notre solution dans votre équipe ? Pour bien démarrer, nous vous recommandons de lire les bonnes pratiques du déploiement. Changer d’outil, ce n’est pas seulement une configuration technique, c’est aussi une transformation des pratiques quotidiennes ! 
+
+TEST
 
 {% from "components/component.njk" import component with context %}
 <div class="fr-grid-row fr-grid-row--gutters fr-my-4w">
@@ -57,8 +59,9 @@ Vous disposez déjà d’un compte et souhaitez aller plus loin grâce à une in
 </div>
 
 :::info
-Si vous ne trouvez pas de réponses à vos questions vous souhaitez suggérer des modifications, contactez nous : **support@rdv-service-public.fr**
-:::
 
+Si vous ne trouvez pas de réponses à vos questions vous souhaitez suggérer des modifications, contactez nous : **support@rdv-service-public.fr**
+
+:::
 
 </div>
