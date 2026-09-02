@@ -16,6 +16,11 @@
  *                      | lien`) — 1re implémentation simplifiée : titre + lien +
  *                      description, sans pictogramme/badge/variante.
  *
+ * Convention : le libellé GUI est suffixé « DSFR » pour les blocs qui produisent
+ * un vrai composant du système de design (accordéons, alerte, mise en avant /
+ * en exergue, tuiles). « Étapes numérotées » n'a pas ce suffixe : c'est un bloc
+ * custom, sans équivalent officiel dans le DSFR.
+ *
  * Limite connue : les conteneurs à 3 deux-points (`:::info`, `:::callout`…) ne
  * s'imbriquent PAS dans un `:::step` (même longueur de marqueur → fermeture
  * prématurée). Ces blocs se placent au premier niveau, hors étapes.
@@ -113,8 +118,8 @@
   // --- Groupe d'accordéons -------------------------------------------------
   window.CMS.registerEditorComponent({
     id: 'dsfr-accordions-group',
-    label: 'Accordéons (groupe)',
-    icon: 'expand_more',
+    label: 'Accordéons (groupe) DSFR',
+    icon: 'view_agenda',
     pattern: /^\?\?\?\?[ \t]*accordionsgroup[^\n]*\n([\s\S]*?)\n\?\?\?\?[ \t]*(?=\n|$)/m,
     fields: [
       {
@@ -271,7 +276,7 @@
 
   window.CMS.registerEditorComponent({
     id: 'tiles',
-    label: 'Tuiles (grille)',
+    label: 'Tuiles (grille) DSFR',
     icon: 'grid_view',
     pattern: /^::::tiles[^\n]*\n([\s\S]*?)\n::::[ \t]*(?=\n|$)/m,
     fields: [
@@ -311,8 +316,8 @@
   // --- Accordéon isolé ---------------------------------------------------
   window.CMS.registerEditorComponent({
     id: 'dsfr-accordion',
-    label: 'Accordéon (isolé)',
-    icon: 'expand_more',
+    label: 'Accordéon (isolé) DSFR',
+    icon: 'view_agenda',
     pattern: /^\?\?\?(?!\?)[ \t]*(.+)\n([\s\S]*?)\n\?\?\?(?!\?)[ \t]*(?=\n|$)/m,
     fields: [
       { name: 'title', label: 'Titre', widget: 'string' },
@@ -339,7 +344,7 @@
 
   window.CMS.registerEditorComponent({
     id: 'dsfr-alert',
-    label: 'Alerte',
+    label: 'Alerte DSFR',
     icon: 'notification_important',
     pattern: /^:::(info|success|warning|error)[ \t]*(.*)\n([\s\S]*?)\n:::[ \t]*(?=\n|$)/m,
     fields: [
@@ -381,7 +386,7 @@
   // --- Mise en avant (fr-callout) -------------------------------------
   window.CMS.registerEditorComponent({
     id: 'dsfr-callout',
-    label: 'Mise en avant',
+    label: 'Mise en avant DSFR',
     icon: 'campaign',
     pattern: /^:::callout[ \t]*(.*)\n([\s\S]*?)\n:::[ \t]*(?=\n|$)/m,
     fields: [
@@ -410,7 +415,7 @@
   // --- Mise en exergue (fr-highlight) -------------------------------
   window.CMS.registerEditorComponent({
     id: 'dsfr-highlight',
-    label: 'Mise en exergue',
+    label: 'Mise en exergue DSFR',
     icon: 'format_quote',
     pattern: /^:::highlight[ \t]*\n([\s\S]*?)\n:::[ \t]*(?=\n|$)/m,
     fields: [{ name: 'body', label: 'Texte', widget: 'markdown' }],
