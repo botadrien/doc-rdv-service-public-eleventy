@@ -2,6 +2,7 @@ backend:
   name: github
   repo: botadrien/doc-rdv-service-public-eleventy
   branch: main
+  base_url: https://sveltia-cms-auth-rdvsp.adrien-076.workers.dev
 
 site_url: https://botadrien.github.io/doc-rdv-service-public-eleventy/
 display_url: https://botadrien.github.io/doc-rdv-service-public-eleventy/
