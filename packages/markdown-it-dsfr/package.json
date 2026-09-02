@@ -1,0 +1,24 @@
+{
+  "name": "markdown-it-dsfr",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Conteneurs Markdown pour le Système de Design de l'État (DSFR) : alertes, accordéons, mises en avant, citations, étapes numérotées, tuiles.",
+  "keywords": ["markdown-it", "markdown-it-plugin", "dsfr", "gouvfr"],
+  "license": "MIT",
+  "main": "index.js",
+  "files": ["index.js", "containers.js", "syntax.js", "dsfr-content.css"],
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
+  "peerDependencies": {
+    "markdown-it": ">=13"
+  },
+  "dependencies": {
+    "markdown-it-anchor": "^8.6.7",
+    "markdown-it-container": "^4.0.0"
+  },
+  "devDependencies": {
+    "@sindresorhus/slugify": "1.1.2",
+    "markdown-it": "14.1.0"
+  }
+}

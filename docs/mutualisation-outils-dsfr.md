@@ -1,6 +1,7 @@
 # Mutualiser les outils DSFR de ce dépôt
 
-> Statut : **décision prise (2 septembre 2026), extraction non commencée.**
+> Statut : **décision prise (2 sept. 2026) ; étape 1 faite (paquet local
+> `packages/markdown-it-dsfr`).**
 > Objectif : partager avec d'autres équipes les briques réutilisables produites
 > ici, et garder dans ce dépôt uniquement le **contenu de l'aide RDV Service
 > Public** + les éventuels composants **spécifiques à ce site**.
@@ -9,7 +10,7 @@
 
 | Bloc | Fichiers | Nature | Couplage |
 |---|---|---|---|
-| **1. Cœur portable** | `markdown-config.js`, `markdown-custom-containers.js` ; règles CSS `.steps` / `.tiles` / largeur de lecture / fallback emoji dans `public/css/index.css` | Plugin **markdown-it** pur + CSS compagnon | Aucun — 11ty, Astro, VitePress, Nuxt Content, markdown-it nu |
+| **1. Cœur portable** | `packages/markdown-it-dsfr/` (`index.js`, `containers.js`, `syntax.js`, `dsfr-content.css`) | Plugin **markdown-it** pur + CSS compagnon | Aucun — 11ty, Astro, VitePress, Nuxt Content, markdown-it nu |
 | **2. Couche CMS** | `public/admin/editor-components.js`, `admin-src/preview.js`, hook esbuild de `eleventy.config.js` | Scripts navigateur (`window.CMS.*`) | **Fort** avec la syntaxe des conteneurs (les `pattern` doivent matcher) + noms de collections |
 | **3. Thème Eleventy** | `_includes/layouts/*`, `_includes/templates/*`, `_includes/components/{tile,component,breadcrumb,back_to_top}.njk`, glu de `eleventy.config.js` (passthrough DSFR, filtre `tableOfContents`, shims i18n), `public/admin/config.yml` | Thème Eleventy opinioné | Eleventy uniquement ; recoupe déjà [`codegouvfr/eleventy-dsfr`](https://github.com/codegouvfr/eleventy-dsfr) |
 
@@ -98,19 +99,22 @@ Ordre :
       C'est le **prérequis** pour scinder en paquets sans casser les round-trips
       en silence.
 
-### Étape 1 — Isoler le cœur dans ce dépôt (sans publier)
+### Étape 1 — Isoler le cœur dans ce dépôt (sans publier) *(fait, 2 sept. 2026)*
 
-- [ ] Créer `packages/markdown-it-dsfr/` : `index.js` (le plugin, forme
-      `module.exports = (md, opts) => …`), `containers.js` (ex-
-      `markdown-custom-containers.js`), `dsfr-content.css` (règles extraites de
-      `index.css`), `syntax.js` (marqueurs + regex **canoniques**, à importer
-      plus tard par `sveltia-cms-dsfr`), `package.json` (`private: true`,
-      `version: 0.0.0`), `README.md`.
-- [ ] `eleventy.config.js` + `admin-src/preview.js` consomment
-      `packages/markdown-it-dsfr` en chemin relatif.
-- [ ] `base.njk` : inclure `dsfr-content.css` depuis le paquet.
-- [ ] Basculer le dépôt en **npm workspaces** (`"workspaces": ["packages/*"]`).
-- [ ] Tests déplacés / partagés avec le paquet.
+- [x] `packages/markdown-it-dsfr/` : `index.js` (plugin `md.use(fn, opts)`),
+      `containers.js`, `dsfr-content.css` (extrait d'`index.css`), `syntax.js`
+      (marqueurs canoniques), `package.json` (`private`, `0.0.0`), `README.md`.
+- [x] `eleventy.config.js` + `admin-src/preview.js` consomment
+      `require("markdown-it-dsfr")` (résolu par le workspace).
+- [x] `dsfr-content.css` : passthrough → `/css/dsfr-content.css`, `<link>` dans
+      `base.njk`, `registerPreviewStyle` dans l'aperçu CMS.
+- [x] Dépôt en **npm workspaces** (`"workspaces": ["packages/*"]`).
+- [x] Tests de rendu → `packages/markdown-it-dsfr/test/` ; le round-trip éditeur
+      reste à la racine (transverse). `npm test` couvre les deux.
+
+**Ce qui reste avant de scinder `sveltia-cms-dsfr` :** `editor-components.js` et
+`admin-src/preview.js` sont encore côté site. Ils dépendent des marqueurs de
+`syntax.js` (aujourd'hui juste documentaire — à durcir en regex partagées).
 
 ### Étape 2 — `sveltia-cms-dsfr`
 

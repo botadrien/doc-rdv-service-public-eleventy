@@ -6,15 +6,15 @@
  *
  * - Charge la CSS du site dans l'iframe d'aperçu (registerPreviewStyle).
  * - Enregistre un template « contenu seul » par collection qui rend le corps
- *   Markdown avec le VRAI markdown-it du site (markdown-config.js partagé),
+ *   Markdown avec le MÊME plugin markdown-it que le site (markdown-it-dsfr),
  *   donc conteneurs / accordéons / ancres identiques à la prod.
  *
- * Voir docs/apercu-cms-dsfr.md.
+ * Voir docs/apercu-cms-dsfr.md et docs/mutualisation-outils-dsfr.md.
  */
 import MarkdownIt from "markdown-it";
 import slugify from "@sindresorhus/slugify";
 
-import configureMarkdown from "../markdown-config.js";
+import markdownItDsfr from "markdown-it-dsfr";
 
 const CMS = window.CMS;
 const h = window.h;
@@ -27,7 +27,7 @@ if (!CMS || !h || !createClass) {
 }
 
 function init() {
-  const md = configureMarkdown(new MarkdownIt({ html: true }), {
+  const md = new MarkdownIt({ html: true }).use(markdownItDsfr, {
     // Identique à @11ty/eleventy/src/Filters/Slugify.js
     slugify: (str) => slugify("" + str, { decamelize: false }),
   });
@@ -40,6 +40,7 @@ function init() {
     "../css/dsfr.min.css",
     "../css/utility/utility.min.css",
     "../css/index.css",
+    "../css/dsfr-content.css",
   ].forEach((href) => CMS.registerPreviewStyle(href));
 
   CMS.registerPreviewStyle(

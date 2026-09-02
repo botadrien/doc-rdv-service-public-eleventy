@@ -1,14 +1,15 @@
 # Aperçu Sveltia CMS fidèle au rendu Eleventy + DSFR
 
-> **Statut : implémenté** (1er septembre 2026). Fichiers : `markdown-config.js`,
-> `admin-src/preview.js`, hook `eleventy.before` dans `eleventy.config.js`,
-> `public/admin/index.html`. Bundle généré : `public/admin/preview.gen.js`
-> (gitignoré). Approche : « esbuild auto » + « contenu seul ».
+> **Statut : implémenté** (1er septembre 2026). Fichiers : `admin-src/preview.js`,
+> hook `eleventy.before` dans `eleventy.config.js`, `public/admin/index.html`.
+> Bundle généré : `public/admin/preview.gen.js` (gitignoré).
+> Approche : « esbuild auto » + « contenu seul ».
 >
-> ⚠️ Ce document décrit l'analyse initiale. Certains détails ont évolué depuis
-> (conteneurs Markdown ajoutés : `steps`, `tiles` ; `markdown-it-attrs` et la
-> coloration Prism retirés). **Source de vérité : `markdown-config.js` +
-> `markdown-custom-containers.js` + `public/admin/editor-components.js`.**
+> ⚠️ Ce document décrit l'analyse initiale. Depuis : conteneurs `steps` / `tiles`
+> ajoutés ; `markdown-it-attrs` et Prism retirés ; le plugin markdown-it a été
+> **extrait dans `packages/markdown-it-dsfr/`** (cf.
+> `docs/mutualisation-outils-dsfr.md`). **Source de vérité :
+> `packages/markdown-it-dsfr/` + `public/admin/editor-components.js`.**
 
 ## Contexte
 

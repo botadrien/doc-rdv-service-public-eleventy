@@ -7,8 +7,9 @@ const pluginNavigation = require("@11ty/eleventy-navigation");
 const {EleventyHtmlBasePlugin} = require("@11ty/eleventy");
 const {EleventyI18nPlugin} = require("@11ty/eleventy");
 
-// Config markdown-it partagée avec l'aperçu du CMS (cf. docs/apercu-cms-dsfr.md).
-const configureMarkdown = require("./markdown-config");
+// Conteneurs Markdown DSFR — paquet local (packages/markdown-it-dsfr),
+// partagé avec l'aperçu du CMS (cf. docs/mutualisation-outils-dsfr.md).
+const markdownItDsfr = require("markdown-it-dsfr");
 
 // Site monolingue (français). On garde les chaînes d'UI du template mais on
 // remplace la mécanique i18n (plugins @11ty/eleventy-i18n + @codegouvfr/eleventy-plugin-i18n)
@@ -26,7 +27,8 @@ module.exports = function (eleventyConfig) {
         "./node_modules/@gouvfr/dsfr/dist/utility/utility.min.css": "/css/utility/utility.min.css",
         "./node_modules/@gouvfr/dsfr/dist/dsfr.module.min.js": "/js/dsfr.module.min.js",
         "./node_modules/@gouvfr/dsfr/dist/dsfr.nomodule.min.js": "/js/dsfr.nomodule.min.js",
-        "./node_modules/@gouvfr/dsfr/dist/artwork": "/artwork"
+        "./node_modules/@gouvfr/dsfr/dist/artwork": "/artwork",
+        "./node_modules/markdown-it-dsfr/dsfr-content.css": "/css/dsfr-content.css"
     });
 
     // Images co-localisées avec les pages (content/<section>/<page>/assets/…)
@@ -84,16 +86,16 @@ module.exports = function (eleventyConfig) {
         return items;
     });
 
-    // Réglages de la bibliothèque Markdown — voir markdown-config.js (partagé avec
-    // l'aperçu du CMS).
+    // Conteneurs Markdown DSFR (packages/markdown-it-dsfr) — même config que
+    // l'aperçu du CMS.
     eleventyConfig.amendLibrary("md", mdLib =>
-        configureMarkdown(mdLib, {slugify: eleventyConfig.getFilter("slugify")})
+        mdLib.use(markdownItDsfr, {slugify: eleventyConfig.getFilter("slugify")})
     );
 
     // Bundle navigateur de l'aperçu du CMS (public/admin/preview.gen.js, gitignoré).
     // Régénéré avant chaque build — voir docs/apercu-cms-dsfr.md.
     eleventyConfig.addWatchTarget("admin-src/");
-    eleventyConfig.addWatchTarget("markdown-config.js");
+    eleventyConfig.addWatchTarget("packages/markdown-it-dsfr/");
     eleventyConfig.on("eleventy.before", async () => {
         await esbuild.build({
             entryPoints: ["admin-src/preview.js"],

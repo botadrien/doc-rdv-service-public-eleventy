@@ -1,15 +1,13 @@
-// Rendu des conteneurs Markdown DSFR (markdown-config.js + markdown-custom-containers.js).
-// Sert de contrat pour l'extraction future en paquet `markdown-it-dsfr`
-// (cf. docs/mutualisation-outils-dsfr.md).
+// Rendu des conteneurs Markdown DSFR — contrat du paquet markdown-it-dsfr.
 
 const test = require("node:test");
 const assert = require("node:assert/strict");
 const MarkdownIt = require("markdown-it");
-const configureMarkdown = require("../markdown-config.js");
+const markdownItDsfr = require("../index.js");
 
 // Même slugify que l'aperçu CMS (≈ le filtre `slugify` intégré à Eleventy).
 const slugify = require("@sindresorhus/slugify");
-const md = configureMarkdown(new MarkdownIt({ html: true }), {
+const md = new MarkdownIt({ html: true }).use(markdownItDsfr, {
   slugify: (s) => slugify("" + s, { decamelize: false }),
 });
 const render = (src) => md.render(src).replace(/\s+/g, " ").trim();

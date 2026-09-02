@@ -9,7 +9,7 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
 const MarkdownIt = require("markdown-it");
-const configureMarkdown = require("../markdown-config.js");
+const markdownItDsfr = require("markdown-it-dsfr");
 const slugify = require("@sindresorhus/slugify");
 
 // --- Charge editor-components.js dans un faux environnement navigateur --------
@@ -19,7 +19,7 @@ global.window = {
 };
 require("../public/admin/editor-components.js");
 
-const md = configureMarkdown(new MarkdownIt({ html: true }), {
+const md = new MarkdownIt({ html: true }).use(markdownItDsfr, {
   slugify: (s) => slugify("" + s, { decamelize: false }),
 });
 

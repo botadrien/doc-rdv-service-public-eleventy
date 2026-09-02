@@ -2,8 +2,12 @@
   "name": "doc-rdv-service-public-eleventy",
   "version": "1.0.0",
   "description": "Site d'aide de RDV Service Public — Eleventy + Système de Design de l'État (DSFR).",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "test": "node --test test/*.test.js",
+    "test": "node --test test/*.test.js packages/*/test/*.test.js",
     "build": "npx @11ty/eleventy",
     "postbuild": "npx pagefind --site _site/ --output-subdir \"_pagefind\"",
     "build-ghpages": "npx @11ty/eleventy --pathprefix=/doc-rdv-service-public-eleventy/ && npx pagefind --site _site/ --output-subdir \"_pagefind\"",
@@ -28,8 +32,7 @@
     "esbuild": "^0.24.0",
     "luxon": "^3.5.0",
     "markdown-it": "14.1.0",
-    "markdown-it-anchor": "^8.6.7",
-    "markdown-it-container": "^4.0.0",
+    "markdown-it-dsfr": "*",
     "pagefind": "^1.2.0"
   }
 }
