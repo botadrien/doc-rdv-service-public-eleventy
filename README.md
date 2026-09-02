@@ -62,7 +62,10 @@ Build avec `--pathprefix=/doc-rdv-service-public-eleventy/` (sous-chemin GitHub 
 
 - [ ] Limiter le scope de l'auth app GitHub
 - [ ] ajouter les redirects depuis les routes github directement dans cette app
-- [ ] corriger l'affichage des images
+- [x] corriger l'affichage des images — les captures Markdown débordaient de la
+      colonne (le DSFR ne pose pas de `img { max-width: 100% }` global)
+- [ ] rapatrier l'image hébergée sur `storage.gra.cloud.ovh.net`
+      (FAQ, synchro Outlook) dans `content/.../assets/`
 
 ### Mutualiser les outils DSFR
 

@@ -36,6 +36,9 @@ tuiles, que le DSFR ne fournit pas) :
 node_modules/markdown-it-dsfr/dsfr-content.css
 ```
 
+Le DSFR n'a pas de garde-fou `img { max-width: 100% }` global : prévoyez-le dans
+votre CSS, sinon les captures d'écran dans le Markdown débordent.
+
 ## Conteneurs
 
 | Syntaxe | Rend |

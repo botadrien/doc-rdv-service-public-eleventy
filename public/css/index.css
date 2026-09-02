@@ -40,6 +40,13 @@ code {
     word-break: break-all;
 }
 
+/* Images de contenu (Markdown) : jamais plus larges que leur colonne.
+   Le DSFR ne pose pas ce garde-fou global (il attend `.fr-responsive-img`). */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
 /* Direct Links / Markdown Headers */
 .header-anchor {
     background-image: none;
