@@ -87,6 +87,14 @@ h2 + .header-anchor {
     justify-content: flex-end !important;
 }
 
+/* Navigation latérale (menu général) : espace sous la sidebar quand elle passe
+   au-dessus du contenu en mobile. */
+@media (max-width: 47.99em) {
+    .fr-sidemenu {
+        margin-bottom: 2rem;
+    }
+}
+
 @media (min-width: 48em) {
     .fr-share__group {
         justify-content: flex-end !important;

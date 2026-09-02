@@ -6,15 +6,13 @@ eleventyNavigation:
   order: 1
 ---
 
-<div class="fr-py-8w fr-background-alt--blue-cumulus">
-  <div class="fr-container">
-    <h1>Centre d'aide de RDV Service Public</h1>
-    <p class="fr-text--lead">Tutoriels, guides de configuration et réponses aux questions
-      les plus fréquentes pour prendre en main RDV Service Public.</p>
-  </div>
+<div class="fr-p-4w fr-mb-6w fr-background-alt--blue-cumulus">
+  <h1>Centre d'aide de RDV Service Public</h1>
+  <p class="fr-text--lead">Tutoriels, guides de configuration et réponses aux questions
+    les plus fréquentes pour prendre en main RDV Service Public.</p>
 </div>
 
-<div class="fr-container fr-my-8w">
+<div class="fr-mb-6w">
 
 ## Bien démarrer 🌱
 

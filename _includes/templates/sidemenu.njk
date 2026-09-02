@@ -1,0 +1,45 @@
+<nav class="fr-sidemenu fr-sidemenu--sticky-full-height" role="navigation" aria-labelledby="fr-sidemenu-title">
+  {% set navigationLinks = collections.all | filterCollectionLang | eleventyNavigation %}
+  <div class="fr-sidemenu__inner">
+    <button class="fr-sidemenu__btn" aria-controls="fr-sidemenu-wrapper" aria-expanded="false">
+      {{ "menu" | i18n }}
+    </button>
+    <div class="fr-collapse" id="fr-sidemenu-wrapper">
+      <div class="fr-sidemenu__title" id="fr-sidemenu-title">{{ "main_menu" | i18n }}</div>
+      <ul class="fr-sidemenu__list">
+        {% for link in navigationLinks %}
+          {% set linkUrl = link.url | locale_url(lang) %}
+          {% if not link.children | length %}
+            {% set isCurrent = linkUrl == page.url %}
+            <li class="fr-sidemenu__item{% if isCurrent %} fr-sidemenu__item--active{% endif %}">
+              <a class="fr-sidemenu__link" href="{{ linkUrl }}"{% if isCurrent %} aria-current="page"{% endif %}>
+                {{ link.title }}
+              </a>
+            </li>
+          {% else %}
+            {% set sectionActive = link.title == eleventyNavigation.parent %}
+            <li class="fr-sidemenu__item{% if sectionActive %} fr-sidemenu__item--active{% endif %}">
+              <button class="fr-sidemenu__btn" aria-controls="fr-sidemenu-section-{{ loop.index }}" aria-expanded="{{ "true" if sectionActive else "false" }}"{% if sectionActive %} aria-current="true"{% endif %}>
+                {{ link.title }}
+              </button>
+              <div class="fr-collapse{% if sectionActive %} fr-collapse--expanded{% endif %}" id="fr-sidemenu-section-{{ loop.index }}">
+                <ul class="fr-sidemenu__list">
+                  {% for sublink in link.children %}
+                    {% set sublinkUrl = sublink.url | locale_url(lang) or sublink.externalUrl %}
+                    {% set isSubCurrent = sublinkUrl == page.url %}
+                    <li class="fr-sidemenu__item{% if isSubCurrent %} fr-sidemenu__item--active{% endif %}">
+                      <a class="fr-sidemenu__link"
+                         href="{{ sublinkUrl }}"{% if sublink.externalUrl %} target="_blank" rel="noopener"{% endif %}{% if isSubCurrent %} aria-current="page"{% endif %}>
+                        {{ sublink.title }}
+                      </a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</nav>
