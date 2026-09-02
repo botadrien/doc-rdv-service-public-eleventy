@@ -1,9 +1,9 @@
 /*
- * Composants d'éditeur Sveltia/Decap pour les accordéons du DSFR.
+ * Composants d'éditeur Sveltia/Decap pour les blocs DSFR custom.
  *
- * Ils permettent d'insérer des accordéons depuis l'éditeur riche du CMS, tout en
- * produisant la syntaxe Markdown déjà comprise par Eleventy
- * (markdown-it-container « accordion », cf. markdown-custom-containers.js) :
+ * Ils permettent d'insérer des accordéons et des étapes numérotées depuis
+ * l'éditeur riche du CMS, tout en produisant la syntaxe Markdown déjà comprise
+ * par Eleventy (markdown-it-container, cf. markdown-custom-containers.js) :
  *
  *     ????accordionsgroup
  *
@@ -125,6 +125,76 @@
     toPreview: function (data) {
       var items = data && Array.isArray(data.items) ? data.items : [];
       return groupToPreview(items);
+    },
+  });
+
+  // --- Étapes verticales numérotées ------------------------------------
+  var STEP_RE = /^:::step[ \t]*(.*)\n([\s\S]*?)\n:::[ \t]*$/gm;
+
+  function parseSteps(inner) {
+    var steps = [];
+    var m;
+    STEP_RE.lastIndex = 0;
+    while ((m = STEP_RE.exec(inner))) {
+      steps.push({ title: (m[1] || '').trim(), body: (m[2] || '').trim() });
+    }
+    return steps;
+  }
+
+  function stepToMarkdown(s) {
+    var title = s && s.title ? String(s.title).trim() : '';
+    var body = s && s.body ? String(s.body).trim() : '';
+    return ':::step ' + title + '\n\n' + body + '\n\n:::';
+  }
+
+  function stepsToPreview(steps) {
+    if (!steps.length) {
+      return '_(aucune étape)_';
+    }
+    return (
+      '<ol>\n' +
+      steps
+        .map(function (s) {
+          var title = esc(s.title || 'Étape sans titre');
+          var body = s.body || '';
+          return '<li><strong>' + title + '</strong>\n\n' + body + '\n\n</li>';
+        })
+        .join('\n\n') +
+      '\n</ol>'
+    );
+  }
+
+  window.CMS.registerEditorComponent({
+    id: 'dsfr-steps',
+    label: 'Étapes numérotées',
+    icon: 'format_list_numbered',
+    pattern: /^::::steps[^\n]*\n([\s\S]*?)\n::::[ \t]*(?=\n|$)/m,
+    fields: [
+      {
+        name: 'steps',
+        label: 'Étapes',
+        label_singular: 'Étape',
+        widget: 'list',
+        summary: '{{fields.title}}',
+        fields: [
+          { name: 'title', label: 'Titre', widget: 'string' },
+          { name: 'body', label: 'Contenu', widget: 'markdown', required: false },
+        ],
+      },
+    ],
+    fromBlock: function (match) {
+      return { steps: parseSteps(match[1] || '') };
+    },
+    toBlock: function (data) {
+      var steps = data && Array.isArray(data.steps) ? data.steps : [];
+      if (!steps.length) {
+        return '::::steps\n\n::::';
+      }
+      return '::::steps\n\n' + steps.map(stepToMarkdown).join('\n\n') + '\n\n::::';
+    },
+    toPreview: function (data) {
+      var steps = data && Array.isArray(data.steps) ? data.steps : [];
+      return stepsToPreview(steps);
     },
   });
 

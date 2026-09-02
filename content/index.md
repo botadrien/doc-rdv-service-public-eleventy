@@ -21,7 +21,7 @@ Vous souhaitez déployer notre solution dans votre équipe ? Pour bien démarrer
 {% from "components/component.njk" import component with context %}
 <div class="fr-grid-row fr-grid-row--gutters fr-my-4w">
   <div class="fr-col-12 fr-col-md-6">
-  {{ component("tile", { url: "/accompagner-le-changement/etape-par-etape/", title: "Étape par étape", description: "Quelques conseils et bonnes pratiques pour le déploiement" }) }}
+  {{ component("tile", { url: "/accompagner-le-changement/etape-par-etape/", title: "Étape par étape", description: "Quelques conseils et bonnes pratiques pour le déploiement", pictogram: "leisure/community.svg" }) }}
   </div>
 </div>
 
@@ -32,13 +32,13 @@ Vous venez de créer un compte RDV Service Public ? Pour configurer la solution,
 {% from "components/component.njk" import component with context %}
 <div class="fr-grid-row fr-grid-row--gutters fr-my-4w">
   <div class="fr-col-12 fr-col-md-4">
-  {{ component("tile", { url: "/documentation-utilisateur/gerer-et-planifier-des-rendez-vous/", title: "Gérer et planifier des rendez-vous", description: "Comprendre les fonctionnalités essentielles de la gestion des rendez-vous." }) }}
+  {{ component("tile", { url: "/documentation-utilisateur/gerer-et-planifier-des-rendez-vous/", title: "Gérer et planifier des rendez-vous", description: "Comprendre les fonctionnalités essentielles de la gestion des rendez-vous.", pictogram: "digital/calendar.svg" }) }}
   </div>
   <div class="fr-col-12 fr-col-md-4">
-  {{ component("tile", { url: "/documentation-utilisateur/configurer-son-organisation/", title: "Configurer une organisation", description: "Comprendre les options des motifs, des agents et de la réservation en ligne." }) }}
+  {{ component("tile", { url: "/documentation-utilisateur/configurer-son-organisation/", title: "Configurer une organisation", description: "Comprendre les options des motifs, des agents et de la réservation en ligne.", pictogram: "buildings/city-hall.svg" }) }}
   </div>
   <div class="fr-col-12 fr-col-md-4">
-  {{ component("tile", { url: "/documentation-utilisateur/configurer-son-espace/", title: "Gérer et configurer son espace", description: "Comprendre les options d'un espace, des organisations et des services." }) }}
+  {{ component("tile", { url: "/documentation-utilisateur/configurer-son-espace/", title: "Gérer et configurer son espace", description: "Comprendre les options d'un espace, des organisations et des services.", pictogram: "system/system.svg" }) }}
   </div>
 </div>
 
@@ -49,10 +49,10 @@ Vous disposez déjà d’un compte et souhaitez aller plus loin grâce à une in
 {% from "components/component.njk" import component with context %}
 <div class="fr-grid-row fr-grid-row--gutters fr-my-4w">
   <div class="fr-col-12 fr-col-md-6">
-  {{ component("tile", { url: "/integration/formulaire/", title: "Démarche Simplifiée", description: "Associer des formulaires à la gestion des rendez-vous" }) }}
+  {{ component("tile", { url: "/integration/formulaire/", title: "Démarche Simplifiée", description: "Associer des formulaires à la gestion des rendez-vous", pictogram: "document/document.svg" }) }}
   </div>
   <div class="fr-col-12 fr-col-md-6">
-  {{ component("tile", { url: "/integration/titres-securises/", title: "France Titres", description: "Brancher vos disponiblités au moteur de recherche national" }) }}
+  {{ component("tile", { url: "/integration/titres-securises/", title: "France Titres", description: "Brancher vos disponiblités au moteur de recherche national", pictogram: "document/passport.svg" }) }}
   </div>
 </div>
 

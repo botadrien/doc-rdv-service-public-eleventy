@@ -15,7 +15,7 @@ Vous êtes probablement une commune équipée d’un ou plusieurs dispositifs de
 {% from "components/component.njk" import component with context %}
 <div class="fr-grid-row fr-grid-row--gutters fr-my-4w">
   <div class="fr-col-12 fr-col-md-6">
-  {{ component("tile", { url: false, externalUrl: "https://www.canva.com/design/DAG19TyTakA/ATyXcJjcZUCVKHMUXeN8nQ/view?utm_content=DAG19TyTakA&#x26;utm_campaign=designshare&#x26;utm_medium=link2&#x26;utm_source=uniquelinks&#x26;utlId=h0fff15141a", title: "Tutoriel ↗", description: "Un guide pas à pas pour configurer l'intégration à France Titres !" }) }}
+  {{ component("tile", { url: false, externalUrl: "https://www.canva.com/design/DAG19TyTakA/ATyXcJjcZUCVKHMUXeN8nQ/view?utm_content=DAG19TyTakA&#x26;utm_campaign=designshare&#x26;utm_medium=link2&#x26;utm_source=uniquelinks&#x26;utlId=h0fff15141a", title: "Tutoriel ↗", description: "Un guide pas à pas pour configurer l'intégration à France Titres !", pictogram: "leisure/book.svg" }) }}
   </div>
 </div>
 
@@ -29,13 +29,25 @@ Vous devez disposer d’un compte administrateur _RDV Service Public._
 Cliquez [ici](https://app.gitbook.com/u/km9eNWP7RWehXQFqSmnKtQGGjEy1) pour vous créer un compte.
 :::
 
-### 1. Créer un compte RDV Service Public
+::::steps
 
-### 2. Configurer votre compte
+:::step Créer un compte RDV Service Public
 
-### 3. Activer l'intégration
+:::
 
-### 4. Les usagers peuvent planifier des rendez-vous 🎉
+:::step Configurer votre compte
+
+:::
+
+:::step Activer l'intégration
+
+:::
+
+:::step Les usagers peuvent planifier des rendez-vous 🎉
+
+:::
+
+::::
 
 #### Comment le mettre en place ?
 
@@ -44,9 +56,9 @@ Vous pouvez retrouver le détails des fonctionnalités et les modalités de sa m
 {% from "components/component.njk" import component with context %}
 <div class="fr-grid-row fr-grid-row--gutters fr-my-4w">
   <div class="fr-col-12 fr-col-md-6">
-  {{ component("tile", { url: false, externalUrl: "https://www.canva.com/design/DAG19TyTakA/ATyXcJjcZUCVKHMUXeN8nQ/view?utm_content=DAG19TyTakA&#x26;utm_campaign=designshare&#x26;utm_medium=link2&#x26;utm_source=uniquelinks&#x26;utlId=h0fff15141a", title: "Tutoriel ↗", description: "" }) }}
+  {{ component("tile", { url: false, externalUrl: "https://www.canva.com/design/DAG19TyTakA/ATyXcJjcZUCVKHMUXeN8nQ/view?utm_content=DAG19TyTakA&#x26;utm_campaign=designshare&#x26;utm_medium=link2&#x26;utm_source=uniquelinks&#x26;utlId=h0fff15141a", title: "Tutoriel ↗", description: "", pictogram: "leisure/book.svg" }) }}
   </div>
   <div class="fr-col-12 fr-col-md-6">
-  {{ component("tile", { url: false, externalUrl: "https://cal.com/team/rdv-service-public/accompagnement", title: "Rencontrer l'équipe ↗", description: "" }) }}
+  {{ component("tile", { url: false, externalUrl: "https://cal.com/team/rdv-service-public/accompagnement", title: "Rencontrer l'équipe ↗", description: "", pictogram: "digital/avatar.svg" }) }}
   </div>
 </div>

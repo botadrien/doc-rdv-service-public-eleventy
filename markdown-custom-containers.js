@@ -113,6 +113,48 @@ module.exports = {
             }
         }
     },
+    // Étapes verticales numérotées (1, 2, 3…) — composant custom.
+    // Syntaxe (marqueur `:` par défaut, 4 deux-points pour le groupe, 3 par étape) :
+    //
+    //     ::::steps
+    //     :::step Partager l'ambition
+    //     Contenu **markdown** de l'étape.
+    //     :::
+    //     :::step Identifier les référents
+    //     …
+    //     :::
+    //     ::::
+    steps: () => {
+        return {
+            validate: (params) => params.trim() === "steps",
+
+            render: (tokens, idx) => {
+                return tokens[idx].nesting === 1
+                    ? '<ol class="steps">\n'
+                    : "</ol>\n";
+            }
+        };
+    },
+    step: md => {
+        const re = /^step(?:\s+(.*))?$/;
+        return {
+            validate: (params) => params.trim().match(re),
+
+            render: (tokens, idx) => {
+                if (tokens[idx].nesting === 1) {
+                    const params = tokens[idx].info.trim().match(re);
+                    const title = (params && params[1] || "").trim();
+                    return (
+                        '<li class="steps__item">\n' +
+                        (title
+                            ? `<p class="steps__title">${md.utils.escapeHtml(title)}</p>\n`
+                            : "")
+                    );
+                }
+                return "</li>\n";
+            }
+        };
+    },
     accordion: md => {
         const re = /^(accordionsgroup|.*)?$/;
         return {

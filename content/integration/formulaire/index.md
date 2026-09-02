@@ -15,7 +15,7 @@ Centralisez la gestion des dossiers et la planification des rendez-vous !
 {% from "components/component.njk" import component with context %}
 <div class="fr-grid-row fr-grid-row--gutters fr-my-4w">
   <div class="fr-col-12 fr-col-md-6">
-  {{ component("tile", { url: false, externalUrl: "https://www.canva.com/design/DAGyd65U97M/ltVLzCzeSUqpbKBX2cJL8g/view?utm_content=DAGyd65U97M&#x26;utm_campaign=designshare&#x26;utm_medium=link2&#x26;utm_source=uniquelinks&#x26;utlId=h60a9e7a6ea", title: "Tutoriel ↗", description: "Comprendre pas à pas la mise en place de l'intégration !" }) }}
+  {{ component("tile", { url: false, externalUrl: "https://www.canva.com/design/DAGyd65U97M/ltVLzCzeSUqpbKBX2cJL8g/view?utm_content=DAGyd65U97M&#x26;utm_campaign=designshare&#x26;utm_medium=link2&#x26;utm_source=uniquelinks&#x26;utlId=h60a9e7a6ea", title: "Tutoriel ↗", description: "Comprendre pas à pas la mise en place de l'intégration !", pictogram: "leisure/book.svg" }) }}
   </div>
 </div>
 
@@ -33,21 +33,33 @@ Vous devez disposer d’un compte administrateur _Démarches Simplifiées_.
 Cliquez [ici](https://www.demarches-simplifiees.fr/commencer/demande-d-inscription-a-demarches-simplifiees) pour vous créer un compte.
 :::
 
-### 1. Publiez un formulaire sur Démarches Simplifiés
+::::steps
+
+:::step Publiez un formulaire sur Démarches Simplifiés
 
 Vous générez un formulaire complet, intégrant tous les champs nécessaires à un dossier : nom, prénom, e-mail, adresse, zones de texte libre, pièces jointes, etc... Ce formulaire est ensuite facilement accessible pour vos usagers via un lien web.
 
-### 2. Connectez votre compte Démarches Simplifiés à RDV Service Public
+:::
+
+:::step Connectez votre compte Démarches Simplifiés à RDV Service Public
 
 _Démarches Simplifiées_ vous proposera de vous connecter à un compte existant ou de créer un compte _RDV Service Public_. Cette connexion facilitée par ProConnect permettra d'activer le module de prise de rendez-vous dans la vue instructeur de _Démarches Simplifiés_.
 
-### 3. Configurez vos disponiblités sur RDV Service Public
+:::
+
+:::step Configurez vos disponiblités sur RDV Service Public
 
 Vous définissez vos motifs de rendez-vous (nom, durée, en présentiel, par visioconférence ou par téléphone…), vous générez des agendas pour vos agents et vous y associez des disponibilités ponctuelles ou récurrentes.
 
-### 4. Planifiez des rendez-vous depuis les réponses du formulaire 🎉
+:::
+
+:::step Planifiez des rendez-vous depuis les réponses du formulaire 🎉
 
 Vous pouvez ouvrir un module de prise de rendez-vous depuis chaque dossier réceptionné. Le module récupérera les informations de contact du dossier et vous permettra de planifier un rendez-vous parmi les disponbilités d'un ou plusieurs agendas.
+
+:::
+
+::::
 
 #### Comment le mettre en place ?
 
@@ -56,9 +68,9 @@ Vous pouvez retrouver le détails des fonctionnalités et les modalités de sa m
 {% from "components/component.njk" import component with context %}
 <div class="fr-grid-row fr-grid-row--gutters fr-my-4w">
   <div class="fr-col-12 fr-col-md-6">
-  {{ component("tile", { url: false, externalUrl: "https://www.canva.com/design/DAGyd65U97M/ltVLzCzeSUqpbKBX2cJL8g/view?utm_content=DAGyd65U97M&#x26;utm_campaign=designshare&#x26;utm_medium=link2&#x26;utm_source=uniquelinks&#x26;utlId=h60a9e7a6ea", title: "Tutoriel ↗", description: "" }) }}
+  {{ component("tile", { url: false, externalUrl: "https://www.canva.com/design/DAGyd65U97M/ltVLzCzeSUqpbKBX2cJL8g/view?utm_content=DAGyd65U97M&#x26;utm_campaign=designshare&#x26;utm_medium=link2&#x26;utm_source=uniquelinks&#x26;utlId=h60a9e7a6ea", title: "Tutoriel ↗", description: "", pictogram: "leisure/book.svg" }) }}
   </div>
   <div class="fr-col-12 fr-col-md-6">
-  {{ component("tile", { url: false, externalUrl: "https://cal.com/team/rdv-service-public/accompagnement", title: "Rencontrer l'équipe ↗", description: "" }) }}
+  {{ component("tile", { url: false, externalUrl: "https://cal.com/team/rdv-service-public/accompagnement", title: "Rencontrer l'équipe ↗", description: "", pictogram: "digital/avatar.svg" }) }}
   </div>
 </div>

@@ -14,7 +14,7 @@ Vous trouverez ici une aide et des explications sur la configuration d'une organ
 {% from "components/component.njk" import component with context %}
 <div class="fr-grid-row fr-grid-row--gutters fr-my-4w">
   <div class="fr-col-12 fr-col-md-6">
-  {{ component("tile", { url: false, externalUrl: "https://www.canva.com/design/DAGz5MMraCA/tKSSSeonoaIX5HDmJZTsjA/view?utm_content=DAGz5MMraCA&#x26;utm_campaign=designshare&#x26;utm_medium=link2&#x26;utm_source=uniquelinks&#x26;utlId=h6bddb23c9b", title: "Tutoriel ↗", description: "Découvrez étape par étape les options de configuration d'une organisation" }) }}
+  {{ component("tile", { url: false, externalUrl: "https://www.canva.com/design/DAGz5MMraCA/tKSSSeonoaIX5HDmJZTsjA/view?utm_content=DAGz5MMraCA&#x26;utm_campaign=designshare&#x26;utm_medium=link2&#x26;utm_source=uniquelinks&#x26;utlId=h6bddb23c9b", title: "Tutoriel ↗", description: "Découvrez étape par étape les options de configuration d'une organisation", pictogram: "leisure/book.svg" }) }}
   </div>
 </div>
 

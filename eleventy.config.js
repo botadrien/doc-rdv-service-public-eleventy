@@ -91,6 +91,25 @@ module.exports = function (eleventyConfig) {
     eleventyConfig.addFilter("getMonth", (dateObj) => DateTime.fromJSDate(dateObj, {zone: "utc"}).month);
     eleventyConfig.addFilter("getDay", (dateObj) => DateTime.fromJSDate(dateObj, {zone: "utc"}).day);
 
+    // Sommaire (fr-summary) : extrait les titres de niveau 2 du HTML rendu.
+    // markdown-it-anchor pose déjà un `id` et un lien `.header-anchor` sur chaque
+    // titre — on retire ce lien avant de récupérer le texte.
+    eleventyConfig.addFilter("tableOfContents", (content) => {
+        const items = [];
+        const re = /<h2[^>]*\bid="([^"]+)"[^>]*>([\s\S]*?)<\/h2>/gi;
+        let match;
+        while ((match = re.exec(content || ""))) {
+            const text = match[2]
+                .replace(/<a\b[^>]*class="[^"]*header-anchor[^"]*"[\s\S]*?<\/a>/gi, "")
+                .replace(/<[^>]+>/g, "")
+                .trim();
+            if (text) {
+                items.push({ id: match[1], text });
+            }
+        }
+        return items;
+    });
+
     // Get the first `n` elements of a collection.
     eleventyConfig.addFilter("head", (array, n) => {
         if (!Array.isArray(array) || array.length === 0) {

@@ -14,7 +14,7 @@ Vous trouverez ici une aide et des explications sur les fonctionnalités de la s
 {% from "components/component.njk" import component with context %}
 <div class="fr-grid-row fr-grid-row--gutters fr-my-4w">
   <div class="fr-col-12 fr-col-md-6">
-  {{ component("tile", { url: false, externalUrl: "https://www.canva.com/design/DAG12n5tsJk/4DdLZlT4eyfrV6nUboI5mQ/view?utm_content=DAG12n5tsJk&#x26;utm_campaign=designshare&#x26;utm_medium=link2&#x26;utm_source=uniquelinks&#x26;utlId=ha4d852eef7", title: "Tutoriel ↗", description: "Un tutoriel pas à pas pour comprendre les fonctionnalités essentielles" }) }}
+  {{ component("tile", { url: false, externalUrl: "https://www.canva.com/design/DAG12n5tsJk/4DdLZlT4eyfrV6nUboI5mQ/view?utm_content=DAG12n5tsJk&#x26;utm_campaign=designshare&#x26;utm_medium=link2&#x26;utm_source=uniquelinks&#x26;utlId=ha4d852eef7", title: "Tutoriel ↗", description: "Un tutoriel pas à pas pour comprendre les fonctionnalités essentielles", pictogram: "leisure/book.svg" }) }}
   </div>
 </div>
 

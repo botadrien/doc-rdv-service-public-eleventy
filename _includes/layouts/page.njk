@@ -6,7 +6,7 @@ layout: layouts/base.njk
     <div class="fr-col-12 fr-col-md-3">
       {% include "templates/sidemenu.njk" %}
     </div>
-    <div class="fr-col-12 fr-col-md-9" data-pagefind-body>
+    <div class="fr-col-12 fr-col-md-9 fr-col-lg-8 page-content" data-pagefind-body>
       {% if showBreadcrumb %}
         {% include "components/breadcrumb.njk" %}
       {% endif %}
@@ -16,7 +16,27 @@ layout: layouts/base.njk
           {{ description }}
         </p>
       {% endif %}
+
+      {% set toc = content | tableOfContents %}
+      {% if toc | length >= 3 %}
+        <nav class="fr-summary" role="navigation" aria-labelledby="fr-summary-title">
+          <div class="fr-summary__title" id="fr-summary-title">{{ "summary" | i18n }}</div>
+          <ol class="fr-summary__list">
+            {% for item in toc %}
+              <li><a class="fr-summary__link" href="#{{ item.id }}">{{ item.text }}</a></li>
+            {% endfor %}
+          </ol>
+        </nav>
+      {% endif %}
+
       {{ content | safe }}
+
+      {% if page.date %}
+        <p class="fr-text--sm page-content__updated fr-mt-6w fr-mb-0">
+          {{ "updated_on" | i18n }}
+          <time datetime="{{ page.date | htmlDateString }}">{{ page.date | readableDate }}</time>
+        </p>
+      {% endif %}
     </div>
   </div>
 </div>

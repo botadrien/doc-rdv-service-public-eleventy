@@ -88,21 +88,26 @@ function init() {
   }
 
   function renderTile(t) {
-    const ext = !!t.externalUrl;
+    const isExternal = !!t.externalUrl && !(t.url && t.url !== false);
     const url = t.url && t.url !== false ? t.url : t.externalUrl || "#";
+    const title = String(t.title || "").replace(/\s*↗/g, "").trim();
+    const horizontal = t.horizontal || (isExternal && !t.pictogram);
+    const cls =
+      "fr-tile fr-enlarge-link" +
+      (horizontal ? " fr-tile--horizontal fr-tile--sm" : "");
     return (
-      '<div class="fr-tile fr-enlarge-link"><div class="fr-tile__body">' +
-      '<div class="fr-tile__content"><h4 class="fr-tile__title">' +
+      '<div class="' + cls + '"><div class="fr-tile__body">' +
+      '<div class="fr-tile__content"><h3 class="fr-tile__title">' +
       '<a class="fr-tile__link" href="' +
       esc(url) +
       '"' +
-      (ext ? ' target="_blank" rel="noopener"' : "") +
+      (isExternal ? ' target="_blank" rel="noopener"' : "") +
       ">" +
-      esc(t.title) +
-      "</a></h4>" +
-      '<p class="fr-tile__desc">' +
-      esc(t.description) +
-      "</p></div></div></div>"
+      esc(title) +
+      "</a></h3>" +
+      (t.description ? '<p class="fr-tile__desc">' + esc(t.description) + "</p>" : "") +
+      (isExternal ? '<p class="fr-tile__detail">Nouvelle fenêtre</p>' : "") +
+      "</div></div></div>"
     );
   }
 

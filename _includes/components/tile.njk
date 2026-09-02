@@ -1,22 +1,35 @@
 {% if not tile %}{% set tile = params %}{% endif %}
-<div class="fr-tile fr-enlarge-link">
+{% set tileUrl = tile.url | locale_url or tile.externalUrl %}
+{% set isExternal = tile.externalUrl and not tile.url %}
+{# Le picto « lien externe » est ajouté automatiquement par le DSFR sur les liens
+   target="_blank" : on retire la flèche « ↗ » saisie à la main dans les titres. #}
+{% set tileTitle = (tile.title | replace(" ↗", "") | replace("↗", "")) | trim %}
+{% set isHorizontal = tile.horizontal or (isExternal and not tile.pictogram) %}
+<div class="fr-tile fr-enlarge-link{% if isHorizontal %} fr-tile--horizontal{% endif %}{% if tile.sm or isHorizontal %} fr-tile--sm{% endif %}">
   <div class="fr-tile__body">
     <div class="fr-tile__content">
-      {% set tileUrl = tile.url | locale_url or tile.externalUrl %}
-      {% set urlDescription %}{{ tile.title }}{% if tile.externalUrl %} - {{ "new_window" | i18n }}{% endif %}{% endset %}
-      <h4 class="fr-tile__title">
+      {% set urlDescription %}{{ tileTitle }}{% if isExternal %} - {{ "new_window" | i18n }}{% endif %}{% endset %}
+      <h3 class="fr-tile__title">
         <a class="fr-tile__link" href="{{ tileUrl }}"
-           title="{{ urlDescription }}"{% if tile.externalUrl %} target="_blank" rel="noopener"{% endif %}>
-          {{ tile.title }}
+           title="{{ urlDescription }}"{% if isExternal %} target="_blank" rel="noopener"{% endif %}>
+          {{ tileTitle }}
         </a>
-      </h4>
-      <p class="fr-tile__desc">{{ tile.description }}</p>
+      </h3>
+      {% if tile.description %}
+        <p class="fr-tile__desc">{{ tile.description }}</p>
+      {% endif %}
+      {% if tile.detail %}
+        <p class="fr-tile__detail">{{ tile.detail }}</p>
+      {% elif isExternal %}
+        {% set tileHost = (tile.externalUrl | replace("https://", "") | replace("http://", "")).split("/")[0] %}
+        <p class="fr-tile__detail">{{ tileHost }}</p>
+      {% endif %}
     </div>
   </div>
   {% if tile.pictogram %}
+    {% set pictogramUrl = "/artwork/pictograms/" + tile.pictogram %}
     <div class="fr-tile__header">
       <div class="fr-tile__pictogram">
-        {% set pictogramUrl = "/artwork/pictograms/" + tile.pictogram %}
         <svg aria-hidden="true" class="fr-artwork" viewBox="0 0 80 80" width="80px" height="80px">
           <use class="fr-artwork-decorative" href="{{ pictogramUrl | htmlBaseUrl }}#artwork-decorative"></use>
           <use class="fr-artwork-minor" href="{{ pictogramUrl | htmlBaseUrl }}#artwork-minor"></use>

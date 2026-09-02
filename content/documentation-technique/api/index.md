@@ -12,6 +12,6 @@ Nous enrichissons régulièrement nos API selon les besoins de nos utilisateurs.
 {% from "components/component.njk" import component with context %}
 <div class="fr-grid-row fr-grid-row--gutters fr-my-4w">
   <div class="fr-col-12 fr-col-md-6">
-  {{ component("tile", { url: false, externalUrl: "https://www.rdv-solidarites.fr/api-docs/index.html", title: "Consulter les API", description: "" }) }}
+  {{ component("tile", { url: false, externalUrl: "https://www.rdv-solidarites.fr/api-docs/index.html", title: "Consulter les API", description: "", pictogram: "digital/application.svg" }) }}
   </div>
 </div>

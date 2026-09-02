@@ -9,7 +9,9 @@ showBreadcrumb: true
 ---
 Changer d’outil, ce n’est pas seulement une configuration technique, c’est une transformation des pratiques au service d’un meilleur service aux usagers. Voilà quelques étapes conseillées pour déployer notre solution dans votre administration.
 
-### 1. Partager l'ambition à l'équipe 🎯
+::::steps
+
+:::step Partager l'ambition à l'équipe 🎯
 
 _Pourquoi changer ?_
 
@@ -19,7 +21,9 @@ Les raison d'un changement peuvent variés selon vos cas d'usage. Il est essenti
 * Réduire les appels entrants ?
 * Améliorer la satisfaction des agents et des usagers ?
 
-### 2. Identifier des référents 👤
+:::
+
+:::step Identifier des référents 👤
 
 _Qui est responsable de quoi dans ce changement ?_
 
@@ -29,7 +33,9 @@ Les agents métiers : ils auront un rôle essentiel car ils sont au coeur des pr
 
 Un référent outil : Il devra présenter et proposer un premier niveau de support aux agents métiers. Il est parfois plus simple de poser une question à un ou une collègue du couloir que d'écrire un mot au support de l'équipe produit ! Pour faciliter le déploiement, il est alors recommander d'identifier une personne référente au sein de votre équipe. Cette personne pourra assister à des sessions de formation et présentation collective régulièrement organisées par nos équipes !
 
-### 3. Identifier les besoins avant de paramétrer 🔎
+:::
+
+:::step Identifier les besoins avant de paramétrer 🔎
 
 _Qui gère des rendez-vous et quels sont les besoins ?_
 
@@ -40,7 +46,9 @@ Il est également essentiel de bien définir les besoins des agents. Plusieurs q
 * Quelles plages horaires sont disponibles ?
 * Quelles contraintes doivent être respectées ?
 
-### 4. Déployer progressivement ☕️
+:::
+
+:::step Déployer progressivement ☕️
 
 _Qui est volontaire ?_
 
@@ -48,7 +56,9 @@ Il est préférable d’amorcer le déploiement progressivement, en commençant 
 
 C’est également une excellente manière de tester l’outil, d’en mesurer l’impact et d’ajuster si nécessaire avant une généralisation. Il vaut toujours mieux ajuster à petite échelle que devoir revenir en arrière après être allé trop loin trop vite.
 
-### 5. Former et rassurer les équipes 🎓
+:::
+
+:::step Former et rassurer les équipes 🎓
 
 _Comment ça marche ?_
 
@@ -62,12 +72,18 @@ Cependant, il est recommandé de proposer un accompagnement progressif sous diff
 
 Cet accompagnement combiné permet de lever les appréhensions et de favoriser une montée en compétence efficace et sereine.
 
-### 6. Mesurer et améliorer 📊
+:::
+
+:::step Mesurer et améliorer 📊
 
 _Est-ce utile ?_
 
 Il est essentiel de planifier des points d’étape réguliers afin d’évaluer la pertinence de l’outil dans le quotidien des agents métiers. Parfois, une simple question comme _« Tout se passe bien ? »_ permet de révéler des irritants ou frustrations qui seraient restés invisibles.\
 Ces retours sont précieux : ils permettent d’ajuster progressivement la configuration de la solution pour qu’elle réponde au mieux aux besoins réels des agents.
+
+:::
+
+::::
 
 #### Nous pouvons vous aider !
 
@@ -76,6 +92,6 @@ Nous pouvons, lors d'un temps d'échange individuel, vous accompagner dans la mi
 {% from "components/component.njk" import component with context %}
 <div class="fr-grid-row fr-grid-row--gutters fr-my-4w">
   <div class="fr-col-12 fr-col-md-6">
-  {{ component("tile", { url: false, externalUrl: "https://cal.com/team/rdv-service-public/accompagnement", title: "Rencontrer l'équipe ↗", description: "" }) }}
+  {{ component("tile", { url: false, externalUrl: "https://cal.com/team/rdv-service-public/accompagnement", title: "Rencontrer l'équipe ↗", description: "", pictogram: "digital/avatar.svg" }) }}
   </div>
 </div>
