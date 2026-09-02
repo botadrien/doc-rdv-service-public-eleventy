@@ -6,7 +6,9 @@
  * (markdown-it-container, cf. markdown-custom-containers.js) :
  *
  * - `dsfr-accordions-group` / `dsfr-accordion` : accordéons (`????` / `???`).
- * - `dsfr-steps`     : étapes verticales numérotées (`::::steps` / `:::step`).
+ * - `steps`          : étapes verticales numérotées (`::::steps` / `:::step`) —
+ *                      composant custom, PAS un composant officiel du DSFR
+ *                      (fr-stepper = indicateur de formulaire, autre chose).
  * - `dsfr-alert`     : alerte `fr-alert` (`:::info|success|warning|error`).
  * - `dsfr-callout`   : mise en avant `fr-callout` (`:::callout`).
  * - `dsfr-highlight` : mise en exergue `fr-highlight` (`:::highlight`).
@@ -177,7 +179,7 @@
   }
 
   window.CMS.registerEditorComponent({
-    id: 'dsfr-steps',
+    id: 'steps',
     label: 'Étapes numérotées',
     icon: 'format_list_numbered',
     pattern: /^::::steps[^\n]*\n([\s\S]*?)\n::::[ \t]*(?=\n|$)/m,
