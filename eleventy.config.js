@@ -1,9 +1,7 @@
 const {DateTime} = require("luxon");
-const {nanoid} = require ("nanoid");
 
 const esbuild = require("esbuild");
 
-const pluginSyntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight");
 const pluginBundle = require("@11ty/eleventy-plugin-bundle");
 const pluginNavigation = require("@11ty/eleventy-navigation");
 const {EleventyHtmlBasePlugin} = require("@11ty/eleventy");
@@ -18,8 +16,7 @@ const configureMarkdown = require("./markdown-config");
 const uiStrings = require("./_data/i18n/fr");
 
 module.exports = function (eleventyConfig) {
-    // Copy the contents of the `public` folder to the output folder
-    // For example, `./public/css/` ends up in `_site/css/`
+    // Copie du dossier `public` + des assets DSFR vers la sortie.
     eleventyConfig.addPassthroughCopy({
         "./public/": "/",
         "./node_modules/@gouvfr/dsfr/dist/favicon": "/favicon",
@@ -34,18 +31,9 @@ module.exports = function (eleventyConfig) {
 
     // Images co-localisées avec les pages (content/<section>/<page>/assets/…)
     eleventyConfig.addPassthroughCopy("content/**/assets/*.{png,jpg,jpeg,gif,svg,webp,avif}");
-
-    // Watch content images for the image pipeline.
     eleventyConfig.addWatchTarget("content/**/*.{svg,webp,png,jpeg,jpg,gif}");
 
-    // App plugins
-    eleventyConfig.addPlugin(require("./eleventy.config.drafts.js"));
-    eleventyConfig.addPlugin(require("./eleventy.config.images.js"));
-
-    // Official plugins
-    eleventyConfig.addPlugin(pluginSyntaxHighlight, {
-        preAttributes: {tabindex: 0}
-    });
+    // Plugins
     eleventyConfig.addPlugin(pluginNavigation);
     eleventyConfig.addPlugin(pluginBundle);
     eleventyConfig.addPlugin(EleventyHtmlBasePlugin);
@@ -55,28 +43,18 @@ module.exports = function (eleventyConfig) {
         errorMode: "never"
     });
 
-    // --- Shims i18n (site monolingue) -------------------------------------
-    // `"clé" | i18n` et `"clé" | i18n({}, lang)` -> chaîne française
+    // --- Shims i18n (site monolingue) -----------------------------------
+    // `"clé" | i18n` -> chaîne française ; `url | locale_url` -> URL inchangée
+    // (pages servies à la racine, sans préfixe /fr/ — on écrase le filtre du plugin).
     eleventyConfig.addFilter("i18n", (key) => uiStrings[key] !== undefined ? uiStrings[key] : key);
-    // `url | locale_url` et `url | locale_url(lang)` -> URL inchangée : les pages
-    // sont servies à la racine (pas de préfixe /fr/). On écrase le filtre du plugin i18n.
     eleventyConfig.addFilter("locale_url", (url) => url);
-    // `collection | filterCollectionLang` -> collection inchangée
-    eleventyConfig.addFilter("filterCollectionLang", (collection) => collection);
-    eleventyConfig.addGlobalData("availableLang", ["fr"]);
 
-    // Custom collections
+    // Collection triée par chemin (plan du site HTML + sitemap.xml).
     eleventyConfig.addCollection("allSortedByPathAsc", function(collectionApi) {
-        return collectionApi.getAll().sort((a, b) => {
-            return a.inputPath.localeCompare(b.inputPath);
-        });
+        return collectionApi.getAll().sort((a, b) => a.inputPath.localeCompare(b.inputPath));
     });
 
-    // Filters
-    eleventyConfig.addFilter("jsDateObject", function jsDateObject(dateStr, format, zone) {
-        return DateTime.fromFormat(dateStr, format || "yyyy-LL-dd", {zone: zone || "utc"}).toJSDate();
-    });
-
+    // --- Filtres -------------------------------------------------------
     eleventyConfig.addFilter("readableDate", function readableDate(dateObj, format, zone) {
         return DateTime.fromJSDate(dateObj, {zone: zone || "utc"})
             .setLocale(this.page.lang || "fr")
@@ -86,10 +64,6 @@ module.exports = function (eleventyConfig) {
     eleventyConfig.addFilter("htmlDateString", (dateObj) => {
         return DateTime.fromJSDate(dateObj, {zone: "utc"}).toFormat("yyyy-LL-dd");
     });
-
-    eleventyConfig.addFilter("getYear", (dateObj) => DateTime.fromJSDate(dateObj, {zone: "utc"}).year);
-    eleventyConfig.addFilter("getMonth", (dateObj) => DateTime.fromJSDate(dateObj, {zone: "utc"}).month);
-    eleventyConfig.addFilter("getDay", (dateObj) => DateTime.fromJSDate(dateObj, {zone: "utc"}).day);
 
     // Sommaire (fr-summary) : extrait les titres de niveau 2 du HTML rendu.
     // markdown-it-anchor pose déjà un `id` et un lien `.header-anchor` sur chaque
@@ -108,26 +82,6 @@ module.exports = function (eleventyConfig) {
             }
         }
         return items;
-    });
-
-    // Get the first `n` elements of a collection.
-    eleventyConfig.addFilter("head", (array, n) => {
-        if (!Array.isArray(array) || array.length === 0) {
-            return [];
-        }
-        if (n < 0) {
-            return array.slice(n);
-        }
-        return array.slice(0, n);
-    });
-
-    // Return the smallest number argument
-    eleventyConfig.addFilter("min", (...numbers) => Math.min.apply(null, numbers));
-
-    eleventyConfig.addFilter("filterTagList", function filterTagList(tags, addTags = []) {
-        return (tags || []).filter(tag => ["all", "nav", "post", "posts", "events"]
-            .concat(addTags)
-            .indexOf(tag) === -1);
     });
 
     // Réglages de la bibliothèque Markdown — voir markdown-config.js (partagé avec
@@ -156,8 +110,6 @@ module.exports = function (eleventyConfig) {
         trimBlocks: true,
         lstripBlocks: true,
     });
-
-    eleventyConfig.addNunjucksGlobal("nanoid", () => nanoid());
 
     return {
         templateFormats: ["md", "njk", "html", "liquid"],

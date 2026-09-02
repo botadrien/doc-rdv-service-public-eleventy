@@ -106,8 +106,9 @@ scripts/migrate/convert.mjs + README.md
 
 - Un fichier `.njk` **n'est pas** rendu en markdown → l'accueil est un `.md`
   (`content/index.md`) pour que `##`/`:::` fonctionnent tout en gardant `{{ component() }}`.
-- Les images en markdown `![](./assets/…)` ne passent **pas** par `eleventy-img` : il a
-  fallu la règle `addPassthroughCopy("content/**/assets/*")`.
+- Les images en markdown `![](./assets/…)` sont servies telles quelles via
+  `addPassthroughCopy("content/**/assets/*")` (le plugin `eleventy-img` a été
+  retiré au nettoyage de sept. 2026 — il n'était branché sur rien).
 - `page.lang` n'existe que si `EleventyI18nPlugin` est chargé (d'où sa conservation).
 - Le marqueur des accordéons DSFR est `?` : `????accordionsgroup` … `???Titre` … `???` … `????`.
 - L'outil shell garde le `cwd` entre commandes : toujours travailler en chemins absolus

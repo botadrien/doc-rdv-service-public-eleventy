@@ -40,7 +40,6 @@ function init() {
     "../css/dsfr.min.css",
     "../css/utility/utility.min.css",
     "../css/index.css",
-    "../css/prism-diff.css",
   ].forEach((href) => CMS.registerPreviewStyle(href));
 
   CMS.registerPreviewStyle(

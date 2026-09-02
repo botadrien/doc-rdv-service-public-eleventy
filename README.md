@@ -8,13 +8,15 @@ gabarit [`codegouvfr/eleventy-dsfr`](https://github.com/codegouvfr/eleventy-dsfr
 Il remplace l'ancien site GitBook <https://aide.rdv-service-public.fr/>
 (source : [`rdv-solidarites/rdv-service-public-gitbook`](https://github.com/rdv-solidarites/rdv-service-public-gitbook)).
 
+![Page d'accueil du site](docs/screenshots/accueil.png)
+
 ## Développement
 
 Prérequis : Node.js ≥ 18.
 
 ```bash
 npm ci             # installe les dépendances
-npm start          # serveur de dev sur http://localhost:8080 (brouillons visibles)
+npm start          # serveur de dev sur http://localhost:8080
 npm run build      # build de production dans _site/ (+ index de recherche Pagefind)
 ```
 
@@ -23,6 +25,13 @@ Le site est **monolingue (français)** et servi à la racine (pas de préfixe `/
 ## Édition du contenu (Sveltia CMS)
 
 Interface d'édition : `/admin/` (`public/admin/`).
+
+![Interface d'édition Sveltia CMS](docs/screenshots/edition-cms.png)
+
+Le menu **« Insert »** de l'éditeur donne accès aux blocs DSFR (accordéons, étapes
+numérotées, tuiles, alertes, mises en avant / en exergue). Voir
+[`public/admin/editor-components.js`](public/admin/editor-components.js) et
+[`markdown-custom-containers.js`](markdown-custom-containers.js).
 
 - **En local** : lancer `npm start`, ouvrir <http://localhost:8080/admin/> dans un
   navigateur Chromium, choisir « Work with Local Repository » et sélectionner le dossier du projet.

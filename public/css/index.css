@@ -1,7 +1,6 @@
 /* Defaults */
 :root {
     --font-family-monospace: Consolas, Menlo, Monaco, Andale Mono WT, Andale Mono, Lucida Console, Lucida Sans Typewriter, DejaVu Sans Mono, Bitstream Vera Sans Mono, Liberation Mono, Nimbus Mono L, Courier New, Courier, monospace;
-    --syntax-tab-size: 2;
 }
 
 /* Global stylesheet */
@@ -30,24 +29,11 @@ code {
     font-family: var(--font-family-monospace);
 }
 
-pre[class*="language-"] {
-    margin-bottom: 1.5em !important;
-}
-
-pre:not([class*="language-"]) {
+pre {
     margin: .5em 0;
-    line-height: 1.375; /* 22px /16 */
-    -moz-tab-size: var(--syntax-tab-size);
-    -o-tab-size: var(--syntax-tab-size);
-    tab-size: var(--syntax-tab-size);
-    -webkit-hyphens: none;
-    -ms-hyphens: none;
-    hyphens: none;
-    direction: ltr;
-    text-align: left;
+    line-height: 1.375;
+    tab-size: 2;
     white-space: pre;
-    word-spacing: normal;
-    word-break: normal;
 }
 
 code {
@@ -268,37 +254,20 @@ div.fr-callout__text p {
     line-height: inherit;
 }
 
-/** Missing icons **/
-.fr-follow .fr-btn--peertube:before,
-.fr-follow .fr-btn--github:before,
-.fr-follow .fr-btn--sourcehut:before {
-    margin-left: 0;
-    margin-right: 0.5rem;
-    flex: 0 0 auto;
-    display: inline-block;
-    vertical-align: calc((0.75em - var(--icon-size)) * 0.5);
-    background-color: currentColor;
-    width: var(--icon-size);
-    height: var(--icon-size);
-    -webkit-mask-size: 100% 100%;
-    mask-size: 100% 100%;
-    --icon-size: 2rem;
-    content: "";
-}
-
-.fr-follow .fr-btn--peertube:before {
-    -webkit-mask-image: url(/icons/logo/peertube.svg) !important;
-    mask-image: url(/icons/logo/peertube.svg) !important;
-}
-
+/* Icône GitHub manquante dans le DSFR pour le bloc « Suivez-nous ». */
 .fr-follow .fr-btn--github:before {
-    -webkit-mask-image: url(/icons/logo/github-fill.svg) !important;
-    mask-image: url(/icons/logo/github-fill.svg) !important;
-}
-
-.fr-follow .fr-btn--sourcehut:before {
-    -webkit-mask-image: url(/icons/logo/sourcehut.svg) !important;
-    mask-image: url(/icons/logo/sourcehut.svg) !important;
+    content: "";
+    display: inline-block;
+    flex: 0 0 auto;
+    width: 2rem;
+    height: 2rem;
+    margin-right: 0.5rem;
+    vertical-align: calc((0.75em - 2rem) * 0.5);
+    background-color: currentColor;
+    mask-image: url(/icons/logo/github-fill.svg);
+    mask-size: 100% 100%;
+    -webkit-mask-image: url(/icons/logo/github-fill.svg);
+    -webkit-mask-size: 100% 100%;
 }
 
 /* Custom */

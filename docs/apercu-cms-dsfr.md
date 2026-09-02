@@ -4,6 +4,11 @@
 > `admin-src/preview.js`, hook `eleventy.before` dans `eleventy.config.js`,
 > `public/admin/index.html`. Bundle généré : `public/admin/preview.gen.js`
 > (gitignoré). Approche : « esbuild auto » + « contenu seul ».
+>
+> ⚠️ Ce document décrit l'analyse initiale. Certains détails ont évolué depuis
+> (conteneurs Markdown ajoutés : `steps`, `tiles` ; `markdown-it-attrs` et la
+> coloration Prism retirés). **Source de vérité : `markdown-config.js` +
+> `markdown-custom-containers.js` + `public/admin/editor-components.js`.**
 
 ## Contexte
 

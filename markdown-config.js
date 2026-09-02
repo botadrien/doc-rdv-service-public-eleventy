@@ -1,5 +1,4 @@
 const markdownItAnchor = require("markdown-it-anchor");
-const markdownItAttrs = require("markdown-it-attrs");
 const markdownItContainer = require("markdown-it-container");
 
 const customMarkdownContainers = require("./markdown-custom-containers");
@@ -34,7 +33,6 @@ module.exports = function configureMarkdown(md, { slugify }) {
         return '<table class="fr-table">';
     };
 
-    md.use(markdownItAttrs);
     md.use(markdownItContainer, "callout", customMarkdownContainers.callout(md));
     md.use(markdownItContainer, "highlight", customMarkdownContainers.highlight(md));
     md.use(markdownItContainer, "quote", customMarkdownContainers.quote(md));
