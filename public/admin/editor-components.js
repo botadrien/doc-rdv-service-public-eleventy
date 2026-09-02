@@ -1,9 +1,21 @@
 /*
  * Composants d'éditeur Sveltia/Decap pour les blocs DSFR custom.
  *
- * Ils permettent d'insérer des accordéons et des étapes numérotées depuis
- * l'éditeur riche du CMS, tout en produisant la syntaxe Markdown déjà comprise
- * par Eleventy (markdown-it-container, cf. markdown-custom-containers.js) :
+ * Ils permettent d'insérer les blocs DSFR depuis l'éditeur riche du CMS, tout en
+ * produisant la syntaxe Markdown déjà comprise par Eleventy
+ * (markdown-it-container, cf. markdown-custom-containers.js) :
+ *
+ * - `dsfr-accordions-group` / `dsfr-accordion` : accordéons (`????` / `???`).
+ * - `dsfr-steps`     : étapes verticales numérotées (`::::steps` / `:::step`).
+ * - `dsfr-alert`     : alerte `fr-alert` (`:::info|success|warning|error`).
+ * - `dsfr-callout`   : mise en avant `fr-callout` (`:::callout`).
+ * - `dsfr-highlight` : mise en exergue `fr-highlight` (`:::highlight`).
+ *
+ * Limite connue : les conteneurs à 3 deux-points (`:::info`, `:::callout`…) ne
+ * s'imbriquent PAS dans un `:::step` (même longueur de marqueur → fermeture
+ * prématurée). Ces blocs se placent au premier niveau, hors étapes.
+ *
+ * Rappel accordéons :
  *
  *     ????accordionsgroup
  *
@@ -216,6 +228,103 @@
     },
     toPreview: function (data) {
       return itemToPreview(data);
+    },
+  });
+
+  // --- Alerte (fr-alert) ------------------------------------------------
+  var ALERT_TYPES = [
+    { label: 'Information', value: 'info' },
+    { label: 'Succès', value: 'success' },
+    { label: 'Attention', value: 'warning' },
+    { label: 'Erreur', value: 'error' },
+  ];
+
+  window.CMS.registerEditorComponent({
+    id: 'dsfr-alert',
+    label: 'Alerte',
+    icon: 'notification_important',
+    pattern: /^:::(info|success|warning|error)[ \t]*(.*)\n([\s\S]*?)\n:::[ \t]*(?=\n|$)/m,
+    fields: [
+      {
+        name: 'type',
+        label: 'Type',
+        widget: 'select',
+        default: 'info',
+        options: ALERT_TYPES,
+      },
+      { name: 'title', label: 'Titre (optionnel)', widget: 'string', required: false },
+      { name: 'body', label: 'Contenu', widget: 'markdown' },
+    ],
+    fromBlock: function (match) {
+      return {
+        type: match[1] || 'info',
+        title: (match[2] || '').trim(),
+        body: (match[3] || '').trim(),
+      };
+    },
+    toBlock: function (data) {
+      var type = data && data.type ? data.type : 'info';
+      var title = data && data.title ? ' ' + String(data.title).trim() : '';
+      var body = data && data.body ? String(data.body).trim() : '';
+      return ':::' + type + title + '\n\n' + body + '\n\n:::';
+    },
+    toPreview: function (data) {
+      var type = data && data.type ? data.type : 'info';
+      var title = data && data.title ? String(data.title).trim() : '';
+      var body = (data && data.body) || '';
+      return (
+        '<div class="fr-alert fr-alert--' + type + (title ? '' : ' fr-alert--sm') + '">\n' +
+        (title ? '<h3 class="fr-alert__title">' + esc(title) + '</h3>\n' : '') +
+        '\n' + body + '\n\n</div>'
+      );
+    },
+  });
+
+  // --- Mise en avant (fr-callout) -------------------------------------
+  window.CMS.registerEditorComponent({
+    id: 'dsfr-callout',
+    label: 'Mise en avant',
+    icon: 'campaign',
+    pattern: /^:::callout[ \t]*(.*)\n([\s\S]*?)\n:::[ \t]*(?=\n|$)/m,
+    fields: [
+      { name: 'title', label: 'Titre (optionnel)', widget: 'string', required: false },
+      { name: 'body', label: 'Contenu', widget: 'markdown' },
+    ],
+    fromBlock: function (match) {
+      return { title: (match[1] || '').trim(), body: (match[2] || '').trim() };
+    },
+    toBlock: function (data) {
+      var title = data && data.title ? ' ' + String(data.title).trim() : '';
+      var body = data && data.body ? String(data.body).trim() : '';
+      return ':::callout' + title + '\n\n' + body + '\n\n:::';
+    },
+    toPreview: function (data) {
+      var title = data && data.title ? esc(String(data.title).trim()) : '';
+      var body = (data && data.body) || '';
+      return (
+        '<div class="fr-callout">\n' +
+        (title ? '<h3 class="fr-callout__title">' + title + '</h3>\n' : '') +
+        '<div class="fr-callout__text">\n\n' + body + '\n\n</div>\n</div>'
+      );
+    },
+  });
+
+  // --- Mise en exergue (fr-highlight) -------------------------------
+  window.CMS.registerEditorComponent({
+    id: 'dsfr-highlight',
+    label: 'Mise en exergue',
+    icon: 'format_quote',
+    pattern: /^:::highlight[ \t]*\n([\s\S]*?)\n:::[ \t]*(?=\n|$)/m,
+    fields: [{ name: 'body', label: 'Texte', widget: 'markdown' }],
+    fromBlock: function (match) {
+      return { body: (match[1] || '').trim() };
+    },
+    toBlock: function (data) {
+      var body = data && data.body ? String(data.body).trim() : '';
+      return ':::highlight\n\n' + body + '\n\n:::';
+    },
+    toPreview: function (data) {
+      return '<div class="fr-highlight">\n\n' + ((data && data.body) || '') + '\n\n</div>';
     },
   });
 })();
