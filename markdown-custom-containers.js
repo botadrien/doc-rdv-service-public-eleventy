@@ -155,6 +155,66 @@ module.exports = {
             }
         };
     },
+    // Grille de tuiles DSFR (fr-tile) — première implémentation simplifiée :
+    // titre + lien uniquement sur la ligne de fence, description dans le corps.
+    // Pas de pictogramme / badge / variante ici — pour ça, garder le composant
+    // Nunjucks `{{ component("tile", {…}) }}`.
+    //
+    //     ::::tiles
+    //     :::tile Configurer son organisation | /documentation-utilisateur/configurer-son-organisation/
+    //     Comprendre les options des motifs et des agents.
+    //     :::
+    //     :::tile France Titres | https://rendezvouspasseport.ants.gouv.fr/
+    //     :::
+    //     ::::
+    tiles: () => {
+        return {
+            validate: (params) => params.trim() === "tiles",
+
+            render: (tokens, idx) => {
+                if (tokens[idx].nesting !== 1) {
+                    return "</ul>\n";
+                }
+                // Nombre de colonnes = nombre de tuiles (plafonné à 3).
+                let count = 0;
+                for (
+                    let i = idx + 1;
+                    i < tokens.length && tokens[i].type !== "container_tiles_close";
+                    i++
+                ) {
+                    if (tokens[i].type === "container_tile_open") count++;
+                }
+                const cols = Math.max(1, Math.min(count || 1, 3));
+                return `<ul class="tiles" style="--tiles-cols:${cols}">\n`;
+            }
+        };
+    },
+    tile: md => {
+        const re = /^tile\s+(.+)$/;
+        return {
+            validate: (params) => re.test(params.trim()),
+
+            render: (tokens, idx) => {
+                if (tokens[idx].nesting !== 1) {
+                    return "</div>\n</div></div></div>\n</li>\n";
+                }
+                const raw = tokens[idx].info.trim().replace(/^tile\s+/, "");
+                const sep = raw.indexOf("|");
+                const title = (sep === -1 ? raw : raw.slice(0, sep)).trim();
+                const url = (sep === -1 ? "" : raw.slice(sep + 1)).trim();
+                const external = /^https?:\/\//i.test(url);
+                return (
+                    '<li>\n<div class="fr-tile fr-tile--sm fr-enlarge-link">\n' +
+                    '<div class="fr-tile__body"><div class="fr-tile__content">\n' +
+                    '<h3 class="fr-tile__title">' +
+                    `<a class="fr-tile__link" href="${md.utils.escapeHtml(url || "#")}"` +
+                    (external ? ' target="_blank" rel="noopener"' : "") +
+                    `>${md.utils.escapeHtml(title)}</a></h3>\n` +
+                    '<div class="fr-tile__desc">\n'
+                );
+            }
+        };
+    },
     accordion: md => {
         const re = /^(accordionsgroup|.*)?$/;
         return {

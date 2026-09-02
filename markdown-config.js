@@ -41,6 +41,8 @@ module.exports = function configureMarkdown(md, { slugify }) {
     md.use(markdownItContainer, "alert", customMarkdownContainers.alert(md));
     md.use(markdownItContainer, "steps", customMarkdownContainers.steps(md));
     md.use(markdownItContainer, "step", customMarkdownContainers.step(md));
+    md.use(markdownItContainer, "tiles", customMarkdownContainers.tiles(md));
+    md.use(markdownItContainer, "tile", customMarkdownContainers.tile(md));
     md.use(markdownItContainer, "accordion", customMarkdownContainers.accordion(md));
 
     return md;

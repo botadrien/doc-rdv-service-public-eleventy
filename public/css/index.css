@@ -217,6 +217,37 @@ textarea {
     margin-bottom: 0;
 }
 
+/* ------------------------------------------------------------------ *
+ *  Grille de tuiles (conteneur Markdown ::::tiles / :::tile)         *
+ * ------------------------------------------------------------------ */
+.tiles {
+    display: grid;
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+    padding: 0;
+    list-style: none;
+}
+
+.tiles > li {
+    margin: 0;
+}
+
+@media (min-width: 48em) {
+    .tiles {
+        grid-template-columns: repeat(var(--tiles-cols, 2), minmax(0, 1fr));
+    }
+}
+
+/* Corps de tuile issu du Markdown : marge du <p> interne neutralisée,
+   bloc masqué s'il n'y a pas de description. */
+.tiles .fr-tile__desc > p {
+    margin: 0;
+}
+
+.tiles .fr-tile__desc:not(:has(p)) {
+    display: none;
+}
+
 @media (min-width: 48em) {
     .fr-share__group {
         justify-content: flex-end !important;

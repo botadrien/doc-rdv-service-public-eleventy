@@ -12,6 +12,9 @@
  * - `dsfr-alert`     : alerte `fr-alert` (`:::info|success|warning|error`).
  * - `dsfr-callout`   : mise en avant `fr-callout` (`:::callout`).
  * - `dsfr-highlight` : mise en exergue `fr-highlight` (`:::highlight`).
+ * - `tiles`          : grille de tuiles `fr-tile` (`::::tiles` / `:::tile Titre
+ *                      | lien`) — 1re implémentation simplifiée : titre + lien +
+ *                      description, sans pictogramme/badge/variante.
  *
  * Limite connue : les conteneurs à 3 deux-points (`:::info`, `:::callout`…) ne
  * s'imbriquent PAS dans un `:::step` (même longueur de marqueur → fermeture
@@ -209,6 +212,99 @@
     toPreview: function (data) {
       var steps = data && Array.isArray(data.steps) ? data.steps : [];
       return stepsToPreview(steps);
+    },
+  });
+
+  // --- Grille de tuiles (fr-tile) — 1re implémentation simplifiée -----
+  // Ligne de fence : « Titre | lien » ; corps = description (optionnelle).
+  // Pas de pictogramme / badge / variante → pour ça, garder le composant
+  // Nunjucks {{ component("tile", {…}) }}.
+  var TILE_RE = /^:::tile[ \t]+([^\n|]*)\|([^\n]*)\n([\s\S]*?)\n:::[ \t]*$/gm;
+
+  function parseTiles(inner) {
+    var tiles = [];
+    var m;
+    TILE_RE.lastIndex = 0;
+    while ((m = TILE_RE.exec(inner))) {
+      tiles.push({
+        title: (m[1] || '').trim(),
+        url: (m[2] || '').trim(),
+        description: (m[3] || '').trim(),
+      });
+    }
+    return tiles;
+  }
+
+  function tileToMarkdown(t) {
+    var title = t && t.title ? String(t.title).trim() : '';
+    var url = t && t.url ? String(t.url).trim() : '';
+    var desc = t && t.description ? String(t.description).trim() : '';
+    return ':::tile ' + title + ' | ' + url + '\n\n' + desc + '\n\n:::';
+  }
+
+  function tilesToPreview(tiles) {
+    if (!tiles.length) {
+      return '_(aucune tuile)_';
+    }
+    var cols = Math.max(1, Math.min(tiles.length, 3));
+    return (
+      '<ul class="tiles" style="--tiles-cols:' + cols + '">\n' +
+      tiles
+        .map(function (t) {
+          var ext = /^https?:\/\//i.test(t.url || '');
+          return (
+            '<li><div class="fr-tile fr-tile--sm fr-enlarge-link">' +
+            '<div class="fr-tile__body"><div class="fr-tile__content">' +
+            '<h3 class="fr-tile__title"><a class="fr-tile__link" href="' +
+            esc(t.url || '#') + '"' + (ext ? ' target="_blank" rel="noopener"' : '') +
+            '>' + esc(t.title || 'Tuile sans titre') + '</a></h3>' +
+            (t.description
+              ? '<div class="fr-tile__desc"><p>' + esc(t.description) + '</p></div>'
+              : '') +
+            '</div></div></div></li>'
+          );
+        })
+        .join('\n') +
+      '\n</ul>'
+    );
+  }
+
+  window.CMS.registerEditorComponent({
+    id: 'tiles',
+    label: 'Tuiles (grille)',
+    icon: 'grid_view',
+    pattern: /^::::tiles[^\n]*\n([\s\S]*?)\n::::[ \t]*(?=\n|$)/m,
+    fields: [
+      {
+        name: 'tiles',
+        label: 'Tuiles',
+        label_singular: 'Tuile',
+        widget: 'list',
+        summary: '{{fields.title}}',
+        fields: [
+          { name: 'title', label: 'Titre', widget: 'string' },
+          {
+            name: 'url',
+            label: 'Lien (interne « /… » ou externe « https://… »)',
+            widget: 'string',
+          },
+          { name: 'description', label: 'Description', widget: 'text', required: false },
+        ],
+      },
+    ],
+    fromBlock: function (match) {
+      return { tiles: parseTiles(match[1] || '') };
+    },
+    toBlock: function (data) {
+      var tiles = data && Array.isArray(data.tiles) ? data.tiles : [];
+      if (!tiles.length) {
+        return '::::tiles\n\n::::';
+      }
+      return '::::tiles\n\n' + tiles.map(tileToMarkdown).join('\n\n') + '\n\n::::';
+    },
+    toPreview: function (data) {
+      var tiles = data && Array.isArray(data.tiles) ? data.tiles : [];
+      return tilesToPreview(tiles);
     },
   });
 
