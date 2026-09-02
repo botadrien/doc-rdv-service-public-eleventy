@@ -1,3 +1,9 @@
+# Authentification : GitHub App (pas OAuth App) via le worker Cloudflare
+# sveltia-cms-auth-rdvsp. L'App est installée sur ce seul dépôt -> le jeton
+# délivré à chaque éditeur est limité à `doc-rdv-service-public-eleventy`.
+# Procédure d'installation : docs/cms-auth-github-app.md
+# (pas de `auth_scope` : une GitHub App ignore les scopes OAuth, ses permissions
+# sont définies sur l'App elle-même.)
 backend:
   name: github
   repo: botadrien/doc-rdv-service-public-eleventy

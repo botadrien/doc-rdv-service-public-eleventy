@@ -32,13 +32,15 @@ Interface d'édition : `/admin/` (`public/admin/`).
 Le menu **« Insert »** de l'éditeur donne accès aux blocs DSFR (accordéons, étapes
 numérotées, tuiles, alertes, mises en avant / en exergue). Voir
 [`public/admin/editor-components.js`](public/admin/editor-components.js) et
-[`markdown-custom-containers.js`](markdown-custom-containers.js).
+[`packages/markdown-it-dsfr/`](packages/markdown-it-dsfr/).
 
 - **En local** : lancer `npm start`, ouvrir <http://localhost:8080/admin/> dans un
   navigateur Chromium, choisir « Work with Local Repository » et sélectionner le dossier du projet.
-- **En production** : « Sign in with Token » avec un
-  [jeton d'accès personnel GitHub à granularité fine](https://github.com/settings/tokens?type=beta)
-  limité à ce dépôt (permission *Contents: Read and write*).
+- **En production** : **« Sign in with GitHub »**. L'authentification passe par une
+  **GitHub App** installée sur ce seul dépôt (via le worker Cloudflare
+  [`sveltia-cms-auth-rdvsp`](https://github.com/botadrien/sveltia-cms-auth-rdvsp)) :
+  chaque éditeur autorise en un clic, et son jeton est limité à ce dépôt.
+  Mise en place : [`docs/cms-auth-github-app.md`](docs/cms-auth-github-app.md).
 
 Le contenu vit dans `content/<section>/<page>/index.md` ; les images sont co-localisées
 dans `content/<section>/<page>/assets/`.
@@ -60,8 +62,9 @@ Build avec `--pathprefix=/doc-rdv-service-public-eleventy/` (sous-chemin GitHub 
 
 ## Feuille de route
 
-- [ ] Limiter le scope de l'auth app GitHub
-- [ ] ajouter les redirects depuis les routes github directement dans cette app
+- [ ] auth CMS : passer d'une OAuth App à une **GitHub App** limitée à ce dépôt
+      — procédure dans [`docs/cms-auth-github-app.md`](docs/cms-auth-github-app.md)
+      (étapes GitHub + Cloudflare à exécuter à la main ; le code est prêt)
 - [x] corriger l'affichage des images — les captures Markdown débordaient de la
       colonne (le DSFR ne pose pas de `img { max-width: 100% }` global) ; toutes
       les images sont désormais servies depuis `content/.../assets/`
