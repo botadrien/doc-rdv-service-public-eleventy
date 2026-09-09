@@ -1,0 +1,41 @@
+.demo-shell {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--background-default-grey);
+}
+
+.demo-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid var(--border-default-grey);
+}
+
+.demo-title {
+  font-size: 1rem;
+  color: var(--text-title-grey);
+  /* cale le titre à gauche, tout le reste (contrôles + liens) à droite */
+  margin-right: auto;
+}
+
+.demo-content {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+.demo-column {
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: 2rem 1rem 6rem;
+}
+
+.published-root {
+  padding-top: 1rem;
+  /* Aligne la colonne de contenu sur celle de l'éditeur : BlockNote applique
+     `padding-inline: 54px` sur `.bn-editor` pour loger la poignée `⋮⋮`. */
+  padding-inline: 54px;
+}
