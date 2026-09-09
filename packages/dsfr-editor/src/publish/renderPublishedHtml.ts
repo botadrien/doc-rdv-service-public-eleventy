@@ -15,6 +15,7 @@
 import type { DsfrEditorInstance, DsfrPartialBlock } from "../schema";
 
 const ACCORDION = "dsfrAccordionSection";
+const HTML_EMBED = "htmlEmbed";
 
 /** Sérialise le contenu inline d'un bloc (sans balise conteneur). */
 function inlineToHtml(
@@ -53,7 +54,8 @@ function serialize(
   const parts: string[] = [];
   let i = 0;
   while (i < blocks.length) {
-    if (blocks[i].type === ACCORDION) {
+    const type = blocks[i].type;
+    if (type === ACCORDION) {
       const run: DsfrPartialBlock[] = [];
       while (i < blocks.length && blocks[i].type === ACCORDION) {
         run.push(blocks[i]);
@@ -64,9 +66,19 @@ function serialize(
           run.map((s) => accordionSectionHtml(editor, s)).join("") +
           `</div>`,
       );
+    } else if (type === HTML_EMBED) {
+      // Injecté verbatim, sans conteneur (contenu de confiance).
+      parts.push(
+        String((blocks[i] as { props?: { html?: unknown } }).props?.html ?? ""),
+      );
+      i++;
     } else {
       const run: DsfrPartialBlock[] = [];
-      while (i < blocks.length && blocks[i].type !== ACCORDION) {
+      while (
+        i < blocks.length &&
+        blocks[i].type !== ACCORDION &&
+        blocks[i].type !== HTML_EMBED
+      ) {
         run.push(blocks[i]);
         i++;
       }
@@ -99,13 +111,18 @@ function cleanup(html: string): string {
     return stripped;
   }
   root.querySelectorAll("*").forEach((el) => {
-    const kept = el.className
-      .split(/\s+/)
-      .filter((c) => c && !c.startsWith("bn-"));
-    if (kept.length) {
-      el.className = kept.join(" ");
-    } else {
-      el.removeAttribute("class");
+    // `class` (et `classname`, artefact d'export inline de BlockNote) : retire
+    // les classes `bn-*`. `el.className` est un `SVGAnimatedString` sur SVG ->
+    // passer par les attributs.
+    for (const name of ["class", "classname"]) {
+      const raw = el.getAttribute(name);
+      if (raw == null) continue;
+      const kept = raw.split(/\s+/).filter((c) => c && !c.startsWith("bn-"));
+      if (kept.length && name === "class") {
+        el.setAttribute("class", kept.join(" "));
+      } else {
+        el.removeAttribute(name);
+      }
     }
     for (const attr of [...el.attributes]) {
       if (

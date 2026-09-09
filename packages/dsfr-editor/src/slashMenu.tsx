@@ -69,6 +69,15 @@ export function getDsfrSlashMenuItems(
       onItemClick: () =>
         insertOrUpdateBlockForSlashMenu(editor, { type: "dsfrHighlight" }),
     },
+    {
+      title: "HTML brut",
+      subtext: "Coller du HTML tel quel (grille, vidéo, tuile, embed…)",
+      group: "DSFR",
+      aliases: ["html", "embed", "brut", "raw", "iframe", "video", "vidéo"],
+      icon: <DsfrIcon id="fr-icon-code-s-slash-line" />,
+      onItemClick: () =>
+        insertOrUpdateBlockForSlashMenu(editor, { type: "htmlEmbed" }),
+    },
   ];
 
   return [...natives, ...dsfr];

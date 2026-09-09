@@ -2,6 +2,7 @@ export { calloutBlock } from "./Callout";
 export { alertBlock } from "./Alert";
 export { highlightBlock } from "./Highlight";
 export { accordionSectionBlock } from "./AccordionSection";
+export { htmlEmbedBlock } from "./HtmlEmbed";
 
 export * from "./dsfrOptions";
 export {

@@ -167,3 +167,16 @@
   margin-bottom: 0.5rem;
   padding: 0.25rem 1rem;
 }
+
+/* Bloc « HTML brut » : liseré discret pour signaler une zone non éditable en
+   place (l'édition passe par l'engrenage). */
+.dsfr-html-embed {
+  outline: 1px dashed var(--border-default-grey);
+  outline-offset: 0.25rem;
+}
+.dsfr-html-embed > :first-child {
+  margin-top: 0;
+}
+.dsfr-html-embed > :last-child {
+  margin-bottom: 0;
+}

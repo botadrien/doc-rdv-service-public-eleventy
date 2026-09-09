@@ -12,6 +12,7 @@ import {
   alertBlock,
   calloutBlock,
   highlightBlock,
+  htmlEmbedBlock,
 } from "./blocks";
 
 export const dsfrSchema = BlockNoteSchema.create({
@@ -38,6 +39,9 @@ export const dsfrSchema = BlockNoteSchema.create({
     dsfrAlert: alertBlock(),
     dsfrHighlight: highlightBlock(),
     dsfrAccordionSection: accordionSectionBlock(),
+
+    // --- trappe HTML brut -------------------------------------------------
+    htmlEmbed: htmlEmbedBlock(),
   },
 });
 
@@ -52,4 +56,5 @@ export const DSFR_BLOCK_TYPES = {
   alert: "dsfrAlert",
   highlight: "dsfrHighlight",
   accordionSection: "dsfrAccordionSection",
+  htmlEmbed: "htmlEmbed",
 } as const;

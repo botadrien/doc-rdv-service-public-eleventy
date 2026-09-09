@@ -58,10 +58,21 @@ export type ConfigTextField = {
   onChange: (value: string) => void;
 };
 
+export type ConfigTextareaField = {
+  kind: "textarea";
+  key: string;
+  label: string;
+  value: string;
+  placeholder?: string;
+  rows?: number;
+  onChange: (value: string) => void;
+};
+
 export type ConfigField =
   | ConfigSelectField
   | ConfigBooleanField
-  | ConfigTextField;
+  | ConfigTextField
+  | ConfigTextareaField;
 
 export type ConfigPanel = { title: string; fields: ConfigField[] };
 
@@ -101,6 +112,23 @@ export function ConfigFields({ fields }: { fields: ConfigField[] }) {
             />
           );
         }
+        if (field.kind === "textarea") {
+          return (
+            <Input
+              key={field.key}
+              label={field.label}
+              textArea
+              nativeTextAreaProps={{
+                value: field.value,
+                placeholder: field.placeholder,
+                rows: field.rows ?? 8,
+                spellCheck: false,
+                style: { fontFamily: "monospace", whiteSpace: "pre" },
+                onChange: (e) => field.onChange(e.target.value),
+              }}
+            />
+          );
+        }
         return (
           <Select
             key={field.key}
@@ -126,7 +154,8 @@ export function ConfigFields({ fields }: { fields: ConfigField[] }) {
 export type ConfigurableBlockType =
   | "dsfrCallout"
   | "dsfrAlert"
-  | "dsfrHighlight";
+  | "dsfrHighlight"
+  | "htmlEmbed";
 
 type CalloutProps = {
   colorVariant: AccentColor;
@@ -135,6 +164,7 @@ type CalloutProps = {
 };
 type AlertProps = { severity: Severity; small: boolean; title: string };
 type HighlightProps = { size: HighlightSize };
+type HtmlEmbedProps = { html: string };
 
 export const configFieldsFor: Record<
   ConfigurableBlockType,
@@ -224,6 +254,28 @@ export const configFieldsFor: Record<
             editor.updateBlock(block, {
               type: "dsfrHighlight",
               props: { size: v as HighlightSize },
+            }),
+        },
+      ],
+    };
+  },
+
+  htmlEmbed: (block, editor) => {
+    const p = block.props as HtmlEmbedProps;
+    return {
+      title: "HTML brut",
+      fields: [
+        {
+          kind: "textarea",
+          key: "html",
+          label: "Code HTML (contenu de confiance uniquement)",
+          value: p.html,
+          rows: 12,
+          placeholder: '<div class="fr-grid-row">…</div>',
+          onChange: (v) =>
+            editor.updateBlock(block, {
+              type: "htmlEmbed",
+              props: { html: v },
             }),
         },
       ],
