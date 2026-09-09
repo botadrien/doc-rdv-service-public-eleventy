@@ -7,7 +7,8 @@
     "packages/*"
   ],
   "scripts": {
-    "test": "node --test test/*.test.js packages/*/test/*.test.js",
+    "test": "node --test packages/*/test/*.test.js && vitest run && npm run typecheck",
+    "typecheck": "tsc -p admin-src/tsconfig.json --noEmit && tsc -p packages/dsfr-editor/tsconfig.typecheck.json",
     "prebuild": "npm run admin:build",
     "build": "npx @11ty/eleventy",
     "postbuild": "npx pagefind --site _site/ --output-subdir \"_pagefind\"",
@@ -28,7 +29,7 @@
     "node": ">=18"
   },
   "comments": {
-    "overrides": "Le lot Decap publié le 2026-09-08 (*.1) référence des versions pnpm `catalog:` non résolues -> npm 10 refuse d'installer. On épingle les 5 paquets touchés à leur dernier patch sain (*.0). À retirer quand l'upstream corrige. cf. docs/remplacer-editeur-cms-dsfr-editor.md."
+    "overrides": "Le lot Decap publié le 2026-09-08 (*.1) référence des versions pnpm `catalog:` non résolues -> npm 10 refuse d'installer. On épingle les 5 paquets touchés à leur dernier patch sain (*.0). À retirer quand l'upstream corrige. cf. docs/cms-architecture.md (§ contournement npm)."
   },
   "overrides": {
     "decap-cms-lib-util": "3.8.0",
@@ -52,7 +53,7 @@
     "@vitejs/plugin-react": "^4.3.4",
     "decap-cms-app": "^3.16.1",
     "dsfr-editor": "*",
-    "esbuild": "^0.24.0",
+    "happy-dom": "^15.11.0",
     "luxon": "^3.5.0",
     "markdown-it": "14.1.0",
     "markdown-it-dsfr": "*",
@@ -60,6 +61,7 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "typescript": "^5.6.3",
-    "vite": "^6.0.0"
+    "vite": "^6.0.0",
+    "vitest": "^2.1.9"
   }
 }
