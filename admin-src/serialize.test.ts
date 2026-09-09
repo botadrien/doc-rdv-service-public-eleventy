@@ -42,6 +42,11 @@ describe("injectHeadingIds", () => {
     expect(injectHeadingIds("<h3>Été 2024 !</h3>")).toContain('id="ete-2024"');
   });
 
+  it("ne découpe pas le camelCase (decamelize: false, comme Eleventy)", () => {
+    // decamelize:true donnerait `probleme-connu` -> ancres divergentes du site.
+    expect(injectHeadingIds("<h2>ProblèmeConnu</h2>")).toContain('id="problemeconnu"');
+  });
+
   it("laisse les titres de composants (avec classe) intacts", () => {
     const out = injectHeadingIds('<h2 class="fr-tile__title">Une tuile</h2>');
     expect(out).not.toContain("id=");

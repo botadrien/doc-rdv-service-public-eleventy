@@ -52,8 +52,13 @@ export function parseBody(body: string): {
 
 /**
  * Pose un `id` slugifié sur les titres h2–h4 qui n'en ont pas — indispensable
- * au filtre `tableOfContents` d'Eleventy (`fr-summary`). Même slugify que le
- * site (`@sindresorhus/slugify` `{ decamelize: false }`).
+ * au filtre `tableOfContents` d'Eleventy (`fr-summary`).
+ *
+ * DOIT produire le même slug que le filtre `slugify` d'Eleventy
+ * (`@sindresorhus/slugify`, `{ decamelize: false }`), sinon les ancres du
+ * sommaire pointent dans le vide. Verrouillé par
+ * `packages/markdown-it-dsfr/test/slugify.test.js` (convention) et
+ * `serialize.test.ts` (cette fonction).
  */
 export function injectHeadingIds(html: string): string {
   if (typeof DOMParser === "undefined") return html;
