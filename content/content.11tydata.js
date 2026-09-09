@@ -11,5 +11,8 @@ module.exports = {
         }
     }
     // NB : les pages éditées avec dsfr-editor portent `templateEngineOverride: false`
-    // dans leur frontmatter (ajouté par la migration) — corps HTML servi verbatim.
+    // dans leur frontmatter (champ caché de la config Decap, cf. admin-src/main.tsx)
+    // — corps HTML servi verbatim, ni Nunjucks ni markdown-it.
+    // Ne PAS calculer cette clé ici : en Eleventy 2.x une fonction eleventyComputed
+    // pose toujours la clé, et la home (non concernée) perdrait ses {{ component() }}.
 };

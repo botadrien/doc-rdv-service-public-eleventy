@@ -40,6 +40,9 @@ jobs:
       - name: Build (Eleventy + Pagefind)
         run: npm run build-ghpages
 
+      - name: Filet de sécurité format dsfr-editor
+        run: node scripts/check-build.mjs
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site/

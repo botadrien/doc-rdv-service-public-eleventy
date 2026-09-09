@@ -10,12 +10,13 @@
  *   npx -y decap-server@3.11.0     (:8081 — le 3.11.1 est cassé, cf. SPIKE-NOTES.md)
  *
  * Toutes les sections de contenu sont exposées avec le widget `dsfr-editor` et
- * SANS volet d'aperçu. Un corps encore au format Markdown est converti à
- * l'ouverture (markdownToBlocks.ts) ; l'enregistrement migre le fichier.
- * `templateEngineOverride: false` n'est PAS un champ : il est calculé par
- * `content/content.11tydata.js` dès que le corps porte le marqueur source.
+ * SANS volet d'aperçu.
  *
- * cf. docs/remplacer-editeur-cms-dsfr-editor.md
+ * Le corps est du HTML pré-compilé : Eleventy ne doit ni Nunjucks ni markdown-it.
+ * C'est garanti par le champ caché `templateEngineOverride: false` de `PAGE_FIELDS`
+ * (Decap l'écrit dans le frontmatter à la création comme à l'enregistrement).
+ *
+ * cf. docs/cms-architecture.md
  */
 import CMS from "decap-cms-app";
 import { startReactDsfr } from "@codegouvfr/react-dsfr/spa";
@@ -55,6 +56,8 @@ const PAGE_FIELDS = [
   { name: "title", label: "Titre", widget: "string" },
   { name: "description", label: "Sous-titre (chapô)", widget: "string", required: false },
   { name: "layout", label: "Gabarit", widget: "hidden", default: "layouts/page.njk" },
+  // Corps = HTML pré-compilé : Eleventy le sert verbatim (ni Nunjucks, ni markdown-it).
+  { name: "templateEngineOverride", label: "Traitement Eleventy", widget: "hidden", default: false },
   NAV_FIELD,
   {
     name: "showBreadcrumb",

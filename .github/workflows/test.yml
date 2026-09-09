@@ -16,7 +16,9 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - name: Tests (blocs Markdown DSFR + composants d'éditeur)
+      - name: Tests (markdown-it-dsfr + sérialisation dsfr-editor + typecheck)
         run: npm test
       - name: Build de vérification
         run: npm run build
+      - name: Filet de sécurité format dsfr-editor
+        run: node scripts/check-build.mjs
