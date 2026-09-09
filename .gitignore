@@ -8,7 +8,9 @@ _site/
 # Pagefind (index de recherche généré au build)
 public/_pagefind/
 
-# Bundle de l'aperçu CMS (généré par esbuild au build, cf. docs/apercu-cms-dsfr.md)
+# Bundle admin (Decap + dsfr-editor) généré par Vite (npm run admin:build)
+public/admin/index.html
+public/admin/assets/
 public/admin/preview.gen.js
 
 # Divers

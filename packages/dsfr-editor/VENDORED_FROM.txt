@@ -1,0 +1,2 @@
+b7413c1141c6f2b7cc3a5c5f8c857710c7d9ae6b
+botadrientronics/dsfr-editor @ commit above (vendored 2026-09-09)

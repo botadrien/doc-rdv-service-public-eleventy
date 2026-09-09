@@ -1,7 +1,5 @@
 const {DateTime} = require("luxon");
 
-const esbuild = require("esbuild");
-
 const pluginBundle = require("@11ty/eleventy-plugin-bundle");
 const pluginNavigation = require("@11ty/eleventy-navigation");
 const {EleventyHtmlBasePlugin} = require("@11ty/eleventy");
@@ -87,26 +85,26 @@ module.exports = function (eleventyConfig) {
     });
 
     // Conteneurs Markdown DSFR (packages/markdown-it-dsfr) — même config que
-    // l'aperçu du CMS.
+    // l'aperçu du CMS. À conserver tant que toutes les pages ne sont pas passées
+    // au format dsfr-editor (corps HTML pré-compilé).
     eleventyConfig.amendLibrary("md", mdLib =>
         mdLib.use(markdownItDsfr, {slugify: eleventyConfig.getFilter("slugify")})
     );
 
-    // Bundle navigateur de l'aperçu du CMS (public/admin/preview.gen.js, gitignoré).
-    // Régénéré avant chaque build — voir docs/apercu-cms-dsfr.md.
-    eleventyConfig.addWatchTarget("admin-src/");
-    eleventyConfig.addWatchTarget("packages/markdown-it-dsfr/");
-    eleventyConfig.on("eleventy.before", async () => {
-        await esbuild.build({
-            entryPoints: ["admin-src/preview.js"],
-            bundle: true,
-            format: "iife",
-            minify: true,
-            target: "es2020",
-            outfile: "public/admin/preview.gen.js",
-            logLevel: "warning",
-        });
+    // Pages éditées avec dsfr-editor : le corps du fichier porte, en tête, la
+    // source BlockNote dans un commentaire `<!--dsfr-editor:source … -->`. Elle
+    // sert à rouvrir la page dans l'éditeur ; on la retire du HTML publié.
+    eleventyConfig.addTransform("strip-dsfr-editor-source", (content, outputPath) => {
+        if (typeof outputPath === "string" && outputPath.endsWith(".html")) {
+            return content.replace(/\s*<!--dsfr-editor:source[\s\S]*?-->\s*/g, "\n");
+        }
+        return content;
     });
+
+    // Le bundle admin (Decap + dsfr-editor) est construit hors Eleventy par Vite
+    // (`npm run admin:build`, branché en `prebuild` / `prebuild-ghpages`) et
+    // atterrit dans `public/admin/` -> copié dans `_site/admin/` par le
+    // passthrough. En dev, lancer `npm run admin:dev` en parallèle.
 
     eleventyConfig.setNunjucksEnvironmentOptions({
         trimBlocks: true,

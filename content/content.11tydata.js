@@ -10,4 +10,6 @@ module.exports = {
             return `/${this.slugify(data.slugOverride)}/`;
         }
     }
+    // NB : les pages éditées avec dsfr-editor portent `templateEngineOverride: false`
+    // dans leur frontmatter (ajouté par la migration) — corps HTML servi verbatim.
 };
