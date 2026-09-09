@@ -13,8 +13,11 @@
 > - **`dsfr-editor`** : **vendoré** dans `packages/dsfr-editor/` (git subtree),
 >   pas consommé en dépendance `file:` / git.
 > - **Migration** : 20 pages (pas 28) ; la home reste en widget Markdown natif.
-> - **`amendLibrary` markdown-it-dsfr** : toujours câblé tant que la home n'est
->   pas migrée.
+> - **`amendLibrary` markdown-it-dsfr** : toujours câblé tant que la home et les
+>   pages générales sont en widget Markdown.
+> - **Convertisseur** (`markdownToBlocks.ts`, `legacyShortcodes.ts`,
+>   `scripts/migrate-blocknote.mjs`) : **retiré** une fois la migration finie
+>   (récupérable dans l'historique git si besoin).
 >
 > État courant et fonctionnement : [`../cms-architecture.md`](../cms-architecture.md).
 > Décision « pas de fork Decap » : [`0002-ne-pas-forker-decap.md`](0002-ne-pas-forker-decap.md).

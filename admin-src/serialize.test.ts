@@ -20,7 +20,6 @@ describe("buildBody / parseBody", () => {
     const round = parseBody(buildBody(doc, html));
     expect(round.doc).toEqual(doc);
     expect(round.html).toBe(html);
-    expect(round.legacyMarkdown).toBeUndefined();
   });
 
   it("n'émet jamais `-->` avant le vrai délimiteur de fin", () => {
@@ -30,9 +29,9 @@ describe("buildBody / parseBody", () => {
     expect(source).not.toContain("<!--dsfr-editor:source\n<!--");
   });
 
-  it("un corps illisible ne casse pas parseBody", () => {
-    expect(parseBody("").doc).toEqual([]);
-    expect(parseBody("n'importe quoi").doc).toEqual([]);
+  it("un corps sans marqueur (page neuve) donne un éditeur vide", () => {
+    expect(parseBody("")).toEqual({ doc: [], html: "" });
+    expect(parseBody("n'importe quoi")).toEqual({ doc: [], html: "" });
   });
 });
 

@@ -9,12 +9,14 @@
  *
  *   npx -y decap-server@3.11.0     (:8081 — le 3.11.1 est cassé, cf. docs/cms-architecture.md)
  *
- * Toutes les sections de contenu sont exposées avec le widget `dsfr-editor` et
- * SANS volet d'aperçu.
+ * Les 6 sections de contenu sont éditées avec le widget `dsfr-editor`, SANS volet
+ * d'aperçu. La home et les pages générales (prose légale) restent en widget
+ * `markdown` natif.
  *
- * Le corps est du HTML pré-compilé : Eleventy ne doit ni Nunjucks ni markdown-it.
- * C'est garanti par le champ caché `templateEngineOverride: false` de `PAGE_FIELDS`
- * (Decap l'écrit dans le frontmatter à la création comme à l'enregistrement).
+ * Corps `dsfr-editor` = HTML pré-compilé : Eleventy ne doit ni Nunjucks ni
+ * markdown-it. Le champ caché `templateEngineOverride: false` de `PAGE_FIELDS`
+ * couvre les pages créées dans Decap ; les pages migrées à la main portent déjà
+ * la clé (cf. docs/cms-architecture.md).
  *
  * cf. docs/cms-architecture.md
  */
@@ -77,7 +79,10 @@ const PAGE_FIELDS = [
 ];
 
 const withBodyWidget = (widget: string) =>
-  PAGE_FIELDS.map((f) => (f.name === "body" ? { ...f, widget } : f));
+  PAGE_FIELDS
+    // `templateEngineOverride: false` ne concerne que le HTML pré-compilé de dsfr-editor.
+    .filter((f) => widget === "dsfr-editor" || f.name !== "templateEngineOverride")
+    .map((f) => (f.name === "body" ? { ...f, widget } : f));
 
 /** Une section = un dossier `content/<slug>/` de pages `<page>/index.md`. */
 const section = (name: string, label: string) => ({
@@ -172,10 +177,11 @@ const config = {
             { name: "body", label: "Contenu", widget: "markdown" },
           ],
         },
-        file("accessibilite", "Déclaration d'accessibilité", "content/accessibility/index.md"),
-        file("mentions-legales", "Mentions légales", "content/legal/index.md"),
-        file("donnees-personnelles", "Données personnelles et cookies", "content/personal-data/index.md"),
-        file("contact", "Nous contacter", "content/contact/index.md"),
+        // Prose légale simple -> widget markdown natif (comme la home).
+        file("accessibilite", "Déclaration d'accessibilité", "content/accessibility/index.md", "markdown"),
+        file("mentions-legales", "Mentions légales", "content/legal/index.md", "markdown"),
+        file("donnees-personnelles", "Données personnelles et cookies", "content/personal-data/index.md", "markdown"),
+        file("contact", "Nous contacter", "content/contact/index.md", "markdown"),
       ],
     },
     {

@@ -28,8 +28,6 @@ export function buildBody(doc: DsfrPartialBlock[], html: string): string {
 export function parseBody(body: string): {
   doc: DsfrPartialBlock[];
   html: string;
-  /** Corps à l'ancien format (Markdown) — à convertir à l'ouverture. */
-  legacyMarkdown?: string;
 } {
   const start = body.indexOf(OPEN);
   if (start !== -1) {
@@ -46,8 +44,8 @@ export function parseBody(body: string): {
       }
     }
   }
-  const trimmed = body.trim();
-  return { doc: [], html: "", legacyMarkdown: trimmed || undefined };
+  // Pas de marqueur (page neuve, ou corps illisible) -> éditeur vide.
+  return { doc: [], html: "" };
 }
 
 /**
