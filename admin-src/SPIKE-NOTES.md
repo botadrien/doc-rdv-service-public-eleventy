@@ -173,11 +173,23 @@ layout: layouts/page.njk
 <h2 id="etape-1">Étape 1</h2><p>Texte avec -- et un lien.</p>
 ```
 
+## Auth (étape 4) — OK sous condition
+
+Le worker Cloudflare existant (`base_url`, flux OAuth Netlify/Decap) fonctionne.
+**Mais** Decap fait `GET /repos/{owner}/{repo}` et vérifie `permissions.push` —
+il n'y a **aucun contournement** (le flag `bypassWriteAccessCheckForAppTokens`
+du code n'est pas activable). Donc le compte GitHub connecté **doit avoir un
+accès *write*** au dépôt :
+- se connecter comme `botadrien` (propriétaire) — testé, OK ;
+- ou ajouter les éditeurs en collaborateurs *write* + installer la GitHub App
+  sur le dépôt.
+
+Erreur si accès insuffisant : « Your GitHub user account does not have access to
+this repo. »
+
 ## Verdict
 
-**Feu vert pour la voie Decap auto-bundlé.** Le risque principal (double React /
-BlockNote dans Decap) est levé, et le cycle complet est prouvé : arbo réelle lue
-via le proxy, édition WYSIWYG avec les 4 blocs DSFR, sérialisation round-trip
-exacte, écriture du `.njk` (frontmatter + corps verbatim). Restent des tâches
-d'intégration connues : poids du bundle (~1,9 Mo gzip), régression npm amont
-temporaire, câblage Eleventy du nouveau format, migration des 28 pages.
+**Bascule effectuée** (commit `1920f80` sur `main`, CI verte, site + `/admin`
+live). Restent : retirer le contournement npm (`overrides` + `.npmrc`) quand
+Decap corrige, retouches de conversion (faq, alertes multi-§), thème sombre,
+PR upstream `dsfr-editor`.
