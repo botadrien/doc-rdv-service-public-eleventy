@@ -12,11 +12,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "types": ["vite/client"],
-    "paths": {
-      "dsfr-editor": ["../packages/dsfr-editor/src/index.ts"],
-      "dsfr-editor/style.css": ["../packages/dsfr-editor/src/styles/index.css"]
-    }
+    "types": ["vite/client"]
   },
   "include": ["."]
 }

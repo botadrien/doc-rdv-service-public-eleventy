@@ -16,13 +16,8 @@ export default defineConfig({
   base: "./",
   plugins: [react()],
   resolve: {
-    // Ceinture + bretelles : le paquet vendoré `packages/dsfr-editor` est déjà
-    // résolu via les workspaces npm, mais on force la source TS pour éviter
-    // toute tentative de résolution vers un `dist/` inexistant.
-    alias: {
-      "dsfr-editor/style.css": r("../packages/dsfr-editor/src/styles/index.css"),
-      "dsfr-editor": r("../packages/dsfr-editor/src/index.ts"),
-    },
+    // `dsfr-editor` est résolu par le workspace npm ; son `package.json`
+    // `exports` pointe la source TS (`src/index.ts`), pas de `dist/`.
     dedupe: ["react", "react-dom"],
   },
   build: {
