@@ -3,11 +3,11 @@ import react from "@vitejs/plugin-react";
 import { fileURLToPath } from "node:url";
 
 /*
- * Spike : bundle admin Decap CMS + widget dsfr-editor.
- * `npm run admin:dev`  -> serveur Vite sur http://localhost:5173/
- * `npm run admin:build` -> _site/admin/ (non branché à la CI pour l'instant)
+ * Bundle admin : coquille Decap CMS + widget dsfr-editor.
+ * `npm run admin:dev`   -> serveur Vite sur http://localhost:5173/
+ * `npm run admin:build` -> public/admin/ (branché en prebuild / prebuild-ghpages)
  *
- * cf. docs/remplacer-editeur-cms-dsfr-editor.md (chantier 1).
+ * cf. docs/cms-architecture.md
  */
 const r = (p: string) => fileURLToPath(new URL(p, import.meta.url));
 

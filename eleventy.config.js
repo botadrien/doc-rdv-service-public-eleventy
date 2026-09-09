@@ -5,8 +5,8 @@ const pluginNavigation = require("@11ty/eleventy-navigation");
 const {EleventyHtmlBasePlugin} = require("@11ty/eleventy");
 const {EleventyI18nPlugin} = require("@11ty/eleventy");
 
-// Conteneurs Markdown DSFR — paquet local (packages/markdown-it-dsfr),
-// partagé avec l'aperçu du CMS (cf. docs/mutualisation-outils-dsfr.md).
+// Conteneurs Markdown DSFR — paquet local (packages/markdown-it-dsfr).
+// Ne sert plus qu'à la home (content/index.md), non migrée vers dsfr-editor.
 const markdownItDsfr = require("markdown-it-dsfr");
 
 // Site monolingue (français). On garde les chaînes d'UI du template mais on
@@ -84,9 +84,9 @@ module.exports = function (eleventyConfig) {
         return items;
     });
 
-    // Conteneurs Markdown DSFR (packages/markdown-it-dsfr) — même config que
-    // l'aperçu du CMS. À conserver tant que toutes les pages ne sont pas passées
-    // au format dsfr-editor (corps HTML pré-compilé).
+    // Conteneurs Markdown DSFR (packages/markdown-it-dsfr). À retirer une fois la
+    // home (content/index.md) migrée vers dsfr-editor : plus aucune page au
+    // format Markdown + `:::` / `????` à ce moment-là.
     eleventyConfig.amendLibrary("md", mdLib =>
         mdLib.use(markdownItDsfr, {slugify: eleventyConfig.getFilter("slugify")})
     );

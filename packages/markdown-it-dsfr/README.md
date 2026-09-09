@@ -5,9 +5,11 @@ conteneurs pour le [Système de Design de l'État (DSFR)](https://www.systeme-de
 Framework-agnostique : Eleventy, Astro, VitePress, Nuxt Content, markdown-it nu.
 
 > **Statut : interne, non publié.** Extrait du dépôt
-> `doc-rdv-service-public-eleventy` (étape 1 de
+> `doc-rdv-service-public-eleventy` (cf.
 > [`docs/mutualisation-outils-dsfr.md`](../../docs/mutualisation-outils-dsfr.md)).
-> Consommé en local via npm workspaces.
+> Consommé en local via npm workspaces. Depuis la bascule vers Decap +
+> `dsfr-editor`, ce plugin ne rend plus le corps des pages éditées (seule la home
+> non migrée l'utilise encore).
 
 ## Utilisation
 

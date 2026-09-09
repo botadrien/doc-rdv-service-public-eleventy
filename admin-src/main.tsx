@@ -7,7 +7,7 @@
  * Backend : `github` (auth via le worker Cloudflare, `base_url`) + `local_backend`
  * pour le dev. Le proxy FS local se lance avec :
  *
- *   npx -y decap-server@3.11.0     (:8081 — le 3.11.1 est cassé, cf. SPIKE-NOTES.md)
+ *   npx -y decap-server@3.11.0     (:8081 — le 3.11.1 est cassé, cf. docs/cms-architecture.md)
  *
  * Toutes les sections de contenu sont exposées avec le widget `dsfr-editor` et
  * SANS volet d'aperçu.

@@ -11,7 +11,7 @@
  * Puis :  node scripts/migrate-blocknote.mjs [--collection <name>] [--dry]
  *
  * `playwright-core` requis (chromium déjà installé via ms-playwright).
- * cf. docs/remplacer-editeur-cms-dsfr-editor.md (chantier 4).
+ * cf. docs/cms-architecture.md
  */
 import { chromium } from "playwright-core";
 import fs from "node:fs";

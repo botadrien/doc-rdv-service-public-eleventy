@@ -7,7 +7,7 @@
  * markdownToDsfrBlocks (voir markdownToBlocks.ts). L'enregistrement migre le
  * fichier au nouveau format.
  *
- * Spike — cf. docs/remplacer-editeur-cms-dsfr-editor.md (chantiers 1 & 4).
+ * cf. docs/cms-architecture.md
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {

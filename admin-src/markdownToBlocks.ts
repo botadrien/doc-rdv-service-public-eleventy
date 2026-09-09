@@ -12,7 +12,7 @@
  * HTML brut. `::::tiles` (0 usage réel) reste en bloc `code`.
  *
  * Regex alignées sur `public/admin/editor-components.js`.
- * cf. docs/remplacer-editeur-cms-dsfr-editor.md (chantier 4).
+ * cf. docs/cms-architecture.md
  */
 import type { DsfrPartialBlock } from "dsfr-editor";
 

@@ -2,9 +2,7 @@
  * Marqueurs canoniques des conteneurs Markdown DSFR.
  *
  * Source de vérité de la SYNTAXE (indépendamment du rendu HTML, qui vit dans
- * `containers.js`). Destiné à être importé par `sveltia-cms-dsfr` pour garder les
- * `pattern` des composants d'éditeur alignés sur ces parsers — cf.
- * `docs/mutualisation-outils-dsfr.md`, étape 2.
+ * `containers.js`).
  *
  * Convention : le conteneur « groupe » utilise un marqueur plus long (`????`,
  * `::::`) que ses éléments (`???`, `:::`) pour permettre l'imbrication sans

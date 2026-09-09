@@ -18,32 +18,33 @@ Prérequis : Node.js ≥ 18.
 npm ci             # installe les dépendances
 npm start          # serveur de dev sur http://localhost:8080
 npm run build      # build de production dans _site/ (+ index de recherche Pagefind)
-npm test           # tests des blocs Markdown DSFR + composants d'éditeur (node:test)
+npm test           # markdown-it-dsfr + aller-retour de sérialisation dsfr-editor + typecheck
 ```
 
 Le site est **monolingue (français)** et servi à la racine (pas de préfixe `/fr/`).
 
-## Édition du contenu (Sveltia CMS)
+## Édition du contenu (Decap CMS + dsfr-editor)
 
-Interface d'édition : `/admin/` (`public/admin/`).
+Interface d'édition : `/admin/` — coquille **Decap CMS** dans laquelle est monté
+**`dsfr-editor`** (éditeur WYSIWYG BlockNote/DSFR). Pas de volet d'aperçu :
+l'éditeur colle au rendu final. Le bundle est construit par Vite depuis
+[`admin-src/`](admin-src/).
 
-![Interface d'édition Sveltia CMS](docs/screenshots/edition-cms.png)
+Architecture et format de stockage : [`docs/cms-architecture.md`](docs/cms-architecture.md).
 
-Le menu **« Insert »** de l'éditeur donne accès aux blocs DSFR (accordéons, étapes
-numérotées, tuiles, alertes, mises en avant / en exergue). Voir
-[`public/admin/editor-components.js`](public/admin/editor-components.js) et
-[`packages/markdown-it-dsfr/`](packages/markdown-it-dsfr/).
+- **En local** :
+  ```bash
+  npm run admin:dev            # Vite, http://localhost:5173
+  npx -y decap-server@3.11.0   # 2e terminal — proxy FS local :8081
+  ```
+  puis « Se connecter » dans l'UI.
+- **En production** : **« Sign in with GitHub »**, via le worker Cloudflare
+  [`sveltia-cms-auth-rdvsp`](https://github.com/botadrien/sveltia-cms-auth-rdvsp).
+  Le compte doit avoir un **accès write** au dépôt. Mise en place (GitHub App
+  limitée à ce dépôt) : [`docs/cms-auth-github-app.md`](docs/cms-auth-github-app.md).
 
-- **En local** : lancer `npm start`, ouvrir <http://localhost:8080/admin/> dans un
-  navigateur Chromium, choisir « Work with Local Repository » et sélectionner le dossier du projet.
-- **En production** : **« Sign in with GitHub »**. L'authentification passe par une
-  **GitHub App** installée sur ce seul dépôt (via le worker Cloudflare
-  [`sveltia-cms-auth-rdvsp`](https://github.com/botadrien/sveltia-cms-auth-rdvsp)) :
-  chaque éditeur autorise en un clic, et son jeton est limité à ce dépôt.
-  Mise en place : [`docs/cms-auth-github-app.md`](docs/cms-auth-github-app.md).
-
-Le contenu vit dans `content/<section>/<page>/index.md` ; les images sont co-localisées
-dans `content/<section>/<page>/assets/`.
+Le contenu vit dans `content/<section>/<page>/index.md` (source JSON BlockNote +
+HTML pré-compilé) ; les images sont co-localisées dans `content/<section>/<page>/assets/`.
 
 ## Déploiement
 
@@ -65,25 +66,19 @@ Build avec `--pathprefix=/doc-rdv-service-public-eleventy/` (sous-chemin GitHub 
 - [ ] auth CMS : passer d'une OAuth App à une **GitHub App** limitée à ce dépôt
       — procédure dans [`docs/cms-auth-github-app.md`](docs/cms-auth-github-app.md)
       (étapes GitHub + Cloudflare à exécuter à la main ; le code est prêt)
-- [x] corriger l'affichage des images — les captures Markdown débordaient de la
-      colonne (le DSFR ne pose pas de `img { max-width: 100% }` global) ; toutes
-      les images sont désormais servies depuis `content/.../assets/`
+- [ ] retirer le contournement npm Decap (`overrides` + `.npmrc legacy-peer-deps`)
+      quand l'upstream republie les paquets `catalog:` — cf.
+      [`docs/cms-architecture.md`](docs/cms-architecture.md)
+- [ ] PR upstream à [`dsfr-editor`](https://github.com/botadrientronics/dsfr-editor)
+      (fixes `cleanup()`, option `headingIds`) — cf.
+      [`docs/vendoring-dsfr-editor.md`](docs/vendoring-dsfr-editor.md)
+- [x] corriger l'affichage des images — toutes servies depuis `content/.../assets/`
 
 ### Mutualiser les outils DSFR
 
-Les briques réutilisables de ce dépôt (conteneurs Markdown DSFR, composants
-d'éditeur Sveltia, thème Eleventy) ont vocation à être **extraites en paquets**
-partageables avec d'autres équipes — cf.
-[`docs/mutualisation-outils-dsfr.md`](docs/mutualisation-outils-dsfr.md).
-Piste retenue : cœur agnostique (`markdown-it-dsfr`) + `sveltia-cms-dsfr` +
-fin wrapper `eleventy-plugin-dsfr`. **Publication npm pas encore décidée.**
-
-- [x] Filet de sécurité : suite `npm test` (contrat rendu + aller-retour éditeur)
-- [x] Étape 1 — cœur isolé dans [`packages/markdown-it-dsfr/`](packages/markdown-it-dsfr/)
-      (non publié), dépôt en npm workspaces
-- [ ] Étape 2 — `packages/sveltia-cms-dsfr/` (composants d'éditeur + aperçu)
-- [ ] Étape 3 — `packages/eleventy-plugin-dsfr/` (glu Eleventy) *(conditionnel)*
-- [ ] Étape 4 — publication + petite PR à [`eleventy-dsfr`](https://github.com/codegouvfr/eleventy-dsfr/issues/17)
+`packages/markdown-it-dsfr` (conteneurs Markdown DSFR) est isolé en paquet local,
+non publié. `packages/dsfr-editor` est vendoré (git subtree). Détails et suite
+éventuelle : [`docs/mutualisation-outils-dsfr.md`](docs/mutualisation-outils-dsfr.md).
 
 ### Cutover DNS
 

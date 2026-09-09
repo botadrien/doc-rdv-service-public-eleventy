@@ -10,9 +10,18 @@ choisis, et le jeton *user-to-server* qu'elle délivre = (dépôts installés) �
 (droits de l'utilisateur) ∩ (permissions de l'App).
 
 Le worker Cloudflare [`sveltia-cms-auth-rdvsp`](https://github.com/botadrien/sveltia-cms-auth-rdvsp)
+(hérité de Sveltia, gardé pour Decap — le flux OAuth Netlify est le même)
 fonctionne **sans modification de code** avec une GitHub App — à une condition :
 **désactiver l'expiration des jetons utilisateur** (le worker ne gère pas le
 `refresh_token`).
+
+> ⚠️ **Decap exige un accès *write*.** `decap-cms-backend-github` fait
+> `GET /repos/{owner}/{repo}` et vérifie `permissions.push` ; il n'y a aucun
+> contournement par config. Le compte connecté doit être **propriétaire** du
+> dépôt, ou **collaborateur avec accès write** *et* avoir l'App installée. Sinon :
+> « Your GitHub user account does not have access to this repo. »
+> (Permission `Contents: Read and write` de l'App — étape 1 — + rôle write du
+> compte : les deux sont nécessaires.)
 
 ## Valeurs de référence
 
@@ -76,14 +85,17 @@ Dashboard Cloudflare → Workers & Pages → `sveltia-cms-auth-rdvsp` → **Sett
 
 ## 4. Le CMS
 
-`public/admin/config.yml` est déjà bon : `backend.base_url` pointe sur le worker,
-pas de `auth_scope` (ignoré par une GitHub App). Rien à changer.
+Il n'y a plus de `config.yml` : la config Decap est **inline** dans
+`admin-src/main.tsx` (`backend: { name: "github", repo, branch, base_url }`).
+`base_url` pointe déjà sur le worker ; pas de `auth_scope` (ignoré par une GitHub
+App). Rien à changer côté code.
 
 ## 5. Tester
 
 1. Ouvrir `https://botadrien.github.io/doc-rdv-service-public-eleventy/admin/`
 2. **Sign in with GitHub** → écran d'autorisation GitHub → **Authorize**
-3. Retour dans le CMS, connecté.
+3. Retour dans le CMS, connecté (si « … does not have access to this repo »,
+   voir l'encadré en tête : le compte n'a pas l'accès write).
 4. Vérifier qu'une petite modif se commite bien sur `main`.
 
 Si un éditeur avait autorisé une ancienne **OAuth App** avec le scope `repo` :
@@ -92,10 +104,11 @@ se reconnecter.
 
 ## Limites connues
 
-- Flux **non documenté officiellement** par Sveltia (conçu pour les OAuth Apps),
-  mais les endpoints sont les mêmes et Sveltia gère déjà les jetons « sans header
-  de scope » (comme les fine-grained PAT). Testé OK sur Sveltia ≥ 0.205.
-- **Dev local** : continuer à utiliser « Work with Local Repository » (pas
-  d'OAuth en local, donc pas besoin d'ajouter `localhost` à `ALLOWED_DOMAINS`).
+- Flux OAuth Netlify **non spécifique** à un CMS : les endpoints sont les mêmes
+  pour Sveltia et Decap ; le worker relaie le jeton « sans header de scope »
+  (comme un fine-grained PAT). Testé OK avec Decap 3.16.
+- **Dev local** : `npm run admin:dev` + `npx -y decap-server@3.11.0` (le
+  `local_backend` court-circuite l'OAuth ; pas besoin d'ajouter `localhost` à
+  `ALLOWED_DOMAINS`).
 - Si un jour on veut révoquer l'accès en masse : désinstaller l'App du dépôt
   invalide tous les jetons d'un coup.

@@ -1,149 +1,58 @@
 # Mutualiser les outils DSFR de ce dépôt
 
-> Statut : **décision prise (2 sept. 2026) ; étape 1 faite (paquet local
-> `packages/markdown-it-dsfr`).**
-> Objectif : partager avec d'autres équipes les briques réutilisables produites
-> ici, et garder dans ce dépôt uniquement le **contenu de l'aide RDV Service
-> Public** + les éventuels composants **spécifiques à ce site**.
+> Statut : **`markdown-it-dsfr` isolé** (paquet local, 2 sept. 2026).
+> Le reste est en pause — pas de plan de publication npm à ce jour.
 
-## État des lieux — 3 couches de portabilité
+Objectif : garder dans ce dépôt le **contenu de l'aide RDV Service Public** + ce
+qui est spécifique à ce site, et pouvoir partager les briques génériques.
 
-| Bloc | Fichiers | Nature | Couplage |
+## Les briques
+
+| Bloc | Où | Nature | Portabilité |
 |---|---|---|---|
-| **1. Cœur portable** | `packages/markdown-it-dsfr/` (`index.js`, `containers.js`, `syntax.js`, `dsfr-content.css`) | Plugin **markdown-it** pur + CSS compagnon | Aucun — 11ty, Astro, VitePress, Nuxt Content, markdown-it nu |
-| **2. Couche CMS** | `public/admin/editor-components.js`, `admin-src/preview.js`, hook esbuild de `eleventy.config.js` | Scripts navigateur (`window.CMS.*`) | **Fort** avec la syntaxe des conteneurs (les `pattern` doivent matcher) + noms de collections |
-| **3. Thème Eleventy** | `_includes/layouts/*`, `_includes/templates/*`, `_includes/components/{tile,component,breadcrumb,back_to_top}.njk`, glu de `eleventy.config.js` (passthrough DSFR, filtre `tableOfContents`, shims i18n), `public/admin/config.yml` | Thème Eleventy opinioné | Eleventy uniquement ; recoupe déjà [`codegouvfr/eleventy-dsfr`](https://github.com/codegouvfr/eleventy-dsfr) |
+| **Conteneurs Markdown DSFR** | `packages/markdown-it-dsfr/` | plugin **markdown-it** pur + `dsfr-content.css` | totale (11ty, Astro, VitePress, markdown-it nu) |
+| **Éditeur WYSIWYG DSFR** | `packages/dsfr-editor/` (vendoré, cf. [`vendoring-dsfr-editor.md`](vendoring-dsfr-editor.md)) | blocs BlockNote + `@codegouvfr/react-dsfr` | React ; upstream = [`botadrientronics/dsfr-editor`](https://github.com/botadrientronics/dsfr-editor) |
+| **Thème Eleventy** | `_includes/**`, glu de `eleventy.config.js` | thème opinioné | Eleventy ; recoupe [`codegouvfr/eleventy-dsfr`](https://github.com/codegouvfr/eleventy-dsfr) |
 
-Rien n'est aujourd'hui **spécifique à RDVSP** : tous les conteneurs / composants
-sont génériques. Si des composants propres au site apparaissent (widget de prise
-de RDV, encart support…), ils resteront ici, en surcouche des paquets.
+Rien n'est aujourd'hui spécifique à RDVSP : les conteneurs et blocs sont génériques.
+
+## `packages/markdown-it-dsfr` — état
+
+- **Isolé** dans le dépôt (npm workspaces), `private`, non publié.
+- Conteneurs : `:::info|success|warning|error`, `:::callout`, `:::highlight`,
+  `:::quote`, `????accordionsgroup` / `???`, `::::steps`, `::::tiles`, + ancres de
+  titres et `<table class="fr-table">`. Tests : `packages/markdown-it-dsfr/test/`.
+- **Depuis la bascule Decap/dsfr-editor**, ce plugin n'est **plus câblé sur le
+  rendu du corps de page** : seule la home (`content/index.md`, non migrée) le
+  déclenche encore via `amendLibrary("md", …)` dans `eleventy.config.js`. Une
+  fois la home migrée, `amendLibrary` disparaît et `markdown-it-dsfr` devient un
+  paquet purement autonome (son CSS `dsfr-content.css` reste servi pour le markup
+  `.steps` / `.tiles` figé dans les pages).
 
 ## Écosystème
 
 - [`codegouvfr/eleventy-dsfr`](https://github.com/codegouvfr/eleventy-dsfr) :
-  template **à cloner**, **plus activement maintenu**, sans CMS.
+  template à cloner, sans CMS.
   [Issue #17](https://github.com/codegouvfr/eleventy-dsfr/issues/17) demande un
-  accordéon markdown → intérêt réel, vélocité faible.
-- Autres sites d'aide de l'État : GitBook (fin de vie),
-  [`docsify-dsfr-template`](https://github.com/codegouvfr/docsify-dsfr-template),
-  Eleventy. Un **plugin markdown-it agnostique** comble un vrai trou multi-stack.
-- Un « plugin 11ty » est techniquement un paquet npm
-  ([doc](https://www.11ty.dev/docs/create-plugin/)). Vraie question : **paquet
-  couplé Eleventy** vs **paquets agnostiques** vs **les deux**.
-- Sveltia : [pas de registre de plugins](https://sveltiacms.app/en/docs/api/editor-components).
-  Distribuer = publier un bundle navigateur chargé en `<script>`. L'aperçu
-  par-composant (`toPreview`) n'est pas encore implémenté côté Sveltia — chez nous
-  la fidélité vient de `registerPreviewTemplate` dans `preview.js`.
+  accordéon markdown — `markdown-it-dsfr` y répond ; PR « vitrine » possible.
+- Autres sites d'aide de l'État : GitBook (fin de vie), `docsify-dsfr-template`,
+  Eleventy. Un plugin markdown-it agnostique comble un vrai trou multi-stack.
 
-## Pistes envisagées
+## Si on reprend la mutualisation
 
-### A — Plugin Eleventy unique (`eleventy-plugin-dsfr`)
-
-Un paquet, un `addPlugin` : conteneurs + passthrough DSFR + filtres + (option) CMS + (option) layouts.
-
-- **Pour** : une ligne pour le consommateur ; cible pile le public `eleventy-dsfr` ;
-  un seul dépôt / version / doc ; `eleventy-dsfr` pourrait en dépendre et maigrir.
-- **Contre** : **Eleventy-only** — Astro / VitePress / docsify exclus du travail
-  markdown (le plus dur et le plus universel) ; couple une logique portable à un
-  framework ; le volet CMS reste mal logé.
-
-### B — Paquets npm agnostiques (`markdown-it-dsfr` + `sveltia-cms-dsfr`)
-
-- **Pour** : `markdown-it-dsfr` réutilisable par **tout** consommateur markdown-it
-  (portée maximale) ; séparation des responsabilités ; paquets petits et
-  testables ; indépendant de la santé de `eleventy-dsfr`.
-- **Contre** : 2+ paquets à publier / versionner / synchroniser ; **couplage
-  inter-paquets réel** (les `pattern`/`toBlock` des composants d'éditeur doivent
-  suivre les parsers de conteneurs — décalage = round-trip cassé en silence) ;
-  pas d'histoire « une ligne » pour Eleventy.
-
-### C — Les deux : cœur agnostique + fin wrapper `eleventy-plugin-dsfr` ✅ **retenue**
-
-`markdown-it-dsfr` (+ CSS) et `sveltia-cms-dsfr` = couche portable. Puis
-`eleventy-plugin-dsfr` ≈ 50 lignes de glu (enregistre le plugin md-it, copie
-CSS + assets DSFR, ajoute `tableOfContents`, câble esbuild).
-
-- **Pour** : Eleventy → un `addPlugin` ; les autres → les briques ; le wrapper
-  Eleventy reste trivial ; `eleventy-dsfr` peut en dépendre ; robuste à un
-  changement de stack.
-- **Contre** : le plus de pièces (3 paquets) → **monorepo pnpm/npm workspaces**
-  quasi obligatoire ; le plus de travail initial.
-
-### Hors périmètre paquet
-
-- **Layouts + `config.yml`** : mieux en **starter à cloner** qu'en paquet
-  (Eleventy 2 gère mal les templates packagés). `eleventy-dsfr` joue déjà ce rôle.
-- **PR à `eleventy-dsfr`** : viser **petit** — fermer l'issue #17 (accordéon
-  markdown) en pointant vers `markdown-it-dsfr`, comme vitrine. Pas un gros MR CMS.
-
-## Décision
-
-**Piste C, séquencée.** On n'est **pas prêt à publier sur npm** : l'extraction se
-fait d'abord *en interne* (monorepo local sous le compte `botadrien`), ce dépôt
-consomme via `file:` / dépendance git, et la publication npm (ou vers `codegouvfr`)
-sera décidée plus tard.
-
-Ordre :
-
-1. **`markdown-it-dsfr` (+ `dsfr-content.css`)** — 80 % de la valeur, faible
-   risque, utile tout de suite.
-2. **`sveltia-cms-dsfr`** — composants d'éditeur + aperçu CMS, une fois #1 stable.
-3. **`eleventy-plugin-dsfr`** — seulement s'il y a des consommateurs Eleventy tiers.
-
-## Feuille de route
-
-### Étape 0 — Filet de sécurité *(fait)*
-
-- [x] Suite de tests `test/` (`npm test`, `node:test`) : rendu de chaque
-      conteneur + round-trip `fromBlock → toBlock` des composants d'éditeur.
-      C'est le **prérequis** pour scinder en paquets sans casser les round-trips
-      en silence.
-
-### Étape 1 — Isoler le cœur dans ce dépôt (sans publier) *(fait, 2 sept. 2026)*
-
-- [x] `packages/markdown-it-dsfr/` : `index.js` (plugin `md.use(fn, opts)`),
-      `containers.js`, `dsfr-content.css` (extrait d'`index.css`), `syntax.js`
-      (marqueurs canoniques), `package.json` (`private`, `0.0.0`), `README.md`.
-- [x] `eleventy.config.js` + `admin-src/preview.js` consomment
-      `require("markdown-it-dsfr")` (résolu par le workspace).
-- [x] `dsfr-content.css` : passthrough → `/css/dsfr-content.css`, `<link>` dans
-      `base.njk`, `registerPreviewStyle` dans l'aperçu CMS.
-- [x] Dépôt en **npm workspaces** (`"workspaces": ["packages/*"]`).
-- [x] Tests de rendu → `packages/markdown-it-dsfr/test/` ; le round-trip éditeur
-      reste à la racine (transverse). `npm test` couvre les deux.
-
-**Ce qui reste avant de scinder `sveltia-cms-dsfr` :** `editor-components.js` et
-`admin-src/preview.js` sont encore côté site. Ils dépendent des marqueurs de
-`syntax.js` (aujourd'hui juste documentaire — à durcir en regex partagées).
-
-### Étape 2 — `sveltia-cms-dsfr`
-
-- [ ] `packages/sveltia-cms-dsfr/` : composants d'éditeur + module d'aperçu,
-      build navigateur via esbuild (IIFE + ESM).
-- [ ] Les `pattern`/`toBlock` importent `syntax.js` de `markdown-it-dsfr`
-      (fin du couplage silencieux).
-- [ ] `admin-src/preview.js` : ne garder ici que la partie spécifique au site
-      (noms de collections, résolution `./assets/`).
-
-### Étape 3 — `eleventy-plugin-dsfr` *(conditionnel)*
-
-- [ ] Wrapper mince : `addPlugin` unique = md-it + passthrough DSFR +
-      `tableOfContents` + hook esbuild CMS.
-- [ ] Ce dépôt l'utilise ; `eleventy.config.js` fond à ~30 lignes.
-
-### Étape 4 — Ouverture
-
-- [ ] Choisir l'hébergement de publication (npm public, org `codegouvfr`, …).
-- [ ] Petite PR `eleventy-dsfr` (issue #17) comme vitrine.
-- [ ] `README` de chaque paquet + exemples 11ty / Astro.
+- **`markdown-it-dsfr`** : publier (npm public ou org `codegouvfr`) + README avec
+  exemples 11ty / Astro. C'est 80 % de la valeur, faible risque.
+- **`eleventy-plugin-dsfr`** (~50 lignes : plugin md-it + passthrough DSFR +
+  `tableOfContents`) : seulement s'il y a des consommateurs Eleventy tiers.
+- **`dsfr-editor`** : déjà un dépôt à part ; on contribue en amont, on ne
+  re-package pas ici (cf. [`vendoring-dsfr-editor.md`](vendoring-dsfr-editor.md)).
+- **Layouts + config** : mieux en starter à cloner qu'en paquet (`eleventy-dsfr`
+  joue déjà ce rôle).
 
 ## Références
 
 - [eleventy-dsfr](https://github.com/codegouvfr/eleventy-dsfr) ·
   [issue #17](https://github.com/codegouvfr/eleventy-dsfr/issues/17) ·
   [docsify-dsfr-template](https://github.com/codegouvfr/docsify-dsfr-template)
-- [11ty — Create a Plugin](https://www.11ty.dev/docs/create-plugin/) ·
-  [11ty — Markdown](https://www.11ty.dev/docs/languages/markdown/)
+- [11ty — Create a Plugin](https://www.11ty.dev/docs/create-plugin/)
 - [markdown-it-container](https://www.npmjs.com/package/markdown-it-container)
-- [Sveltia — Editor Components](https://sveltiacms.app/en/docs/api/editor-components) ·
-  [@sveltia/cms](https://www.npmjs.com/package/@sveltia/cms)

@@ -7,7 +7,7 @@
  *   -->
  *   <h2 id="...">...</h2> ...
  *
- * cf. docs/remplacer-editeur-cms-dsfr-editor.md (chantier 2 & 3).
+ * cf. docs/cms-architecture.md (§ format de corps de fichier).
  */
 import slugify from "@sindresorhus/slugify";
 import type { DsfrPartialBlock } from "dsfr-editor";

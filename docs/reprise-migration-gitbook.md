@@ -1,6 +1,7 @@
 # Reprise du travail — migration GitBook → Eleventy
 
-_État au 31 août 2026. Auteur de la session : migration initiale (Claude Code)._
+_État initial : 31 août 2026 (session de migration GitBook → Eleventy)._
+_Le CMS a changé depuis : voir [`cms-architecture.md`](cms-architecture.md)._
 
 ## TL;DR
 
@@ -10,7 +11,6 @@ surtout de la finition (analytics, pages légales, un lien cassé, cutover DNS).
 - **Prod** : <https://botadrien.github.io/doc-rdv-service-public-eleventy/>
 - **CMS prod** : <https://botadrien.github.io/doc-rdv-service-public-eleventy/admin/>
 - **Repo** : <https://github.com/botadrien/doc-rdv-service-public-eleventy> (compte bot `botadrien`)
-- Branche `main`, 6 commits, `origin/main` à jour, working tree propre.
 
 ## Comment relancer l'environnement
 
@@ -40,7 +40,7 @@ la recréer ou installer Node à la main (`curl -fsSL https://deb.nodesource.com
 | Scaffold | Gabarit `codegouvfr/eleventy-dsfr` importé puis **réduit au français, servi à la racine** (pas de `/fr/`). Retirés : blog, calendrier, flux RSS/Atom, pagination, mécanique bilingue. Conservés : DSFR, navigation, recherche Pagefind, sitemap, 404. |
 | i18n | `EleventyI18nPlugin` gardé **uniquement** pour peupler `page.lang`. Les filtres `i18n` / `locale_url` / `filterCollectionLang` sont des **shims neutres** dans `eleventy.config.js` (chaînes FR depuis `_data/i18n/fr/index.js`). |
 | Déploiement | `.github/workflows/deploy.yml` : `npm ci` → `npm run build-ghpages` (build `--pathprefix=/doc-rdv-service-public-eleventy/` + Pagefind) → GitHub Pages. Source Pages = « GitHub Actions ». 4 runs verts. |
-| CMS | Sveltia dans `public/admin/` (`index.html` + `config.yml`, compatible Decap). Collection **Pages** arborescente (`nested.depth: 4`, `path: "{{slug}}/index"`), images co-localisées (`media_folder: assets`). Auth prod : **PAT GitHub** (« Sign in with Token »), pas d'OAuth Worker. |
+| CMS | **Remplacé** (sept. 2026) : Sveltia + widget Markdown → **Decap CMS + `dsfr-editor`** (WYSIWYG). Voir [`cms-architecture.md`](cms-architecture.md) et [`adr/0001`](adr/0001-remplacer-editeur-cms-par-decap-dsfr-editor.md). |
 | Contenu | 20 pages + accueil migrées depuis `rdv-solidarites/rdv-service-public-gitbook`. Arbo : `content/<section>/<page>/index.md`. 6 sections (stubs `content/<section>.md`, `permalink: false`) + Accueil + Contact. Nav identique à `SUMMARY.md`. |
 | Images | 18 fichiers dans `content/<page>/assets/`, copiés via la règle passthrough `content/**/assets/*` (ajoutée dans `eleventy.config.js`). |
 | Convertisseur | `scripts/migrate/convert.mjs` — **idempotent**, relançable. Voir `scripts/migrate/README.md`. |
@@ -58,19 +58,16 @@ content/index.md                accueil (héro + grilles de tuiles)
 content/<section>.md            stubs de navigation
 content/<section>/<page>/index.md + assets/
 content/{legal,personal-data,accessibility,contact}/index.md   pages hors migration
-public/admin/{index.html,config.yml}   Sveltia
+admin-src/                             bundle CMS (Decap + dsfr-editor) — voir cms-architecture.md
 .github/workflows/deploy.yml
 scripts/migrate/convert.mjs + README.md
 ```
 
 ## À faire (par ordre de priorité suggéré)
 
-1. **Sveltia — tester `/admin` en prod** : créer un
-   [PAT fine-grained](https://github.com/settings/tokens?type=beta) sur le repo
-   (`Contents: Read and write`), se connecter via « Sign in with Token », créer/éditer
-   une page de test, vérifier le commit. Ajuster `public/admin/config.yml` si l'arbo
-   ou les champs ne collent pas (le widget markdown ne connaît pas les conteneurs
-   `:::`/`???` — prévoir une aide ou des widgets custom si besoin).
+1. **CMS** : la surface d'édition a été remplacée (Decap + `dsfr-editor`). Reste
+   côté auth : passer l'OAuth App en **GitHub App** limitée à ce dépôt —
+   procédure dans [`cms-auth-github-app.md`](cms-auth-github-app.md).
 2. **Matomo** : renseigner `_data/metadata.js` → `matomo: { url, siteId }` (récupérer
    l'ID de l'ancien site GitBook). Le script de suivi est déjà câblé conditionnellement
    dans `_includes/layouts/base.njk`.
@@ -92,8 +89,8 @@ scripts/migrate/convert.mjs + README.md
    - créer `public/CNAME` contenant `aide.rdv-service-public.fr` ;
    - retirer `--pathprefix=/doc-rdv-service-public-eleventy/` de `package.json`
      (`build-ghpages`) et du workflow ;
-   - mettre à jour `_data/metadata.js` → `url` et `public/admin/config.yml`
-     (`site_url`, `display_url`, `public_folder`) ;
+   - mettre à jour `_data/metadata.js` → `url` (la config Decap est inline dans
+     `admin-src/main.tsx` : vérifier `backend.base_url` / `ALLOWED_DOMAINS` du worker) ;
    - DNS : `aide` → `CNAME` vers `botadrien.github.io` ; activer « Enforce HTTPS » ;
    - prévoir les redirections des anciennes URL (mêmes chemins, sauf
      `guide-des-etapes` → `etape-par-etape`, déjà géré) ;
@@ -105,7 +102,9 @@ scripts/migrate/convert.mjs + README.md
 ## Pièges rencontrés (pour info)
 
 - Un fichier `.njk` **n'est pas** rendu en markdown → l'accueil est un `.md`
-  (`content/index.md`) pour que `##`/`:::` fonctionnent tout en gardant `{{ component() }}`.
+  (`content/index.md`) pour que `##`/`:::` fonctionnent tout en gardant
+  `{{ component() }}`. (Les pages éditées avec `dsfr-editor` contournent ça avec
+  `templateEngineOverride: false` — cf. `cms-architecture.md`.)
 - Les images en markdown `![](./assets/…)` sont servies telles quelles via
   `addPassthroughCopy("content/**/assets/*")` (le plugin `eleventy-img` a été
   retiré au nettoyage de sept. 2026 — il n'était branché sur rien).
